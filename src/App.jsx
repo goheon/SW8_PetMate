@@ -11,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         {/* 경로 수정 필요path: pet-sitter-list/:id */}
-        <Route path="/pet-sitter" element={<PetSitterInfo />} />
+        <Route path="/pet" element={<PetSitterInfo />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
     </>

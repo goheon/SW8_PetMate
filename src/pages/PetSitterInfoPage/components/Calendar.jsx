@@ -1,7 +1,8 @@
 import DatePicker from 'react-datepicker';
 import { useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export const Calendar = () => {
   const [startDate, setStartDate] = useState(new Date());
-  return <DatePicker showIcon selected={startDate} onChange={(date) => setStartDate(date)} />;
+  return <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />;
 };
