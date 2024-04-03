@@ -7,13 +7,11 @@ import App from './App';
 
 export function render(path) {
   const html = ReactDOMServer.renderToString(
-    <React.StrictMode>
-      <Provider store={store}>
-        <StaticRouter location={path}>
-          <App />
-        </StaticRouter>
-      </Provider>
-    </React.StrictMode>,
+    <Provider store={store}>
+      <StaticRouter location={path}>
+        <App />
+      </StaticRouter>
+    </Provider>,
   );
   return { html };
 }
