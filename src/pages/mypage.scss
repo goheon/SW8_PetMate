@@ -1,0 +1,411 @@
+.mypage {
+  background-color: #f5f5f5;
+  min-height: 90vh;
+  padding: 140px 0px 80px;
+  &_inner {
+    max-width: 1200px;
+    padding: 0px 30px;
+    margin: 0px auto;
+    display: flex;
+    align-items: start;
+  }
+  &_left {
+    width: 30%;
+    margin-right: 2%;
+  }
+  &_right {
+    width: 68%;
+  }
+  &-info {
+    display: flex;
+    background-color: #fff;
+    box-shadow: 0 0px 10px rgba(10, 10, 10, 0.07);
+    border-radius: 10px;
+    flex-wrap: wrap;
+    padding: 30px;
+    margin-bottom: 20px;
+    > div {
+      &:nth-of-type(1) {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+    }
+    &_img {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      margin-right: 20px;
+      &-box {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #ebeeff;
+        cursor: pointer;
+      }
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        &.defalut {
+          width: 100%;
+        }
+      }
+      .camera {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        background-color: #632ed8;
+        font-size: 0;
+        padding: 6px;
+        border-radius: 50px;
+        cursor: pointer;
+      }
+      svg {
+        width: 12px;
+        fill: #fff;
+      }
+    }
+    &_text {
+      flex: 1 0;
+      h5 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 14px;
+        color: #555;
+      }
+    }
+  }
+  &-point {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 18px;
+    background-color: #f4f6fe;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    h5 {
+      font-weight: 900;
+    }
+    p {
+      font-weight: bold;
+    }
+    span {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      background-color: #632ed8;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      position: relative;
+      top: -1px;
+      font-family: 'Roboto', sans-serif;
+    }
+  }
+  &-expert {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: #632ed8;
+    color: #fff;
+    padding: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    svg {
+      width: 15px;
+      margin-right: 10px;
+      fill: #fff;
+    }
+  }
+  &-nav {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 0px 10px rgba(10, 10, 10, 0.07);
+    padding: 30px;
+    border-radius: 10px;
+    ul li {
+      a {
+        display: inline-block;
+        width: 100%;
+        padding: 15px 10px;
+        border-radius: 5px;
+        font-weight: 500;
+        &:hover {
+          background-color: #f4f6fe;
+        }
+      }
+    }
+  }
+  &-reservation {
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0px 10px rgba(10, 10, 10, 0.07);
+
+    h4 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .mypage-board {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+      li {
+        flex: 1 0;
+        background-color: #f4f6fe;
+        padding: 20px;
+        border-radius: 10px;
+        p {
+          font-weight: 500;
+          margin-bottom: 10px;
+        }
+        strong {
+          display: block;
+          font-size: 20px;
+        }
+      }
+    }
+
+    .mypage-filter {
+      display: flex;
+      justify-content: start;
+      margin-bottom: 20px;
+      &_start-day {
+        position: relative;
+        margin-right: 30px;
+        &::after {
+          position: absolute;
+          top: 50%;
+          right: -22px;
+          content: '';
+          display: block;
+          width: 15px;
+          height: 2px;
+          background-color: #555;
+        }
+      }
+      &_start-day,
+      &_end-day {
+        background-color: #f4f6fe;
+        padding: 5px 10px;
+        border-radius: 10px;
+        .react-datepicker__calendar-icon {
+          top: -2px;
+          fill: #632ed8;
+        }
+        input {
+          width: 125px;
+          background-color: #f4f6fe;
+          border: none;
+          font-size: 15px;
+          font-weight: 500;
+          padding-left: 30px;
+        }
+      }
+      &_end-day {
+        margin-right: 10px;
+      }
+
+      &_state {
+        min-width: 115px;
+        margin-right: 10px;
+        &-options {
+          >div {
+            background-color: #f4f6fe;
+            border: none;
+            padding: 2px 0px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
+      }
+      &_search {
+        flex: 1 0;
+        border-radius: 10px;
+        background-color: #f4f6fe;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        input {
+          width: 100%;
+          border: none;
+          background-color: inherit;
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+      >button {
+        background-color: #632ed8;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 10px;
+      }
+    }
+
+    &-list {
+      li {
+        // border: 2px solid #eee;
+        background-color: #fffdf4;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      &_state {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        color: #888;
+        h6 {
+          font-weight: 500;
+          font-size: 14px;
+        }
+        p {
+          font-weight: 500;
+          font-size: 14px;
+          span {
+            color: #222;
+            margin-left: 5px;
+          }
+        }
+      }
+      &_info {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        .img-box {
+          width: 140px;
+          border-radius: 10px;
+          margin-right: 20px;
+          overflow: hidden;
+          font-size: 0;
+          img {
+            width: 100%;
+            object-fit: cover;
+          }
+        }
+        &_right {
+          display: flex;
+          justify-content: space-between;
+          flex: 1 0;
+        }
+        .text-box {
+          flex: 1 0;
+          .title {
+            font-weight: 500;
+            margin-bottom: 12px;
+            span {
+              color: #888;
+              margin-right: 5px;
+              font-weight: 300;
+            }
+          }
+          h5 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #222;
+          }
+          h6 {
+            font-weight: 500;
+            font-size: 14px;
+            color: #555;
+          }
+        }
+        .btn-box {
+          display: flex;
+          flex-direction: column;
+          a {
+            background-color: #ffc800;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 12px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+  &-account {
+    width: 100%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0px 10px rgba(10, 10, 10, 0.07);
+
+    h4 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    &_setting {
+      margin-bottom: 50px;
+    }
+    table {
+      width: 100%;
+      border-top: 1px solid #ebeeff;
+      font-weight: 500;
+      td {
+        width: 150px;
+        font-size: 14px;
+        padding: 20px;
+        border-bottom: 1px solid #ebeeff;
+        svg {
+          width: 15px;
+          margin-left: 10px;
+          cursor: pointer;
+          position: relative;
+          top: 1px;
+          fill: #555;
+          &:hover {
+            fill: #111;
+          }
+        }
+        > p {
+          display: inline-block;
+        }
+        &:nth-of-type(1) {
+          background-color: #f4f6fe;
+          border-right: 1px solid #ebeeff;
+          font-weight: bold;
+          color: #555;
+        }
+        &:nth-of-type(2) {
+          width: calc(100% - 150px);
+        }
+      }
+    }
+
+    .withdrawal {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 8px;
+      color: #f15746;
+      font-size: 13px;
+      margin-top: 10px;
+      border: 1px solid #f15746;
+      font-weight: 500;
+      &:hover {
+        background-color: #f15746;
+        color: #fff;
+      }
+    }
+  }
+}
