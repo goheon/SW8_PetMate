@@ -1,0 +1,165 @@
+.container {
+  height: 1400px;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 100px;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 1fr 1fr;
+  justify-content: center;
+
+  .pet-sitter-info-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .pet-sitter-info-card {
+      max-width: 600px;
+      min-width: 460px;
+      background-color: #632ed8;
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.07);
+      border-radius: 20px;
+
+      .pet-sitter-info {
+        padding: 20px;
+        min-width: 250px;
+        background-color: #ffffff;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+        border-radius: 15px;
+        margin: 20px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      img {
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.07);
+        border-radius: 50%;
+        width: 240px;
+        height: 240px;
+      }
+
+      .sitterId {
+        display: none;
+      }
+
+      .name {
+        font-size: 1.5em;
+        font-weight: 500;
+        margin: 50px 0 20px 0;
+      }
+
+      .info-text {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-top: 0;
+        text-align: center;
+        * {
+          margin: 5px;
+        }
+      }
+
+      h6 {
+        margin: 50px auto 10px 45px;
+        font-weight: 600;
+        font-size: large;
+      }
+
+      .description {
+        padding: 0 50px;
+      }
+
+      .experience {
+        margin-right: auto;
+        margin-left: 50px;
+        margin-top: 10px;
+
+        li {
+          margin-top: 10px;
+        }
+      }
+
+      .check {
+        margin-top: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        span {
+          svg {
+            margin-top: 0;
+          }
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #ffc800;
+          padding: 6px 10px;
+          border-radius: 5px;
+          font-size: 16px;
+          margin-right: 10px;
+          font-weight: 500;
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .reservation-section {
+    grid-column: 2/3;
+    grid-row: 1/3;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    .reservation-card {
+      min-width: 200px;
+      width: 100%;
+      background-color: #632ed8;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .reservation-card_inner {
+        margin: 20px 20px;
+        width: 100%;
+        height: 1000px;
+        background-color: #ffffff;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+        border-radius: 15px;
+
+        h6 {
+          font-size: 24px;
+          padding: 50px 0 10px 50px;
+          border-bottom: 3px solid #632ed8;
+        }
+
+        .date-select,
+        .time-select {
+          padding: 20px 0 0 50px;
+
+          input {
+            display: block;
+          }
+        }
+
+        span {
+          display: block;
+          font-size: large;
+          padding-top: 30px;
+        }
+      }
+    }
+  }
+
+  .review-section {
+    h6 {
+      font-size: 30px;
+    }
+  }
+}

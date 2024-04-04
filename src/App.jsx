@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Notfound from './pages/Notfound';
-import PetSitterInfo from './pages/PetSitterInfoPage/PetSitterInfo';
+import PetSitterInfo from './pages/PetSitterInfo';
 import './reset.css';
 
 function App() {
