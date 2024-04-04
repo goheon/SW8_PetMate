@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './store.js';
 import App from './App';
 
+//이하 코드에서 정적라우팅 진행
 export function render(path) {
   const html = ReactDOMServer.renderToString(
     <React.StrictMode>
@@ -17,3 +18,4 @@ export function render(path) {
   );
   return { html };
 }
+//

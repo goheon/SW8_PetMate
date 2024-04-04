@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import store from './store.js';
 import App from './App';
 
+//이하 코드에서 hydrate 진행
 ReactDOM.hydrateRoot(
   document.getElementById('root'),
   <React.StrictMode>
@@ -16,3 +17,4 @@ ReactDOM.hydrateRoot(
     </Provider>
   </React.StrictMode>,
 );
+//

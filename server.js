@@ -49,10 +49,11 @@ const url = 'mongodb+srv://petmate:1234@petmate.bhm01el.mongodb.net/?retryWrites
   }
 })();
 
-
-
 //Serve APIs
 app.use('/api', apiRouter);
+
+//이하 코드에서 Vite를 미들웨어로 entry-server 정적 라우팅 후에
+// index.html, entry-client의 render => send
 
 // Serve HTML
 app.use('*', async (req, res) => {
@@ -84,6 +85,7 @@ app.use('*', async (req, res) => {
     res.status(500).end(e.stack);
   }
 });
+//
 
 // Start http server
 app.listen(port, () => {
