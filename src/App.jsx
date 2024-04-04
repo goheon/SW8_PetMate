@@ -5,6 +5,10 @@ import SingUp from './pages/SingUp';
 import Login from './pages/Login';
 import Notfound from './pages/Notfound';
 import Mypage from './pages/Mypage';
+import PetSitterList from './pages/PetSitterList';
+import PetSitterInfo from './pages/PetSitterInfo';
+import ReservationSuccess from './pages/ReservationSuccess';
+import Admin from './pages/Admin';
 
 import './swal-popup.scss';
 import './reset.css';
@@ -20,13 +24,17 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/sign-up" element={<SingUp />} />
         <Route path="/login" element={<Login />} />
-
         <Route path="/mypage" element={<Mypage />}>
           <Route path="account" element={<Account />} />
           <Route path="review" element={<Review />} />
           <Route path="point" element={<Point />} />
           <Route path="reservation" element={<Reservation />} />
         </Route>
+        <Route path="/pet-sitter" element={<PetSitterList />}>
+          <Route path=":sitterId" element={<PetSitterInfo />} />
+        </Route>
+        <Route path="/reservation-success" element={<ReservationSuccess />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
     </>
