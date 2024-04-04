@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import './PetSitterInfo.scss';
@@ -37,7 +38,52 @@ function PetSitterInfo({
   description,
   experience,
   check,
+  hourlyRate,
 }) {
+  const petTypeRef = useRef();
+  const petCountRef = useRef();
+
+  const [selectedPetList, setSelectedpetList] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  function handleAdd(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const type = petTypeRef.current.value;
+    const count = petCountRef.current.value;
+    type === '선택' || count === '선택' ? alert('맡기실 반려동물을 선택해주세요') : addBinder(type, count);
+    petTypeRef.current.value = '선택';
+    petCountRef.current.value = '선택';
+  }
+
+  const addBinder = (type, count) => {
+    setSelectedpetList([...selectedPetList, [type, count]]);
+    calculateTotalPrice('add', type, count);
+  };
+
+  function handleRemove(index) {
+    const target = selectedPetList.filter((_, i) => i === index)[0];
+    setSelectedpetList(selectedPetList.filter((_, i) => i !== index));
+    const type = target[0];
+    const count = target[1];
+    calculateTotalPrice('remove', type, count);
+  }
+
+  function calculateTotalPrice(msg, type, count) {
+    switch (msg) {
+      case 'add':
+        setTotalPrice(totalPrice + hourlyRate * count);
+        break;
+      case 'remove':
+        setTotalPrice(totalPrice - hourlyRate * count);
+        break;
+      default:
+        break;
+    }
+  }
+
+  //펫시터의 시간당 가격 설정, 스타일링
+
   return (
     <>
       <Header />
@@ -80,20 +126,83 @@ function PetSitterInfo({
         <section className="reservation-section">
           <div className="reservation-card">
             <div className="reservation-card_inner">
-              <h6>언제 펫시터가 필요한가요?</h6>
-              <div className="date-select">
-                <span>시작일</span>
-                <Calendar className="start-date" />
-                <span>종료일</span>
-                <Calendar className="end-date" />
-              </div>
-              <div className="time-select">
-                <span>시작 시간</span>
-                <Time className="start-time" />
-                <span>종료 시간</span>
-                <Time className="end-time" />
-              </div>
-              <h6></h6>
+              <form action="#" method="post" onSubmit={handleAdd}>
+                <h6>언제 펫시터가 필요한가요?</h6>
+                <div className="date-select">
+                  <span>시작일</span>
+                  <Calendar className="start-date" />
+                  <span>종료일</span>
+                  <Calendar className="end-date" />
+                </div>
+                <div className="time-select">
+                  <span>시작 시간</span>
+                  <Time className="start-time" />
+                  <span>종료 시간</span>
+                  <Time className="end-time" />
+                </div>
+                <h6>맡기시는 반려동물</h6>
+                <div className="pet-select">
+                  <select name="pet-type" ref={petTypeRef}>
+                    {/* {type==='강아지' ? dogOption : type==='고양이' ? catOption : all} */}
+                    <option default>선택</option>
+                    <option value="small">소형 강아지</option>
+                    <option value="medium">중형 강아지</option>
+                    <option value="large">대형 강아지</option>
+                  </select>
+                  <select name="pet-count" ref={petCountRef}>
+                    <option default>선택</option>
+                    {Array(5)
+                      .fill('')
+                      .map((_, i) => (
+                        <option key={i + 1}>{i + 1}</option>
+                      ))}
+                  </select>
+                  <button type="button" onClick={handleAdd}>
+                    추가
+                  </button>
+                  <div className="pet-list">
+                    <ul>
+                      {selectedPetList.map((el, i) => {
+                        switch (el[0]) {
+                          case 'small':
+                            el[0] = '소형 강아지';
+                            break;
+                          case 'medium':
+                            el[0] = '중형 강아지';
+                            break;
+                          case 'large':
+                            el[0] = '대형 강아지';
+                            break;
+                          case 'cat':
+                            el[0] = '고양이';
+                            break;
+                          default:
+                            break;
+                        }
+                        if (el[0] === 'small') {
+                          el[0] = '소형 강아지';
+                        }
+                        return (
+                          <li key={i}>
+                            {el[0]} {el[1]} 마리
+                            <button onClick={() => handleRemove(i)}>X</button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                  <div className="calculator">
+                    <p>총액: {totalPrice.toLocaleString()} 원</p>
+                  </div>
+                  {/* 펫시터 정보에서 type이 강아지인 경우 small, medium, large 가격 조회*/}
+                  <div className="price-list">
+                    <span>시간당 가격</span>
+                    <ul>
+                      <li>소형: {hourlyRate.toLocaleString()}</li>
+                    </ul>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </section>
