@@ -10,7 +10,7 @@
 
   .pet-sitter-info-section {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
     .pet-sitter-info-card {
@@ -118,6 +118,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
+
     .reservation-card {
       min-width: 200px;
       width: 100%;
@@ -138,7 +139,7 @@
 
         h6 {
           font-size: 24px;
-          padding: 50px 0 10px 30px;
+          padding: 30px 0 10px 30px;
           border-bottom: 3px solid #632ed8;
         }
 
@@ -156,20 +157,65 @@
           display: block;
           font-size: large;
         }
-      }
-      .pet-select {
-        padding: 30px;
-        button {
-          padding: 3px;
-          border: 1px solid black;
-          margin: 5px;
+
+        .pet-select {
+          padding: 30px;
+
+          select {
+            margin-right: 5px;
+          }
+
+          button {
+            padding: 3px;
+            border: 1px solid black;
+          }
+
+          .pet-select_pet-list {
+            border: 1px solid black;
+            margin: 10px 0 10px 0;
+            padding: 50px;
+
+            ul > li {
+              display: flex;
+              justify-content: flex-start;
+              line-height: 25px;
+              height: 25px;
+              text-align: center;
+            }
+
+            button {
+              margin-right: 30px;
+              margin-left: auto;
+            }
+          }
+
+          .price-list {
+            border: 1px solid black;
+            margin-top: 10px;
+            padding: 20px;
+
+            & > ul {
+              margin-top: 30px;
+            }
+          }
         }
-        .pet-list {
-          margin: 20px;
+        .request {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          textarea {
+            margin-top: 20px;
+            padding: 30px;
+            width: 85%;
+            height: 200px;
+          }
         }
 
-        .price-list {
-          margin: 30px;
+        button[type='submit'] {
+          margin: 20px 30px 0 30px;
+          border: 1px solid black;
+          width: 85%;
         }
       }
     }
