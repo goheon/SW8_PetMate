@@ -24,6 +24,9 @@ function Header() {
 					<li>
 						<Link to={"/signup"}>회원가입</Link>
 					</li>
+					<li>
+						<Link to={"/mypage/reservation"}>마이페이지</Link>
+					</li>
 				</ul>
 			</div>
 		</header>

@@ -1,8 +1,12 @@
 import fs from 'node:fs/promises';
 import express from 'express';
 import dotenv from 'dotenv';
+<<<<<<< HEAD
 import { authRouter } from './routes/auth.js';
 import mongoose from "mongoose";
+=======
+
+>>>>>>> 6d56d0107d4b1921bc2d10f045856a30bd0bf787
 dotenv.config();
 
 // Constants
@@ -36,6 +40,7 @@ if (!isProduction) {
   app.use(compression());
   app.use(base, sirv('./dist/client', { extensions: [] }));
 }
+<<<<<<< HEAD
 //mongoose, mongodb 연결
 async function connectToMongoDB() {
   try {
@@ -54,6 +59,8 @@ connectToMongoDB();
 //Serve APIs
 app.use('/signup',authRouter);
 
+=======
+>>>>>>> 6d56d0107d4b1921bc2d10f045856a30bd0bf787
 
 // Serve HTML
 app.use('*', async (req, res) => {
@@ -85,6 +92,7 @@ app.use('*', async (req, res) => {
     res.status(500).end(e.stack);
   }
 });
+//
 
 // Start http server
 app.listen(port, () => {
