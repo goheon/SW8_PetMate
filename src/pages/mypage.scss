@@ -15,6 +15,14 @@
   }
   &_right {
     width: 68%;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0px 10px rgba(10, 10, 10, 0.07);
+    h4 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
   }
   &-info {
     display: flex;
@@ -113,14 +121,17 @@
     }
   }
   &-expert {
-    display: flex;
-    justify-content: center;
     width: 100%;
-    background-color: #632ed8;
-    color: #fff;
-    padding: 18px;
-    border-radius: 10px;
-    cursor: pointer;
+    a {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      background-color: #632ed8;
+      color: #fff;
+      padding: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
     svg {
       width: 15px;
       margin-right: 10px;
@@ -147,16 +158,6 @@
     }
   }
   &-reservation {
-    width: 100%;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0px 10px rgba(10, 10, 10, 0.07);
-
-    h4 {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
     .mypage-board {
       display: flex;
       justify-content: space-between;
@@ -186,6 +187,7 @@
         position: relative;
         margin-right: 30px;
         &::after {
+          cursor: auto;
           position: absolute;
           top: 50%;
           right: -22px;
@@ -198,6 +200,7 @@
       }
       &_start-day,
       &_end-day {
+        cursor: pointer;
         background-color: #f4f6fe;
         padding: 5px 10px;
         border-radius: 10px;
@@ -206,6 +209,7 @@
           fill: #632ed8;
         }
         input {
+          cursor: pointer;
           width: 125px;
           background-color: #f4f6fe;
           border: none;
@@ -222,7 +226,8 @@
         min-width: 115px;
         margin-right: 10px;
         &-options {
-          >div {
+          > div {
+            cursor: pointer;
             background-color: #f4f6fe;
             border: none;
             padding: 2px 0px;
@@ -248,7 +253,7 @@
           font-weight: 500;
         }
       }
-      >button {
+      > button {
         background-color: #632ed8;
         color: #fff;
         padding: 10px 15px;
@@ -344,17 +349,6 @@
     }
   }
   &-account {
-    width: 100%;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0px 10px rgba(10, 10, 10, 0.07);
-
-    h4 {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-
     &_setting {
       margin-bottom: 50px;
     }
@@ -405,6 +399,89 @@
       &:hover {
         background-color: #f15746;
         color: #fff;
+      }
+    }
+  }
+  &-join-expert {
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      > div {
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+      }
+      label {
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 14px 20px;
+        background-color: #f4f6fe;
+        margin-right: 5px;
+        font-size: 14px;
+        color: #555;
+      }
+      input {
+        width: 180px;
+        flex: 0 1;
+        border: none;
+        background-color: #f4f6fe;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        &:focus {
+          outline-color: #632ed8;
+        }
+      }
+      .phone-certified {
+        background-color: #632ed8;
+        padding: 10px 14px;
+        color: #fff;
+        border-radius: 5px;
+        margin-left: 5px;
+        margin-right: 10px;
+      }
+      #agreement {
+        display: none;
+      }
+      #agreement:checked + .agreement_label {
+        &::before {
+          content: '✔';
+          background-color: #632ed8;
+          color: #fff;
+        }
+      }
+      .agreement_label {
+        border-radius: 5px;
+        flex: 1 0;
+        cursor: pointer;
+        position: relative;
+        padding-left: 35px;
+        &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 10px;
+          transform: translateY(-50%);
+          width: 15px;
+          height: 15px;
+          border: 1px solid #632ed8;
+          line-height: 13px;
+          background-color: #fff;
+          border-radius: 3px;
+          font-size: 10px;
+          text-align: center;
+        }
+      }
+      .registration {
+        margin-left: auto;
+        margin-top: 30px;
+        padding: 11px 14px;
+        background-color: #ffc800;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 15px;
       }
     }
   }

@@ -12,6 +12,8 @@ import Reservation from './components/mypage/Reservation';
 import Account from './components/mypage/Account';
 import Point from './components/mypage/Point';
 import Review from './components/mypage/Review';
+import JoinExpert from './components/mypage/JoinExpert';
+
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
           <Route path="review" element={<Review />} />
           <Route path="point" element={<Point />} />
           <Route path="reservation" element={<Reservation />} />
+          <Route path="join-expert" element={<JoinExpert />} />
         </Route>
         <Route path="*" element={<Notfound />} />
       </Routes>
