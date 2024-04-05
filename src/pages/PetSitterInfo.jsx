@@ -4,27 +4,19 @@ import Footer from '../components/Footer';
 import './PetSitterInfo.scss';
 import { Calendar, Time } from '../components/Calendar';
 
+// 리뷰(리뷰 수, 펫시터의 리뷰 목록), User(주소(활동범위) 정보 통신으로 가져옴
 PetSitterInfo.defaultProps = {
   userId: 1,
   sitterId: 1,
   name: '이하은',
   img: 'https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg',
-  review: 215,
-  regularCustomer: 145,
-  type: '강아지',
+  type: ['강아지', '고양이'],
   location: '서울시 강서구',
-  description:
-    '안녕하세요! 저는 동물을 사랑하고 책임감을 가지고 행동하는 펫시터입니다. 애완동물의 행복과 안전을 최우선으로 생각하며, 신뢰할 수 있는 돌봄을 제공합니다. 견주와 반려동물 사이의 신뢰를 중요시하며 항상 최선을 다하겠습니다.',
-  experience: [
-    '펫시터 전문가 교육 수료',
-    '전문 펫시터 자격증 보유',
-    '펫시터 직업 훈련 교육 수료',
-    '반려동물행동교정사 2급 자격증 보유',
-    '강아지 반려 경험 (14년) 인증 완료',
-    '고양이 반려 경험 (8년) 인증 완료',
-  ],
+  introduction:
+    '안녕하세요! 저는 동물을 사랑하고 책임감을 가지고 행동하는 펫시터입니다. 애완동물의 행복과 안전을 최우선으로 생각하며, 신뢰할 수 있는 돌봄을 제공합니다.',
+  experience: '8봤고 1 교육으로 뭐를 했고 ~~~..........',
   check: ['신원 인증', '인성 검사', '촬영 동의'],
-  hourlyRate: { small: 15000, medium: 20000, large: 25000 },
+  hourlyRate: { small: 15000, medium: 20000, large: 25000, cat: 10000 },
 };
 
 function PetSitterInfo({
@@ -35,7 +27,7 @@ function PetSitterInfo({
   location,
   review,
   regularCustomer,
-  description,
+  introduction,
   experience,
   check,
   hourlyRate,
@@ -81,6 +73,43 @@ function PetSitterInfo({
         break;
     }
   }
+  function optionCheck(type) {
+    const options = []; // 옵션을 저장할 배열 초기화
+
+    // type 배열 내에 강아지나 고양이가 있는지 확인 후, 해당하는 옵션 추가
+    if (type.includes('강아지')) {
+      options.push(
+        <option key="small" value="small">
+          소형 강아지
+        </option>,
+      );
+      options.push(
+        <option key="medium" value="medium">
+          중형 강아지
+        </option>,
+      );
+      options.push(
+        <option key="large" value="large">
+          대형 강아지
+        </option>,
+      );
+    }
+    if (type.includes('고양이')) {
+      options.push(
+        <option key="cat" value="cat">
+          고양이
+        </option>,
+      );
+    }
+
+    // 추가할 수 있는 다른 펫 종류에 대한 옵션을 여기에 추가
+
+    return options;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
 
   //펫시터의 시간당 가격 설정, 스타일링
 
@@ -90,24 +119,22 @@ function PetSitterInfo({
       <section className="container">
         <section className="pet-sitter-info-section">
           <div className="pet-sitter-info-card">
-            <div className="pet-sitter-info">
+            <div className="pet-sitter-info-card_inner">
               <img src={img} alt="프로필 이미지" />
               <p className="sitterId">{sitterId}</p>
               <p className="name">{name} 님</p>
               <div className="info-text">
-                <p className="type">{type} 펫시터</p>
+                <p className="type">{type.join(', ')} 펫시터</p>
                 <p className="location">{location}</p>
-                <span>리뷰 {review} 개</span>
-                <span>단골고객 {regularCustomer} 명</span>
               </div>
-              <h6>{name} 님을 소개합니다!</h6>
-              <p className="description">{description}</p>
-              <h6>{name} 님의 경력</h6>
-              <ul className="experience">
-                {experience.map((el, i) => (
-                  <li key={i}>{el}</li>
-                ))}
-              </ul>
+              <div className="introduction">
+                <h6>{name} 님을 소개합니다!</h6>
+                <p>{introduction}</p>
+              </div>
+              <div className="experience">
+                <h6>{name} 님의 경력</h6>
+                <p>{experience}</p>
+              </div>
               <p className="check">
                 {check.map((check, i) => {
                   return (
@@ -126,29 +153,36 @@ function PetSitterInfo({
         <section className="reservation-section">
           <div className="reservation-card">
             <div className="reservation-card_inner">
-              <form action="#" method="post" onSubmit={handleAdd}>
+              <form action="#" method="post" onSubmit={handleSubmit}>
                 <h6>언제 펫시터가 필요한가요?</h6>
-                <div className="date-select">
-                  <span>시작일</span>
-                  <Calendar className="start-date" />
-                  <span>종료일</span>
-                  <Calendar className="end-date" />
-                </div>
-                <div className="time-select">
-                  <span>시작 시간</span>
-                  <Time className="start-time" />
-                  <span>종료 시간</span>
-                  <Time className="end-time" />
+                <div className="date-time-select">
+                  <div className="date-select">
+                    <span>시작일</span>
+                    <Calendar className="start-date" />
+                    <span>종료일</span>
+                    <Calendar className="end-date" />
+                  </div>
+                  <div className="time-select">
+                    <span>
+                      시작
+                      <br />
+                      시간
+                    </span>
+                    <Time className="start-time" />
+                    <span>
+                      종료
+                      <br />
+                      시간
+                    </span>
+                    <Time className="end-time" />
+                  </div>
                 </div>
                 <h6>맡기시는 반려동물</h6>
                 <div className="pet-select">
                   <div className="pet-select_buttons">
                     <select name="pet-type" ref={petTypeRef}>
-                      {/* {type==='강아지' ? dogOption : type==='고양이' ? catOption : all} */}
                       <option default>선택</option>
-                      <option value="small">소형 강아지</option>
-                      <option value="medium">중형 강아지</option>
-                      <option value="large">대형 강아지</option>
+                      {optionCheck(type)}
                     </select>
                     <select name="pet-count" ref={petCountRef}>
                       <option default>선택</option>
@@ -195,7 +229,7 @@ function PetSitterInfo({
                     {/* 캘린더 완성 후 시간 값 연결 */}
                     <p>총액: {totalPrice.toLocaleString()} 원</p>
                   </div>
-                  <div className="price-list">
+                  <div className="pet-select_price-list">
                     <span>시간당 가격</span>
                     <ul>
                       {hourlyRate.cat ? <li>고양이: {hourlyRate.cat.toLocaleString()} 원</li> : undefined}
@@ -207,7 +241,13 @@ function PetSitterInfo({
                 </div>
                 <h6>요청사항</h6>
                 <div className="request">
-                  <textarea name="" id="" cols="30" rows="10"></textarea>
+                  <textarea
+                    name=""
+                    id=""
+                    cols="30"
+                    rows="10"
+                    placeholder="펫시팅에 필요한 상세 내용을 적어주세요."
+                  ></textarea>
                 </div>
                 <button type="submit">예약 요청하기</button>
               </form>

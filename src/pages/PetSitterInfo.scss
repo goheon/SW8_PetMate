@@ -1,27 +1,29 @@
+html {
+  background-color: #f5f5f5;
+}
+
 .container {
   height: 1400px;
   max-width: 1200px;
   margin: 0 auto;
   margin-top: 100px;
   display: grid;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 58% 42%;
   grid-template-rows: 1fr 1fr;
-  justify-content: center;
 
   .pet-sitter-info-section {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
 
     .pet-sitter-info-card {
-      max-width: 600px;
+      max-width: 620px;
       min-width: 460px;
       background-color: #632ed8;
       box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.07);
       border-radius: 20px;
 
-      .pet-sitter-info {
-        padding: 20px;
+      .pet-sitter-info-card_inner {
+        padding: 30px;
         min-width: 250px;
         background-color: #ffffff;
         box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
@@ -31,81 +33,87 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-      }
 
-      img {
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.07);
-        border-radius: 50%;
-        width: 240px;
-        height: 240px;
-      }
-
-      .sitterId {
-        display: none;
-      }
-
-      .name {
-        font-size: 1.5em;
-        font-weight: 500;
-        margin: 50px 0 20px 0;
-      }
-
-      .info-text {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        margin-top: 0;
-        text-align: center;
-        * {
-          margin: 5px;
-        }
-      }
-
-      h6 {
-        margin: 50px auto 30px 45px;
-        font-weight: 600;
-        font-size: 24px;
-      }
-
-      .description {
-        padding: 0 50px;
-      }
-
-      .experience {
-        margin-right: auto;
-        margin-left: 50px;
-
-        li {
-          margin-top: 10px;
+        img {
+          box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+          border-radius: 50%;
+          width: 240px;
+          height: 240px;
         }
 
-        :nth-child(1) {
+        .sitterId {
+          display: none;
+        }
+
+        .name {
+          font-size: 28px;
+          font-weight: 600;
+          margin: 50px 0 20px 0;
+        }
+        .info-text {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
           margin-top: 0;
-        }
-      }
+          text-align: center;
 
-      .check {
-        margin-top: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-
-        span {
-          svg {
-            margin-top: 0;
+          * {
+            background-color: #f4f6fe;
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 5px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
           }
+        }
 
+        h6 {
+          display: inline-block;
+          margin: 50px auto 15px 0;
+          font-size: 24px;
+          border-bottom: #632ed8 5px solid;
+          padding-bottom: 10px;
+          border-radius: 3px;
+        }
+
+        .introduction,
+        .experience {
+          width: 100%;
+
+          & > p {
+            background-color: #fffdf4;
+            padding: 40px 45px;
+            border-radius: 15px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+            font-size: 18px;
+            line-height: 28px;
+          }
+        }
+
+        .check {
+          margin-top: 45px;
           display: flex;
           align-items: center;
-          justify-content: center;
-          background-color: #ffc800;
-          padding: 6px 10px;
-          border-radius: 5px;
-          font-size: 16px;
-          margin-right: 10px;
-          font-weight: 500;
+          justify-content: flex-start;
 
-          &:last-child {
-            margin-right: 0;
+          span {
+            svg {
+              margin-top: 0;
+            }
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffc800;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+            font-weight: 500;
+
+            &:last-child {
+              margin-right: 0;
+            }
           }
         }
       }
@@ -132,24 +140,47 @@
       .reservation-card_inner {
         margin: 20px 20px;
         width: 100%;
-        height: 1000px;
         background-color: #ffffff;
         box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
         border-radius: 15px;
 
         h6 {
+          display: inline-block;
           font-size: 24px;
-          padding: 30px 0 10px 30px;
-          border-bottom: 3px solid #632ed8;
+          margin-left: 30px;
+          padding: 30px 0 10px 0;
+          border-bottom: 5px solid #632ed8;
+          border-radius: 3px;
         }
+        .date-time-select {
+          padding: 15px;
 
-        .date-select,
-        .time-select {
-          padding: 10px;
-          display: flex;
+          .date-select,
+          .time-select {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
 
-          input {
-            display: block;
+            * {
+              margin: 3px;
+            }
+
+            span {
+              width: 50px;
+              text-align: center;
+            }
+
+            input {
+              padding: 10px;
+              width: 120px;
+              text-align: center;
+              border: none;
+              border-radius: 5px;
+              background-color: #fffdf4;
+              font-size: 16px;
+              box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+            }
           }
         }
 
@@ -160,20 +191,42 @@
 
         .pet-select {
           padding: 30px;
-
           select {
             margin-right: 5px;
           }
 
-          button {
-            padding: 3px;
-            border: 1px solid black;
+          .pet-select_buttons {
+            height: 30px;
+            margin-bottom: 20px;
+
+            * {
+              margin-right: 15px;
+              box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            select {
+              width: 120px;
+              height: 30px;
+              border-radius: 5px;
+              background-color: #fffdf4;
+              border: none;
+              font-size: 16px;
+            }
+
+            button {
+              background-color: #ffc800;
+              padding: 10px;
+              border-radius: 5px;
+              font-weight: 600;
+            }
           }
 
           .pet-select_pet-list {
-            border: 1px solid black;
+            background-color: #fffdf4;
+            border-radius: 10px;
             margin: 10px 0 10px 0;
             padding: 50px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
 
             ul > li {
               display: flex;
@@ -181,21 +234,37 @@
               line-height: 25px;
               height: 25px;
               text-align: center;
+              border-radius: 5px;
+              font-size: 17px;
             }
 
             button {
-              margin-right: 30px;
+              margin-right: 10px;
               margin-left: auto;
+              line-height: 25px;
+              height: 25px;
+              font-weight: 700;
             }
           }
-
-          .price-list {
-            border: 1px solid black;
+          .pet-select_calculator {
+            padding: 15px;
+            font-size: 18px;
+          }
+          .pet-select_price-list {
+            background-color: #fffdf4;
+            border-radius: 10px;
             margin-top: 10px;
             padding: 20px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+            font-weight: 700;
 
             & > ul {
+              font-weight: 500;
               margin-top: 30px;
+
+              li {
+                padding: 5px;
+              }
             }
           }
         }
@@ -205,17 +274,31 @@
           align-items: center;
 
           textarea {
+            resize: none;
+            background-color: #fffdf4;
+
             margin-top: 20px;
             padding: 30px;
+
             width: 85%;
             height: 200px;
+            font-size: 16px;
+
+            border: none;
+            border-radius: 20px;
+            box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.07);
           }
         }
 
         button[type='submit'] {
-          margin: 20px 30px 0 30px;
-          border: 1px solid black;
+          border-radius: 15px;
+          margin: 40px 30px 50px 30px;
+          background-color: #632ed8;
+          color: #ffffff;
+          font-size: 24px;
           width: 85%;
+          height: 50px;
+          box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
         }
       }
     }
