@@ -33,26 +33,6 @@ if (!isProduction) {
   app.use(compression());
   app.use(base, sirv('./dist/client', { extensions: [] }));
 }
-//mongoose, mongodb 연결
-import { MongoClient } from 'mongodb';
-
-let db;
-const url = 'mongodb+srv://petmate:1234@petmate.bhm01el.mongodb.net/?retryWrites=true&w=majority&appName=PetMate';
-
-(async () => {
-  try {
-    const client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log('DB 연결 성공');
-    db = client.db('forum');
-  } catch (err) {
-    console.log(err);
-  }
-})();
-
-
-
-//Serve APIs
-app.use('/api', apiRouter);
 
 // Serve HTML
 app.use('*', async (req, res) => {
