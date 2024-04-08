@@ -8,13 +8,11 @@ import App from './App';
 //이하 코드에서 정적라우팅 진행
 export function render(path) {
   const html = ReactDOMServer.renderToString(
-    <React.StrictMode>
-      <Provider store={store}>
-        <StaticRouter location={path}>
-          <App />
-        </StaticRouter>
-      </Provider>
-    </React.StrictMode>,
+    <Provider store={store}>
+      <StaticRouter location={path}>
+        <App />
+      </StaticRouter>
+    </Provider>,
   );
   return { html };
 }
