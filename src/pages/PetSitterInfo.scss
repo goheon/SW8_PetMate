@@ -1,12 +1,11 @@
-html {
+.page-wrapper {
   background-color: #f5f5f5;
 }
 
 .container {
-  height: 1400px;
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 100px;
+  padding-top: 100px;
   display: grid;
   grid-template-columns: 58% 42%;
   grid-template-rows: 1fr 1fr;
@@ -14,6 +13,7 @@ html {
   .pet-sitter-info-section {
     display: flex;
     justify-content: flex-start;
+    margin-bottom: 30px;
 
     .pet-sitter-info-card {
       max-width: 620px;
@@ -195,7 +195,7 @@ html {
             margin-right: 5px;
           }
 
-          .pet-select_buttons {
+          .pet-select_options {
             height: 30px;
             margin-bottom: 20px;
 
@@ -286,7 +286,7 @@ html {
 
             border: none;
             border-radius: 20px;
-            box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.07);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
           }
         }
 
@@ -305,8 +305,91 @@ html {
   }
 
   .review-section {
-    h6 {
-      font-size: 30px;
+    display: flex;
+    height: 800px;
+
+    .review-card {
+      max-width: 620px;
+      min-width: 460px;
+      background-color: #632ed8;
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.07);
+      border-radius: 20px;
+
+      .review-card_inner {
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        ::-webkit-scrollbar {
+          display: none;
+          width: 0px;
+        }
+
+        height: 95%;
+        padding: 30px;
+        min-width: 250px;
+        background-color: #ffffff;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+        border-radius: 15px;
+        margin: 20px 20px;
+
+        .review {
+          padding: 30px;
+          border-bottom: 1px solid gray;
+
+          .review_user-profile {
+            display: flex;
+            align-items: center;
+
+            .review_user-profile_img {
+              width: 70px;
+              height: 70px;
+              margin-right: 15px;
+            }
+
+            .review_user-profile_name {
+              font-size: 18px;
+            }
+          }
+
+          .review_images {
+            display: flex;
+            margin-bottom: 20px;
+
+            * {
+              height: 100px;
+              width: 100px;
+            }
+          }
+
+          .review_user-comment {
+            padding: 15px 0;
+          }
+
+          .review_pet-sitter {
+            display: flex;
+            padding: 15px;
+
+            .review_pet-sitter_profile {
+              margin-right: 15px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+
+              .review_pet-sitter_img {
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                margin-bottom: 10px;
+              }
+            }
+
+            .review_pet-siiter_comment {
+              padding: 10px;
+              background-color: #f4f6fe;
+            }
+          }
+        }
+      }
     }
   }
 }
