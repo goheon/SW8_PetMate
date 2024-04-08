@@ -76,7 +76,7 @@ function Reservation() {
                   <h6>서울 동작구 파트너 · 정◯선 님</h6>
                 </div>
                 <div className="btn-box">
-                  <Link>상세내용</Link>
+                  <Link to={'/mypage/order-view/1'}>상세내용</Link>
                   <Link>리뷰쓰기</Link>
                 </div>
               </div>
