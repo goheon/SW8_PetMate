@@ -22,7 +22,7 @@ function Header() {
 						<Link to={"/login"}>로그인</Link>
 					</li>
 					<li>
-						<Link to={"/sign-up"}>회원가입</Link>
+						<Link to={"/signup"}>회원가입</Link>
 					</li>
 					<li>
 						<Link to={"/mypage/reservation"}>마이페이지</Link>
