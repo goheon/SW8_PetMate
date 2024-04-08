@@ -1,0 +1,30 @@
+.react-datepicker {
+  border-radius: 15px;
+}
+
+.react-datepicker__input-container {
+  & > input {
+    caret-color: transparent;
+  }
+
+  & > input:focus {
+    outline: #632ed8 3px solid;
+  }
+}
+.react-datepicker__header--custom {
+  margin: 0px !important;
+  background-color: #fffdf4;
+  border: none;
+}
+
+.custom-year {
+  background-color: #fffdf4;
+  font-size: 16px;
+  border: none;
+  border-radius: 3px;
+}
+
+.react-datepicker__day--selected {
+  background-color: #632ed8;
+  color: #fff;
+}

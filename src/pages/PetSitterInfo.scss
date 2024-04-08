@@ -15,105 +15,101 @@
     justify-content: flex-start;
     margin-bottom: 30px;
 
-    .pet-sitter-info-card {
-      max-width: 620px;
-      min-width: 460px;
-      background-color: #632ed8;
-      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.07);
-      border-radius: 20px;
+    .pet-sitter-info-card_inner {
+      padding: 30px;
+      min-width: 250px;
+      background-color: #ffffff;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+      border-radius: 15px;
+      margin: 20px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
 
-      .pet-sitter-info-card_inner {
+      img {
+        border-radius: 50%;
+        width: 240px;
+        height: 240px;
+      }
+
+      .sitterId {
+        display: none;
+      }
+
+      .name {
+        font-size: 28px;
+        font-weight: 600;
+        margin: 50px 0 20px 0;
+      }
+
+      .info-text {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-top: 0;
+        text-align: center;
+
+        * {
+          background-color: #f4f6fe;
+          padding: 10px;
+          margin: 10px;
+          font-size: 16px;
+          font-weight: 500;
+          border-radius: 5px;
+          box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      h6 {
+        display: inline-block;
+        margin: 50px auto 15px 0;
+        font-size: 24px;
+        border-bottom: #632ed8 5px solid;
+        padding-bottom: 10px;
+        border-radius: 3px;
+      }
+
+      .title {
+        margin-top: 15px;
         padding: 30px;
-        min-width: 250px;
-        background-color: #ffffff;
-        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
-        border-radius: 15px;
-        margin: 20px 20px;
+        font-size: 22px;
+      }
+      .introduction,
+      .experience {
+        width: 100%;
+
+        & > p {
+          background-color: #fffdf4;
+          padding: 40px 45px;
+          border-radius: 15px;
+          font-size: 18px;
+          line-height: 28px;
+        }
+      }
+
+      .check {
+        margin-top: 45px;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
         align-items: center;
+        justify-content: flex-start;
 
-        img {
-          box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-          border-radius: 50%;
-          width: 240px;
-          height: 240px;
-        }
-
-        .sitterId {
-          display: none;
-        }
-
-        .name {
-          font-size: 28px;
-          font-weight: 600;
-          margin: 50px 0 20px 0;
-        }
-        .info-text {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          margin-top: 0;
-          text-align: center;
-
-          * {
-            background-color: #f4f6fe;
-            padding: 10px;
-            margin: 5px;
-            font-size: 16px;
-            font-weight: 500;
-            border-radius: 5px;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+        span {
+          svg {
+            margin-top: 0;
           }
-        }
 
-        h6 {
-          display: inline-block;
-          margin: 50px auto 15px 0;
-          font-size: 24px;
-          border-bottom: #632ed8 5px solid;
-          padding-bottom: 10px;
-          border-radius: 3px;
-        }
-
-        .introduction,
-        .experience {
-          width: 100%;
-
-          & > p {
-            background-color: #fffdf4;
-            padding: 40px 45px;
-            border-radius: 15px;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
-            font-size: 18px;
-            line-height: 28px;
-          }
-        }
-
-        .check {
-          margin-top: 45px;
           display: flex;
           align-items: center;
-          justify-content: flex-start;
+          justify-content: center;
+          background-color: #ffc800;
+          padding: 6px 10px;
+          border-radius: 5px;
+          font-size: 16px;
+          margin-right: 10px;
+          font-weight: 500;
 
-          span {
-            svg {
-              margin-top: 0;
-            }
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #ffc800;
-            padding: 6px 10px;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-right: 10px;
-            font-weight: 500;
-
-            &:last-child {
-              margin-right: 0;
-            }
+          &:last-child {
+            margin-right: 0;
           }
         }
       }
@@ -127,267 +123,258 @@
     justify-content: flex-start;
     align-items: flex-start;
 
-    .reservation-card {
+    .reservation-card_inner {
       min-width: 200px;
+      margin: 20px 20px;
       width: 100%;
-      background-color: #632ed8;
+      background-color: #ffffff;
       box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
       border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
 
-      .reservation-card_inner {
-        margin: 20px 20px;
-        width: 100%;
-        background-color: #ffffff;
-        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
-        border-radius: 15px;
+      h6 {
+        display: inline-block;
+        font-size: 24px;
+        margin-left: 30px;
+        padding: 30px 0 10px 0;
+        border-bottom: 5px solid #632ed8;
+        border-radius: 3px;
+      }
+      .date-time-select {
+        padding: 15px;
 
-        h6 {
-          display: inline-block;
-          font-size: 24px;
-          margin-left: 30px;
-          padding: 30px 0 10px 0;
-          border-bottom: 5px solid #632ed8;
-          border-radius: 3px;
-        }
-        .date-time-select {
-          padding: 15px;
+        .date-select,
+        .time-select {
+          padding: 10px;
+          display: flex;
+          align-items: center;
 
-          .date-select,
-          .time-select {
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-
-            * {
-              margin: 3px;
-            }
-
-            span {
-              width: 50px;
-              text-align: center;
-            }
-
-            input {
-              padding: 10px;
-              width: 120px;
-              text-align: center;
-              border: none;
-              border-radius: 5px;
-              background-color: #fffdf4;
-              font-size: 16px;
-              box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
-            }
-          }
-        }
-
-        span {
-          display: block;
-          font-size: large;
-        }
-
-        .pet-select {
-          padding: 30px;
-          select {
-            margin-right: 5px;
+          * {
+            margin: 3px;
           }
 
-          .pet-select_options {
-            height: 30px;
-            margin-bottom: 20px;
-
-            * {
-              margin-right: 15px;
-              box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            select {
-              width: 120px;
-              height: 30px;
-              border-radius: 5px;
-              background-color: #fffdf4;
-              border: none;
-              font-size: 16px;
-            }
-
-            button {
-              background-color: #ffc800;
-              padding: 10px;
-              border-radius: 5px;
-              font-weight: 600;
-            }
-          }
-
-          .pet-select_pet-list {
-            background-color: #fffdf4;
-            border-radius: 10px;
-            margin: 10px 0 10px 0;
-            padding: 50px;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
-
-            ul > li {
-              display: flex;
-              justify-content: flex-start;
-              line-height: 25px;
-              height: 25px;
-              text-align: center;
-              border-radius: 5px;
-              font-size: 17px;
-            }
-
-            button {
-              margin-right: 10px;
-              margin-left: auto;
-              line-height: 25px;
-              height: 25px;
-              font-weight: 700;
-            }
-          }
-          .pet-select_calculator {
-            padding: 15px;
+          span {
+            width: 50px;
+            text-align: center;
             font-size: 18px;
+            font-weight: 500;
           }
-          .pet-select_price-list {
+
+          input {
+            padding: 10px;
+            width: 120px;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
             background-color: #fffdf4;
-            border-radius: 10px;
-            margin-top: 10px;
-            padding: 20px;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+            font-size: 16px;
+            font-weight: 400;
+          }
+        }
+      }
+
+      .pet-select {
+        padding: 30px;
+        select {
+          margin-right: 5px;
+        }
+
+        .pet-select_options {
+          height: 30px;
+          margin-bottom: 20px;
+
+          * {
+            margin-right: 15px;
+          }
+
+          select {
+            width: 120px;
+            height: 30px;
+            border-radius: 5px;
+            background-color: #fffdf4;
+            border: none;
+            font-size: 16px;
+          }
+
+          button {
+            background-color: #ffc800;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 600;
+          }
+        }
+
+        .pet-select_pet-list {
+          background-color: #fffdf4;
+          border-radius: 10px;
+          margin: 10px 0 10px 0;
+          padding: 50px;
+
+          ul > li {
+            display: flex;
+            justify-content: flex-start;
+            line-height: 25px;
+            height: 25px;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 17px;
+          }
+
+          button {
+            margin-right: 10px;
+            margin-left: auto;
+            line-height: 25px;
+            height: 25px;
             font-weight: 700;
+          }
+        }
+        .pet-select_calculator {
+          padding: 15px;
+          font-size: 18px;
+        }
+        .pet-select_price-list {
+          background-color: #fffdf4;
+          border-radius: 10px;
+          margin-top: 10px;
+          padding: 20px;
+          font-weight: 700;
 
-            & > ul {
-              font-weight: 500;
-              margin-top: 30px;
+          .pet-select_price-list_text {
+            display: flex;
+            padding-left: 20px;
+            padding-top: 20px;
 
-              li {
-                padding: 5px;
+            :last-child {
+              margin-left: auto;
+              margin-right: 60px;
+            }
+          }
+
+          & > ul {
+            font-weight: 500;
+            margin-top: 20px;
+            padding: 20px;
+
+            li {
+              line-height: 25px;
+              display: flex;
+
+              :last-child {
+                margin: 0 20px 0 auto;
               }
             }
           }
         }
-        .request {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+      }
+      .request {
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-          textarea {
-            resize: none;
-            background-color: #fffdf4;
+        textarea {
+          resize: none;
+          background-color: #fffdf4;
 
-            margin-top: 20px;
-            padding: 30px;
+          margin-top: 20px;
+          padding: 30px;
 
-            width: 85%;
-            height: 200px;
-            font-size: 16px;
-
-            border: none;
-            border-radius: 20px;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
-          }
-        }
-
-        button[type='submit'] {
-          border-radius: 15px;
-          margin: 40px 30px 50px 30px;
-          background-color: #632ed8;
-          color: #ffffff;
-          font-size: 24px;
           width: 85%;
-          height: 50px;
-          box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+          height: 200px;
+          font-size: 16px;
+
+          border: none;
+          border-radius: 20px;
         }
+      }
+
+      button[type='submit'] {
+        border-radius: 15px;
+        margin: 40px 30px 50px 30px;
+        background-color: #632ed8;
+        color: #ffffff;
+        font-size: 24px;
+        width: 85%;
+        height: 50px;
       }
     }
   }
+}
 
-  .review-section {
-    display: flex;
-    height: 800px;
+.review-section {
+  display: flex;
+  height: 800px;
 
-    .review-card {
-      max-width: 620px;
-      min-width: 460px;
-      background-color: #632ed8;
-      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.07);
-      border-radius: 20px;
+  .review-card_inner {
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    ::-webkit-scrollbar {
+      display: none;
+      width: 0px;
+    }
 
-      .review-card_inner {
-        overflow-y: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        ::-webkit-scrollbar {
-          display: none;
-          width: 0px;
+    height: 95%;
+    margin: 20px 20px;
+    padding: 30px;
+    min-width: 250px;
+    background-color: #ffffff;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+    border-radius: 15px;
+    margin: 20px 20px;
+
+    .review {
+      padding: 30px;
+      border-bottom: 1px solid gray;
+
+      .review_user-profile {
+        display: flex;
+        align-items: center;
+
+        .review_user-profile_img {
+          width: 70px;
+          height: 70px;
+          margin-right: 15px;
         }
 
-        height: 95%;
-        padding: 30px;
-        min-width: 250px;
-        background-color: #ffffff;
-        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
-        border-radius: 15px;
-        margin: 20px 20px;
+        .review_user-profile_name {
+          font-size: 18px;
+        }
+      }
 
-        .review {
-          padding: 30px;
-          border-bottom: 1px solid gray;
+      .review_images {
+        display: flex;
+        margin-bottom: 20px;
 
-          .review_user-profile {
-            display: flex;
-            align-items: center;
+        * {
+          height: 100px;
+          width: 100px;
+        }
+      }
 
-            .review_user-profile_img {
-              width: 70px;
-              height: 70px;
-              margin-right: 15px;
-            }
+      .review_user-comment {
+        padding: 15px 0;
+      }
 
-            .review_user-profile_name {
-              font-size: 18px;
-            }
+      .review_pet-sitter {
+        display: flex;
+        padding: 15px;
+
+        .review_pet-sitter_profile {
+          margin-right: 15px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .review_pet-sitter_img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-bottom: 10px;
           }
+        }
 
-          .review_images {
-            display: flex;
-            margin-bottom: 20px;
-
-            * {
-              height: 100px;
-              width: 100px;
-            }
-          }
-
-          .review_user-comment {
-            padding: 15px 0;
-          }
-
-          .review_pet-sitter {
-            display: flex;
-            padding: 15px;
-
-            .review_pet-sitter_profile {
-              margin-right: 15px;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-
-              .review_pet-sitter_img {
-                width: 70px;
-                height: 70px;
-                border-radius: 50%;
-                margin-bottom: 10px;
-              }
-            }
-
-            .review_pet-siiter_comment {
-              padding: 10px;
-              background-color: #f4f6fe;
-            }
-          }
+        .review_pet-siiter_comment {
+          padding: 10px;
+          background-color: #f4f6fe;
         }
       }
     }

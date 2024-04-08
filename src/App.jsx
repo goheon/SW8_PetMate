@@ -18,13 +18,12 @@ import Review from './components/mypage/Review';
 import JoinExpert from './components/mypage/JoinExpert';
 import OrderView from './components/mypage/OrderView';
 
-
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<SingUp />} />
+        <Route path="/sign-up" element={<SingUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<Mypage />}>
           <Route path="account" element={<Account />} />
