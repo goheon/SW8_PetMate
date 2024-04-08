@@ -436,11 +436,7 @@
       input::-webkit-inner-spin-button {
         -webkit-appearance: none;
       }
-
-      /* Firefox  */
-      input[type='number'] {
-        -moz-appearance: textfield;
-      }
+     
       button {
         background-color: #632ed8;
         padding: 10px 14px;

@@ -47,6 +47,7 @@ const latestReview = createSlice({
 
     ]
 })
+
 const petSitterInfo = createSlice({
     name: "petSitterInfo",
     initialState: [
@@ -112,10 +113,96 @@ const petSitterInfo = createSlice({
 
 })
 
+const loginUserInfo = createSlice({
+    name: "loginUserInfo",
+    initialState: {
+        username: "이승철",
+        email: "dltmd1502@naver.com",
+        phone: undefined,
+        address: "부천시 원미구 중2동",
+        detailAddress: "쿵야마을",
+        isRole: null,
+    }
+})
+
+const allOrderList = createSlice({
+    name: "allOrderList",
+    initialState: [
+        {
+            orderId: 1,
+            userId: "유저고유id값",
+            sitterId: "펫시터고유id값",
+            pets: [{
+                type: "고양이",
+                size: "소형",
+                name: "참치",
+                age: 3,
+                gender: "여",
+                variety: "페르시안"
+            }],
+            totalPrice: 50000,
+            createdAt: new Date(2024, 3, 1),
+            state: "진행중",
+            detailInfo: "상세 요청사항 / 저희 집 강아지 무니깐 조심쿵야 하세요",
+            start: new Date(),
+            end: new Date(),
+        },
+        {
+            orderId: 2,
+            userId: "유저고유id값",
+            sitterId: "펫시터고유id값",
+            pets: [{
+                type: "강아지",
+                size: "중형",
+                name: "쿵야",
+                age: 5,
+                gender: "남",
+                variety: "시바"
+            }],
+            totalPrice: 30000,
+            createdAt: new Date(2024, 3, 2),
+            state: "완료",
+            detailInfo: "상세 요청사항입니다 어쩌구 저쩌꾸",
+            start: new Date(),
+            end: new Date(),
+        },
+        {
+            orderId: 3,
+            userId: "유저고유id값",
+            sitterId: "펫시터고유id값",
+            pets: [{
+                type: "강아지",
+                size: "대형",
+                name: "레고",
+                age: 7,
+                gender: "남",
+                variety: "허스키"
+            },
+            {
+                type: "고양이",
+                size: "소형",
+                name: "먼지",
+                age: 3,
+                gender: "여",
+                variety: "치즈냥이"
+            },
+            ],
+            totalPrice: 100000,
+            createdAt: new Date(2024, 3, 3),
+            state: "취소",
+            detailInfo: "강아지는 하루종일 산책 해주시고, 고양이는 벅벅 씻겨주세요",
+            start: new Date(),
+            end: new Date(),
+        }
+    ]
+})
+
 export default configureStore({
     reducer: {
         //만든거 여기다 등록해야 사용가능
         latestReview: latestReview.reducer,
         petSitterInfo: petSitterInfo.reducer,
+        loginUserInfo: loginUserInfo.reducer,
+        allOrderList: allOrderList.reducer,
     }
 }) 
