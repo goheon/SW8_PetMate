@@ -1,9 +1,10 @@
 import Header from '../components/Header';
 import './Login.scss';
 import Footer from '../components/Footer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import { API_URL } from '../util/constants';
 
 function validateEmail(email) {
   const re =
@@ -18,6 +19,7 @@ function validPassword(password) {
 }
 
 function Login() {
+  const nav = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -34,6 +36,35 @@ function Login() {
     setIsInputStarted(true);
   };
 
+  async function loginAPI(data) {
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      Swal.fire({
+        title: '로그인 성공',
+        text: `환영합니다`,
+        icon: 'success',
+        customClass: { container: 'custom-popup' },
+      }).then((result) => {
+        nav('/', { replace: true });
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      Swal.fire({
+        title: '로그인 실패',
+        text: `이메일 또는 비밀번호를 확인하세요.`,
+        icon: 'error',
+        customClass: { container: 'custom-popup' },
+      });
+    }
+  }
+
   const handleSumit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -49,6 +80,37 @@ function Login() {
       });
       return;
     }
+
+    if (!validateEmail(email)) {
+      Swal.fire({
+        title: '이메일 확인',
+        text: `이메일을 확인하세요`,
+        icon: 'warning',
+        customClass: {
+          container: 'custom-popup',
+        },
+      });
+      return;
+    }
+
+    if (!validPassword(password)) {
+      Swal.fire({
+        title: '비밀번호 확인',
+        text: `비밀번호를 확인하세요`,
+        icon: 'warning',
+        customClass: {
+          container: 'custom-popup',
+        },
+      });
+      return;
+    }
+
+    const data = {
+      email,
+      password,
+    };
+
+    loginAPI(data);
   };
 
   useEffect(() => {
@@ -107,10 +169,10 @@ function Login() {
 
             <ul className="login_route">
               <li>
-                <a href="/join/">회원 가입</a>
+                <Link to={'/sign-up'}>회원 가입</Link>
               </li>
               <li>
-                <a href="">비밀번호 찾기</a>
+                <Link>비밀번호 찾기</Link>
               </li>
             </ul>
 
