@@ -102,7 +102,7 @@ function OrderView() {
                 </td>
               </tr>
               <tr>
-                <td>소개</td>
+                <td>반려 경험 및 경력</td>
                 <td>
                   <ul>
                     <li>
