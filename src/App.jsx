@@ -13,6 +13,7 @@ import Account from './components/mypage/Account';
 import Point from './components/mypage/Point';
 import Review from './components/mypage/Review';
 import JoinExpert from './components/mypage/JoinExpert';
+import OrderView from './components/mypage/OrderView';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="point" element={<Point />} />
           <Route path="reservation" element={<Reservation />} />
           <Route path="join-expert" element={<JoinExpert />} />
+          <Route path="order-view/:id" element={<OrderView />} />
         </Route>
         <Route path="*" element={<Notfound />} />
       </Routes>
