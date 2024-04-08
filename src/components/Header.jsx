@@ -13,7 +13,7 @@ function Header() {
         </h1>
         <ul>
           <li>
-            <Link to={'/pet'}>펫시터</Link>
+            <Link to={'/pet-sitter'}>펫시터</Link>
           </li>
           <li>
             <Link to={'/'}>이용후기</Link>

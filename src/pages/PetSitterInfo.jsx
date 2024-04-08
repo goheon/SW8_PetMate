@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import './PetSitterInfo.scss';
 import { Calendar, Time } from '../components/Calendar';
 
-// 리뷰(리뷰 수, 펫시터의 리뷰 목록), User(주소(활동범위) 정보 통신으로 가져옴
+// 리뷰(리뷰 수, 펫시터의 리뷰 목록), User(주소(활동범위)) 정보를 가져옴
 PetSitterInfo.defaultProps = {
   userId: 1,
   sitterId: 1,
