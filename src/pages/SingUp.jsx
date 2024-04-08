@@ -4,6 +4,9 @@ import './signUp.scss';
 import Footer from '../components/Footer';
 import AddressAPI from '../components/AddressAPI';
 import Swal from 'sweetalert2';
+import { API_URL } from '../util/constants';
+
+import { useNavigate } from 'react-router-dom';
 
 function validateName(name) {
   // 한글, 알파벳 대소문자만 허용하는 정규식
@@ -24,7 +27,9 @@ function validatePassword(password) {
   return regex.test(password);
 }
 
+
 function SignUp() {
+  const nav = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
   const [inputValues, setInputValues] = useState({
@@ -57,16 +62,39 @@ function SignUp() {
     });
   };
 
+  async function registerNewUser(userInfo) {
+    try {
+      const response = await fetch(`${API_URL}/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userInfo),
+      });
+  
+      if (!response.ok) throw new Error('Network response was not ok');
+  
+      Swal.fire({
+        title: '회원가입을 축하합니다!',
+        text: `환영합니다`,
+        icon: 'success',
+        customClass: { container: 'custom-popup' },
+      }).then((result) => {
+        nav('/login', { replace: true });
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const name = e.target.name.value;
+    const username = e.target.name.value;
     const email = e.target.email.value;
     const address = e.target.address.value;
-    const addressDetail = e.target.addressDetail.value;
+    const detailAddress = e.target.addressDetail.value;
     const password = e.target.password.value;
 
-    if (!name || !email || !address || !addressDetail || !password) {
+    if (!username || !email || !address || !detailAddress || !password) {
       Swal.fire({
         title: '필수값을 입력해주세요.',
         text: `이름, 번호, 이메일, 주소, 비밀번호 모두 입력하세요`,
@@ -77,6 +105,53 @@ function SignUp() {
       });
       return;
     }
+
+    if (!validateName(username)) {
+      Swal.fire({
+        title: '이름 확인',
+        text: `이름을 확인하세요`,
+        icon: 'warning',
+        customClass: {
+          container: 'custom-popup',
+        },
+      });
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      Swal.fire({
+        title: '이메일 확인',
+        text: `이메일을 확인하세요`,
+        icon: 'warning',
+        customClass: {
+          container: 'custom-popup',
+        },
+      });
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      Swal.fire({
+        title: '비밀번호 확인',
+        text: `비밀번호를 확인하세요`,
+        icon: 'warning',
+        customClass: {
+          container: 'custom-popup',
+        },
+      });
+      return;
+    }
+
+    const userInfo = {
+      username,
+      email,
+      address,
+      detailAddress,
+      password,
+    };
+
+    registerNewUser(userInfo);
+
   };
 
   return (
@@ -87,11 +162,7 @@ function SignUp() {
           <h3>펫메이트에 오신 것을 환영합니다</h3>
 
           <div className="sing-up_wrap">
-            <form
-              onSubmit={handleSubmit}
-              action="http://localhost:3000/api/v1/auth/sign-up"
-              method="post"
-            >
+            <form onSubmit={handleSubmit} action="http://localhost:3000/api/v1/auth/sign-up" method="post">
               <div
                 className={`name-wrap ${touchedInputs.name && !validateName(inputValues.name) ? 'invalid' : ''} ${
                   touchedInputs.name && validateName(inputValues.name) ? 'valid' : ''
