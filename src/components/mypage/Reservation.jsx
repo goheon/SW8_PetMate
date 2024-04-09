@@ -54,7 +54,7 @@ const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
 };
 
 function Reservation() {
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(options[0]);
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const allOrderList = useSelector((state) => state.allOrderList);
 

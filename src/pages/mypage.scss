@@ -362,6 +362,7 @@
       margin-top: 10px;
       border: 1px solid #f15746;
       font-weight: 500;
+      background-color: transparent;
       &:hover {
         background-color: #f15746;
         color: #fff;
@@ -378,7 +379,7 @@
         align-items: stretch;
         flex-wrap: wrap;
         margin-bottom: 50px;
-        
+
         > h6 {
           width: 100%;
           margin-bottom: 10px;
@@ -439,7 +440,7 @@
       input::-webkit-inner-spin-button {
         -webkit-appearance: none;
       }
-     
+
       button {
         background-color: #632ed8;
         padding: 10px 14px;
@@ -591,6 +592,27 @@
       }
       &:nth-of-type(2) {
         width: calc(100% - 150px);
+      }
+      input {
+        border: none;
+        background-color: #f4f6fe;
+        padding: 8px 10px;
+        border-radius: 5px;
+        font-weight: 500;
+        font-size: 15px;
+        margin-right: 5px;
+      }
+
+      button {
+        background-color: #632ed8;
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 5px;
+        margin-right: 5px;
+        &:last-child {margin-right: 0;}
+        &.cancel {
+          background-color: #f15746;
+        }
       }
     }
   }
