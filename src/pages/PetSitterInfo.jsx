@@ -27,6 +27,8 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
   const petCountRef = useRef();
   const startDate = useSelector((state) => state.reservationStartDate);
   const endDate = useSelector((state) => state.reservationEndDate);
+  const startTime = useSelector((state) => state.reservationStartTime);
+  const endTime = useSelector((state) => state.reservationEndTime);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPetList, setSelectedpetList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
