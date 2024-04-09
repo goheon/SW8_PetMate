@@ -255,5 +255,13 @@ export default configureStore({
         //만든거 여기다 등록해야 사용가능
         latestReview: latestReview.reducer,
         petSitterInfo: petSitterInfo.reducer,
+
+        reservationStartDate: reservationStartDate.reducer,
+        reservationEndDate: reservationEndDate.reducer,
+        reservationStartTime: reservationStartTime.reducer,
+        reservationEndTime: reservationEndTime.reducer,
+
+        loginUserInfo: loginUserInfo.reducer,
+        allOrderList: allOrderList.reducer,
     }
 }) 
