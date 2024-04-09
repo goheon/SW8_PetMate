@@ -1,4 +1,6 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+
+const date = new Date();
 
 //createSlice() : useState()역할임, state 하나를 slice라고 부른다
 const latestReview = createSlice({
@@ -47,71 +49,109 @@ const latestReview = createSlice({
 
     ]
 })
-
 const petSitterInfo = createSlice({
-    name: "petSitterInfo",
-    initialState: [
-        {
-            userId: 1,
-            name: "이하은",
-            img: "https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg",
-            review: 215,
-            regularCustomer: 145,
-            info: [
-                "펫시터 전문가 교육 수료",
-                "전문 펫시터 자격증 보유",
-                "펫시터 직업 훈련 교육 수료",
-                "반려동물행동교정사 2급 자격증 보유",
-                "강아지 반려 경험 (14년) 인증 완료",
-                "고양이 반려 경험 (8년) 인증 완료"
-            ],
-            check: [
-                "신원 인증",
-                "인성 검사",
-                "촬영 동의"
-            ]
+  name: 'petSitterInfo',
+  initialState: [
+    {
+      userId: 1,
+      name: '이하은',
+      img: 'https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg',
+      review: 215,
+      regularCustomer: 145,
+      info: [
+        '펫시터 전문가 교육 수료',
+        '전문 펫시터 자격증 보유',
+        '펫시터 직업 훈련 교육 수료',
+        '반려동물행동교정사 2급 자격증 보유',
+        '강아지 반려 경험 (14년) 인증 완료',
+        '고양이 반려 경험 (8년) 인증 완료',
+      ],
+      check: ['신원 인증', '인성 검사', '촬영 동의'],
+    },
+    {
+      userId: 2,
+      name: '전다현',
+      img: 'https://cdn.spotvnews.co.kr/news/photo/202306/614926_863772_1541.jpg',
+      review: 115,
+      regularCustomer: 45,
+      info: [
+        '펫시터 전문가 교육 수료',
+        'KSD 훈련사 자격증 보유',
+        '펫시터 직업 훈련 교육 수료',
+        '반려동물관리사 1급 자격증 보유',
+        '고양이 반려 경험 (6년) 인증 완료',
+      ],
+      check: ['신원 인증', '인성 검사', '촬영 동의'],
+    },
+    {
+      userId: 3,
+      name: '뿌링클',
+      img: 'https://isplus.com/data/isp/image/2022/12/22/isp88870ed2-900e-48e0-9f52-5fbcc09ec833.600x.0.jpg',
+      review: 455,
+      regularCustomer: 345,
+      info: [
+        '펫시터 전문가 교육 수료',
+        '전문 펫시터 자격증 보유',
+        '반려동물행동교정사 자격증 보유',
+        '강아지 반려 경험 (5년) 인증 완료',
+      ],
+      check: ['신원 인증', '촬영 동의'],
+    },
+  ],
+});
 
-        },
-        {
-            userId: 2,
-            name: "전다현",
-            img: "https://cdn.spotvnews.co.kr/news/photo/202306/614926_863772_1541.jpg",
-            review: 115,
-            regularCustomer: 45,
-            info: [
-                "펫시터 전문가 교육 수료",
-                "KSD 훈련사 자격증 보유",
-                "펫시터 직업 훈련 교육 수료",
-                "반려동물관리사 1급 자격증 보유",
-                "고양이 반려 경험 (6년) 인증 완료"
-            ],
-            check: [
-                "신원 인증",
-                "인성 검사",
-                "촬영 동의"
-            ]
-        },
-        {
-            userId: 3,
-            name: "뿌링클",
-            img: "https://isplus.com/data/isp/image/2022/12/22/isp88870ed2-900e-48e0-9f52-5fbcc09ec833.600x.0.jpg",
-            review: 455,
-            regularCustomer: 345,
-            info: [
-                "펫시터 전문가 교육 수료",
-                "전문 펫시터 자격증 보유",
-                "반려동물행동교정사 자격증 보유",
-                "강아지 반려 경험 (5년) 인증 완료",
-            ],
-            check: [
-                "신원 인증",
-                "촬영 동의",
-            ]
-        },
+const reservationStartDate = createSlice({
+  name: 'startDate',
+  initialState: {
+    startDate: date.toString(),
+  },
+  reducers: {
+    setStartDate: (state, action) => {
+      state.startDate = action.payload;
+    },
+  },
+});
 
-    ]
+const reservationEndDate = createSlice({
+  name: 'endDate',
+  initialState: {
+    endDate: date.toString(),
+  },
+  reducers: {
+    setEndDate: (state, action) => {
+      state.endDate = action.payload;
+    },
+  },
+});
 
-})
+const reservationStartTime = createSlice({
+  name: 'startTime',
+  initialState: {
+    startTime: null,
+  },
+  reducers: {
+    setStartTime: (state, action) => {
+      state.startTime = action.payload;
+    },
+  },
+});
+
+const reservationEndTime = createSlice({
+  name: 'endTime',
+  initialState: {
+    endTime: null,
+  },
+  reducers: {
+    setEndTime: (state, action) => {
+      state.endTime = action.payload;
+    },
+  },
+});
+
+export const { setStartDate } = reservationStartDate.actions;
+export const { setEndDate } = reservationEndDate.actions;
+export const { setStartTime } = reservationStartTime.actions;
+export const { setEndTime } = reservationEndTime.actions;
 
 const loginUserInfo = createSlice({
     name: "loginUserInfo",
@@ -215,8 +255,5 @@ export default configureStore({
         //만든거 여기다 등록해야 사용가능
         latestReview: latestReview.reducer,
         petSitterInfo: petSitterInfo.reducer,
-        loginUserInfo: loginUserInfo.reducer,
-        allOrderList: allOrderList.reducer,
-        jwt: jwt.reducer,
     }
 }) 
