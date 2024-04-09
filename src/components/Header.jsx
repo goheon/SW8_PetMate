@@ -1,9 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.scss';
 import { getCookie } from '../util/constants';
 
 function Header() {
+  const nav = useNavigate();
   const JWT = getCookie('jwt');
+
+  const logout = () => {
+    document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  };
 
   return (
     <header className="header">
@@ -27,7 +32,16 @@ function Header() {
                 <Link to={'/mypage/reservation'}>마이페이지</Link>
               </li>
               <li>
-                <Link to={'/'}>로그아웃</Link>
+                <a
+                  href=""
+                  onClick={(e) => {
+                    e.preventDefault();
+                    logout();
+                    nav('/', { replace: true });
+                  }}
+                >
+                  로그아웃
+                </a>
               </li>
             </>
           ) : (
