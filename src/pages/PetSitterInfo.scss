@@ -13,7 +13,6 @@
   .pet-sitter-info-section {
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 30px;
 
     .pet-sitter-info-card_inner {
       padding: 30px;
@@ -195,7 +194,7 @@
             font-size: 16px;
           }
 
-          button {
+          & > button {
             background-color: #ffc800;
             padding: 10px;
             border-radius: 5px;
@@ -288,11 +287,23 @@
 
       button[type='submit'] {
         border-radius: 15px;
-        margin: 40px 30px 50px 30px;
+        margin: 10px;
+        margin-top: 30px;
         background-color: #632ed8;
         color: #ffffff;
-        font-size: 24px;
-        width: 85%;
+        font-size: 22px;
+        width: 40%;
+        height: 50px;
+      }
+
+      .inquiryWrite {
+        border-radius: 15px;
+        margin: 30px 10px 10px 35px;
+        margin-top: 30px;
+        background-color: #ffc800;
+        color: #ffffff;
+        font-size: 22px;
+        width: 40%;
         height: 50px;
       }
     }

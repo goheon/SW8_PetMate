@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { MyDatePicker, TimePicker } from '../components/datepicker/DatePicker';
+import InquiryWriteModal from '../components/petSitterInfo/InquiryWriteModal';
 import './PetSitterInfo.scss';
 
 // 리뷰(리뷰 수, 펫시터의 리뷰 목록), User(주소(활동범위)) 정보를 가져옴
@@ -26,8 +27,18 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
   const petCountRef = useRef();
   const startDate = useSelector((state) => state.reservationStartDate);
   const endDate = useSelector((state) => state.reservationEndDate);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPetList, setSelectedpetList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  //모달 상태 핸들링
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   // 추가 버튼의 이벤트 핸들링
   const handleAdd = (e) => {
@@ -77,17 +88,17 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
     if (type.includes('강아지')) {
       options.push(
         <option key="small" value="small">
-          소형 강아지
+          소형견
         </option>,
       );
       options.push(
         <option key="medium" value="medium">
-          중형 강아지
+          중형견
         </option>,
       );
       options.push(
         <option key="large" value="large">
-          대형 강아지
+          대형견
         </option>,
       );
     }
@@ -147,7 +158,9 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
           </section>
           <section className="reservation-section">
             <div className="reservation-card_inner">
-              <form action="#" method="post" onSubmit={handleSubmit}>
+              {/* 문의 모달 로그인 상태에만 동작하게 수정 */}
+              <InquiryWriteModal isOpen={isModalOpen} onClose={closeModal} name={name} />
+              <form action="#" id="reservation" method="post" onSubmit={handleSubmit}>
                 <h6>언제 펫시터가 필요한가요?</h6>
                 <div className="date-time-select">
                   <div className="date-select">
@@ -196,13 +209,13 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                         let text;
                         switch (el[0]) {
                           case 'small':
-                            text = '소형 강아지';
+                            text = '소형견';
                             break;
                           case 'medium':
-                            text = '중형 강아지';
+                            text = '중형견';
                             break;
                           case 'large':
-                            text = '대형 강아지';
+                            text = '대형견';
                             break;
                           case 'cat':
                             text = '고양이';
@@ -236,17 +249,17 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                       ) : undefined}
                       {hourlyRate.small ? (
                         <li>
-                          <span>소형 강아지</span> <span>{hourlyRate.small.toLocaleString()} 원</span>
+                          <span>소형견</span> <span>{hourlyRate.small.toLocaleString()} 원</span>
                         </li>
                       ) : undefined}
                       {hourlyRate.medium ? (
                         <li>
-                          <span>중형 강아지</span> <span>{hourlyRate.medium.toLocaleString()} 원</span>
+                          <span>중형견</span> <span>{hourlyRate.medium.toLocaleString()} 원</span>
                         </li>
                       ) : undefined}
                       {hourlyRate.large ? (
                         <li>
-                          <span>대형 강아지</span> <span>{hourlyRate.large.toLocaleString()} 원</span>
+                          <span>대형견</span> <span>{hourlyRate.large.toLocaleString()} 원</span>
                         </li>
                       ) : undefined}
                     </ul>
@@ -262,7 +275,10 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                     placeholder="펫시팅에 필요한 상세 내용을 적어주세요."
                   ></textarea>
                 </div>
-                <button type="submit">예약 요청하기</button>
+                <button type="button" className="inquiryWrite" onClick={openModal}>
+                  문의하기
+                </button>
+                <button type="submit">예약 요청</button>
               </form>
             </div>
           </section>
