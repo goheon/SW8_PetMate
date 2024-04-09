@@ -1,4 +1,11 @@
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 function OrderView() {
+  const { id } = useParams();
+  const allOrderList = useSelector((state) => state.allOrderList);
+  const order = allOrderList.find((el) => el.orderId == id);
+
   return (
     <>
       <div className="mypage-order-view">
@@ -10,44 +17,57 @@ function OrderView() {
               <tr>
                 <td>주문번호</td>
                 <td>
-                  <p>202403301402520001</p>
+                  <p>{order.orderId}</p>
                 </td>
               </tr>
               <tr>
                 <td>예약일시</td>
                 <td>
-                  <p>2024.03.30 14:03</p>
+                  <p>
+                    {order.createdAt.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}{' '}
+                    {order.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>예약상태</td>
+                <td>
+                  <p>
+                    {order.state}
+                  </p>
                 </td>
               </tr>
               <tr>
                 <td>시팅시간</td>
                 <td>
-                  <p>2024.04.01 14:00 ~ 2024.04.01 16:00 (2시간)</p>
+                  <p>
+                    {order.start.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}{' '}
+                    {order.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}~{' '}
+                    {order.end.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}{' '}
+                    {order.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}{' '}
+                  </p>
                 </td>
               </tr>
               <tr>
                 <td>반려동물 정보</td>
                 <td>
-                  <p>강아지 / 말티즈 / 3세 / 소형</p>
-                </td>
-              </tr>
-              <tr>
-                <td>특이사항</td>
-                <td>
-                  <p>저희 강아지는 물어요</p>
+                  {order.pets.map((obj) => {
+                    const text = Object.values(obj).join(' / ');
+                    return <p style={{ width: '100%' }}>{...text}</p>;
+                  })}
                 </td>
               </tr>
               <tr>
                 <td>요청사항</td>
                 <td>
-                  <p>방문산책</p>
+                <p>{order.detailInfo}</p>
                 </td>
               </tr>
 
               <tr>
                 <td>가격</td>
                 <td>
-                  <p>50,000원</p>
+                  <p>{order.totalPrice.toLocaleString()}원</p>
                 </td>
               </tr>
             </tbody>

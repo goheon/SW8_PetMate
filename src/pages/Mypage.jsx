@@ -4,8 +4,13 @@ import Footer from '../components/Footer';
 import { Link, Outlet } from 'react-router-dom';
 import infoImg from '../assets/mypage_info.png';
 import infoImg02 from '../assets/mypage_info_02.png';
+import { useSelector } from 'react-redux';
+import { getCookie } from '../util/constants';
 
 function Mypage() {
+  const loginUserInfo = useSelector((state) => state.loginUserInfo);
+
+
   return (
     <>
       <Header />
@@ -25,8 +30,8 @@ function Mypage() {
                   </div>
                 </div>
                 <div className="mypage-info_text">
-                  <h5>이승철</h5>
-                  <p>dltmd1502@naver.com</p>
+                  <h5>{loginUserInfo.username}</h5>
+                  <p>{loginUserInfo.email}</p>
                 </div>
               </div>
 
