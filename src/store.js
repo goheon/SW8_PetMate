@@ -1,5 +1,7 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
+const date = new Date();
+
 //createSlice() : useState()역할임, state 하나를 slice라고 부른다
 const latestReview = createSlice({
   name: 'latestReview',
@@ -103,7 +105,7 @@ const petSitterInfo = createSlice({
 const reservationStartDate = createSlice({
   name: 'startDate',
   initialState: {
-    startDate: null,
+    startDate: date.toString(),
   },
   reducers: {
     setStartDate: (state, action) => {
@@ -115,7 +117,7 @@ const reservationStartDate = createSlice({
 const reservationEndDate = createSlice({
   name: 'endDate',
   initialState: {
-    endDate: null,
+    endDate: date.toString(),
   },
   reducers: {
     setEndDate: (state, action) => {

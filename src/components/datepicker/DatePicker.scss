@@ -28,3 +28,21 @@
   background-color: #632ed8;
   color: #fff;
 }
+
+.react-datepicker__header--time--only {
+  margin: 0px !important;
+  background-color: #fffdf4;
+  border: none;
+}
+
+.react-datepicker__time-list {
+  & > li {
+    margin: 0 !important;
+    right: 5px !important;
+    position: relative;
+  }
+}
+.react-datepicker__time-list-item--selected {
+  background-color: #632ed8 !important;
+  color: #fff !important;
+}
