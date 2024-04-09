@@ -390,6 +390,9 @@
           font-size: 14px;
           color: #555;
         }
+        img {
+          max-width: 100%;
+        }
 
         &.mypage-join-expert_price {
           input[type='number'] {
@@ -444,6 +447,18 @@
         border-radius: 5px;
         margin-left: 5px;
         margin-right: 10px;
+      }
+      input[type='file'] {
+        min-width: 100%;
+        flex: 1 0;
+        font-size: 15px;
+      }
+      .file_img-box {
+        font-size: 0;
+        padding: 15px;
+        background-color: #f4f6fe;
+        margin-top: 10px;
+        border-radius: 10px;
       }
       input[type='checkbox'] {
         display: none;

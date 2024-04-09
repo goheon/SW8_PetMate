@@ -10,16 +10,49 @@ const phoneAutoHyphen = (target) => {
 function JoinExpert() {
   const [experienceList, setExperienceList] = useState([]);
   const [experienceValue, setExperienceValue] = useState();
+  const [preview, setPreview] = useState();
+  const fileInput = useRef();
+
+  const handleImageUpload = (e) => {
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  const handleSummit = (e) => {
+    e.preventDefault();
+    let types = [];
+    if (e.target.dog.checked) types.push('강아지');
+    if (e.target.cat.checked) types.push('고양이');
+    if (e.target.s.checked) types.push('소형');
+    if (e.target.m.checked) types.push('중형');
+    if (e.target.l.checked) types.push('대형');
+
+    let formData = new FormData();
+    formData.append('image', fileInput.current.files[0]);
+
+    const data = {
+      type: types,
+      hourlyRate: {
+        priceS: Number(e.target.priceS.value),
+        priceM: Number(e.target.priceM.value),
+        priceL: Number(e.target.priceL.value),
+      },
+      experience: experienceList,
+      introduction: e.target.introduction.value,
+      title: e.target.title.value,
+      image : formData,
+    };
+
+    console.log(data);
+  };
   return (
     <>
       <div className="mypage-join-expert">
         <h4>펫시터 전환</h4>
-        <form
-          action=""
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
+        <form action="" onSubmit={handleSummit}>
           <div>
             <h6>돌봄 가능한 동물 / 사이즈</h6>
             <input type="checkbox" name="dog" id="dog" />
@@ -43,16 +76,16 @@ function JoinExpert() {
               대형
             </label>
           </div>
-          <div className='mypage-join-expert_price'>
+          <div className="mypage-join-expert_price">
             <h6>희망 펫시팅 가격</h6>
-            <label htmlFor="price-s">소형</label>
-            <input type="number" name="price-s" id="price-s" placeholder="20,000" />
+            <label htmlFor="priceS">소형</label>
+            <input type="number" name="priceS" id="priceS" placeholder="20,000" />
 
-            <label htmlFor="price-m">중형</label>
-            <input type="number" name="price-m" id="price-m" placeholder="30,000" />
+            <label htmlFor="priceM">중형</label>
+            <input type="number" name="priceM" id="priceM" placeholder="30,000" />
 
-            <label htmlFor="price-l">대형</label>
-            <input type="number" name="price-l" id="price-l" placeholder="40,000" />
+            <label htmlFor="priceL">대형</label>
+            <input type="number" name="priceL" id="priceL" placeholder="40,000" />
           </div>
           <div>
             <h6>반려 경험 및 경력</h6>
@@ -106,6 +139,13 @@ function JoinExpert() {
             >
               추가
             </button>
+          </div>
+          <div>
+            <h6>대표 이미지</h6>
+            <input type="file" accept="image/*" onChange={handleImageUpload} ref={fileInput}/>
+            <div className='file_img-box'>
+            {preview && <img src={preview} alt="preview" />}
+            </div>
           </div>
           <div>
             <h6>제목 작성</h6>
