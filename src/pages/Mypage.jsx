@@ -5,10 +5,11 @@ import { Link, Outlet } from 'react-router-dom';
 import infoImg from '../assets/mypage_info.png';
 import infoImg02 from '../assets/mypage_info_02.png';
 import { useSelector } from 'react-redux';
-
+import { getCookie } from '../util/constants';
 
 function Mypage() {
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
+
 
   return (
     <>

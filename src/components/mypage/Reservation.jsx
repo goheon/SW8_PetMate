@@ -57,6 +57,7 @@ function Reservation() {
   const [selectedOption, setSelectedOption] = useState(null);
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const allOrderList = useSelector((state) => state.allOrderList);
+  console.log(selectedOption);
 
   const [onFilter, setOnFilter] = useState(false);
   const [filterOrderList, setFilterOrderList] = useState([]);
@@ -81,15 +82,27 @@ function Reservation() {
         <ul className="mypage-board">
           <li>
             <p>진행중</p>
-            <strong>0</strong>
+            <strong>
+              {onFilter
+                ? filterOrderList.filter((el) => el.state === '진행중').length
+                : allOrderList.filter((el) => el.state === '진행중').length}
+            </strong>
           </li>
           <li>
             <p>완료된 시팅</p>
-            <strong>0</strong>
+            <strong>
+              {onFilter
+                ? filterOrderList.filter((el) => el.state === '완료').length
+                : allOrderList.filter((el) => el.state === '완료').length}
+            </strong>
           </li>
           <li>
             <p>취소된 시팅</p>
-            <strong>0</strong>
+            <strong>
+              {onFilter
+                ? filterOrderList.filter((el) => el.state === '취소').length
+                : allOrderList.filter((el) => el.state === '취소').length}
+            </strong>
           </li>
         </ul>
         <div className="mypage-filter">
@@ -114,9 +127,12 @@ function Reservation() {
           <button
             onClick={() => {
               const filterArr = allOrderList.filter((el) => {
-                if (startDate.getTime() <= el.createdAt.getTime() && el.createdAt.getTime() <= endDate.getTime()) {
-                  return true;
+                if (selectedOption.value === 'all'|| selectedOption.label === el.state) {
+                  if (startDate.getTime() <= el.createdAt.getTime() && el.createdAt.getTime() <= endDate.getTime()) {
+                    return true;
+                  }
                 }
+
                 return false;
               });
               setOnFilter(true);

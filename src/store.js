@@ -197,6 +197,19 @@ const allOrderList = createSlice({
     ]
 })
 
+const jwt = createSlice({
+    name: 'jwt',
+    initialState: { token: null },
+    reducers: {
+      loginSuccess(state, action) {
+        // 액션 디스패치 시 토큰을 스토어에 저장
+        state.token = action.payload.token;
+      }
+    }
+  });
+  
+  export const { loginSuccess } = jwt.actions;
+
 export default configureStore({
     reducer: {
         //만든거 여기다 등록해야 사용가능
@@ -204,5 +217,6 @@ export default configureStore({
         petSitterInfo: petSitterInfo.reducer,
         loginUserInfo: loginUserInfo.reducer,
         allOrderList: allOrderList.reducer,
+        jwt: jwt.reducer,
     }
 }) 
