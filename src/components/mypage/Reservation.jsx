@@ -57,7 +57,6 @@ function Reservation() {
   const [selectedOption, setSelectedOption] = useState(null);
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const allOrderList = useSelector((state) => state.allOrderList);
-  console.log(selectedOption);
 
   const [onFilter, setOnFilter] = useState(false);
   const [filterOrderList, setFilterOrderList] = useState([]);

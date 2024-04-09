@@ -563,6 +563,10 @@
       }
       > p {
         display: inline-block;
+        margin-bottom: 10px;
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
       &:nth-of-type(1) {
         background-color: #f4f6fe;
