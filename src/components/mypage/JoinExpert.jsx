@@ -43,7 +43,7 @@ function JoinExpert() {
       experience: experienceList,
       introduction: e.target.introduction.value,
       title: e.target.title.value,
-      image : formData,
+      image: formData,
     };
 
     console.log(data);
@@ -142,10 +142,12 @@ function JoinExpert() {
           </div>
           <div>
             <h6>대표 이미지</h6>
-            <input type="file" accept="image/*" onChange={handleImageUpload} ref={fileInput}/>
-            <div className='file_img-box'>
-            {preview && <img src={preview} alt="preview" />}
-            </div>
+            <input type="file" accept="image/*" onChange={handleImageUpload} ref={fileInput} />
+            {preview && (
+              <div className="file_img-box">
+                <img src={preview} alt="preview" />
+              </div>
+            )}
           </div>
           <div>
             <h6>제목 작성</h6>
