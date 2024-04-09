@@ -4,8 +4,9 @@ import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { API_URL } from '../util/constants';
-
+import { API_URL, getCookie } from '../util/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess } from '../store';
 function validateEmail(email) {
   const re =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -19,12 +20,22 @@ function validPassword(password) {
 }
 
 function Login() {
+  const dispatch = useDispatch();
+  const JWT = getCookie('jwt');
+  // const JWT = useSelector((state) => state.jwt.token);
   const nav = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [isInputStarted, setIsInputStarted] = useState(false);
+
+  //jwt토큰 있으면 홈으로 리다이렉트
+  useEffect(() => {
+    if (JWT) {
+      nav('/', { replace: true });
+    }
+  }, []);
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -45,6 +56,12 @@ function Login() {
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
+
+      const resData = await response.json();
+      const jwt = resData.JWT;
+
+      document.cookie = `jwt=${jwt}; path=/`;
+      dispatch(loginSuccess({ token: jwt }));
 
       Swal.fire({
         title: '로그인 성공',
