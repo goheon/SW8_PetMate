@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { API_URL } from '../util/constants';
+import { API_URL, getCookie } from '../util/constants';
 
 function validateEmail(email) {
   const re =
@@ -19,12 +19,20 @@ function validPassword(password) {
 }
 
 function Login() {
+  const jwt = getCookie('jwt');
   const nav = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [isInputStarted, setIsInputStarted] = useState(false);
+
+  //jwt토큰 있으면 홈으로 리다이렉트
+  useEffect(() => {
+    if (jwt) {
+      nav('/', { replace: true });
+    }
+  }, []);
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -45,6 +53,11 @@ function Login() {
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
+
+      const resData = await response.json();
+      const JWT = resData.JWT;
+
+      document.cookie = `jwt=${JWT}; path=/`;
 
       Swal.fire({
         title: '로그인 성공',
