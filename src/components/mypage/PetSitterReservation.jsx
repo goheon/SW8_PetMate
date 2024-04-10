@@ -39,7 +39,7 @@ const OrderList = ({ orderId, state, createdAt, totalPrice, end }) => {
         {state === '예약 요청' ? <span>NEW</span> : undefined}
         <p>
           예약일시
-          <span>{createdAt.toLocaleDateString()}</span>
+          <span>{new Date(createdAt).toLocaleDateString()}</span>
         </p>
       </div>
       <div className="mypage-reservation-list_info">
