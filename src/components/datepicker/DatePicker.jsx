@@ -1,5 +1,4 @@
-import DatePicker from 'react-datepicker';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
 import './DatePicker.scss';
@@ -10,7 +9,16 @@ export const MyDatePicker = ({ type }) => {
   const dispatch = useDispatch();
   const startDate = useSelector((state) => state.reservationStartDate.startDate);
   const endDate = useSelector((state) => state.reservationEndDate.endDate);
-
+  const [DatePicker, setDatePicker] = useState(null);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('react-datepicker')
+        .then((module) => {
+          setDatePicker(() => module.default);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
   const handleOnChange = async (date, type) => {
     type === 'start' ? dispatch(setStartDate(date.toString())) : dispatch(setEndDate(date.toString()));
     const endDateObject = new Date(Date.parse(endDate));
@@ -20,7 +28,7 @@ export const MyDatePicker = ({ type }) => {
       dispatch(setEndDate(date.toString()));
     }
   };
-
+  if (!DatePicker) return <div>Loading date picker...</div>;
   return (
     <DatePicker
       selected={type === 'start' ? new Date(startDate) : new Date(endDate)}
@@ -55,6 +63,16 @@ export const TimePicker = ({ type }) => {
   const endDate = useSelector((state) => state.reservationEndDate.endDate);
   const startTime = useSelector((state) => state.reservationStartTime.startTime);
   const endTime = useSelector((state) => state.reservationEndTime.endTime);
+  const [DatePicker, setDatePicker] = useState(null);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('react-datepicker')
+        .then((module) => {
+          setDatePicker(() => module.default);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
 
   const handleOnChange = (time, type) => {
     type === 'start' ? dispatch(setStartTime(time.toString())) : dispatch(setEndTime(time.toString()));
@@ -69,7 +87,7 @@ export const TimePicker = ({ type }) => {
   };
   new Date(startTime).setHours(new Date(startTime).getHours() + 1);
   const shouldSetTimeBounds = type === 'end' && new Date(endDate).getTime() <= new Date(startDate).getTime();
-
+  if (!DatePicker) return <div>Loading date picker...</div>;
   return (
     <DatePicker
       onChange={(time) => {
