@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -25,13 +25,19 @@ PetSitterInfo.defaultProps = {
 function PetSitterInfo({ img, sitterId, name, type, location, title, introduction, experience, check, hourlyRate }) {
   const petTypeRef = useRef();
   const petCountRef = useRef();
-  const startDate = useSelector((state) => state.reservationStartDate);
-  const endDate = useSelector((state) => state.reservationEndDate);
-  const startTime = useSelector((state) => state.reservationStartTime);
-  const endTime = useSelector((state) => state.reservationEndTime);
+  const requestRef = useRef();
+  const startDate = useSelector((state) => state.reservationStartDate.startDate);
+  const endDate = useSelector((state) => state.reservationEndDate.endDate);
+  const startTime = useSelector((state) => state.reservationStartTime.startTime);
+  const endTime = useSelector((state) => state.reservationEndTime.endTime);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPetList, setSelectedpetList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  //시간 변경을 감시
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [startDate, endDate, startTime, endTime]);
 
   //모달 상태 핸들링
   const openModal = () => {
@@ -48,7 +54,13 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
     e.stopPropagation();
     const type = petTypeRef.current.value;
     const count = petCountRef.current.value;
-    type === '선택' || count === '선택' ? alert('맡기실 반려동물을 선택해주세요') : addBinder(type, count);
+
+    //시간 선택, 반려동물 선택 검증 후 추가
+    startTime === endTime && startDate === endDate
+      ? alert('시간을 올바르게 선택해주세요.')
+      : type === '선택' || count === '선택'
+      ? alert('맡기실 반려동물을 선택해주세요')
+      : addBinder(type, count);
     petTypeRef.current.value = '선택';
     petCountRef.current.value = '선택';
   };
@@ -70,14 +82,45 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
 
   // 예약 카드 총액 계산
   const calculateTotalPrice = (msg, type, count) => {
+    //시간 계산
+    let hours;
+    const differenceInMillis = Math.abs(new Date(startDate).getTime() - new Date(endDate).getTime());
+    const differenceInHours = differenceInMillis / 1000 / 60 / 60;
+
+    const startTimeHours = new Date(startTime).getHours();
+    const endTimeHours = new Date(endTime).getHours();
+
+    if (differenceInHours === 0) {
+      hours = endTimeHours - startTimeHours;
+    } else {
+      if (endTimeHours > startTimeHours) {
+        hours = differenceInHours + (endTimeHours - startTimeHours);
+      } else {
+        hours = differenceInHours + (24 - startTimeHours) + endTimeHours;
+      }
+    }
+
+    //시간만 바뀌면 선택된 펫리스트를 순회해서 시간 반영된 가격을 계산해서 합친 걸로 재설정
+    if (!msg || !type || !count) {
+      let timeChangedPrice = 0;
+      selectedPetList.forEach((el) => {
+        const type = el[0];
+        const count = el[1];
+
+        timeChangedPrice += hourlyRate[type] * count * hours;
+      });
+      return setTotalPrice(timeChangedPrice);
+    }
+
     switch (msg) {
       case 'add':
-        setTotalPrice(totalPrice + hourlyRate[type] * count);
+        setTotalPrice(totalPrice + hourlyRate[type] * count * hours);
         break;
       case 'remove':
-        setTotalPrice(totalPrice - hourlyRate[type] * count);
+        setTotalPrice(totalPrice - hourlyRate[type] * count * hours);
         break;
       default:
+        setTotalPrice(totalPrice - hourlyRate[type] * count * hours);
         break;
     }
   };
@@ -118,6 +161,9 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
   // 폼 제출시 handleSubmit으로 처리
   const handleSubmit = (e) => {
     e.preventDefault();
+    const request = requestRef.current.value;
+    selectedPetList.forEach((el) => console.log(el));
+    // selectedPetList, startDate, endDate, startTime, endTime, totalPrice
   };
 
   return (
@@ -270,6 +316,7 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                 <h6>요청사항</h6>
                 <div className="request">
                   <textarea
+                    ref={requestRef}
                     name="request_text"
                     id=""
                     cols="30"

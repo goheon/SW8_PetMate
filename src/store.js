@@ -129,7 +129,7 @@ const reservationEndDate = createSlice({
 const reservationStartTime = createSlice({
   name: 'startTime',
   initialState: {
-    startTime: null,
+    startTime: date.toString(),
   },
   reducers: {
     setStartTime: (state, action) => {
@@ -141,7 +141,7 @@ const reservationStartTime = createSlice({
 const reservationEndTime = createSlice({
   name: 'endTime',
   initialState: {
-    endTime: null,
+    endTime: date.toString(),
   },
   reducers: {
     setEndTime: (state, action) => {
