@@ -84,6 +84,10 @@ function Mypage() {
                 <li>
                   <Link to={'/mypage/point'}>포인트관리</Link>
                 </li>
+                {/* 펫시터 회원 체크 후 아래 메뉴 노출 */}
+                <li>
+                  <Link to={'/mypage/petSitter-reservation'}>펫시터 예약 관리</Link>
+                </li>
 
                 <li>
                   <Link to={'/mypage/petssiter-info'}>펫시터 정보관리</Link>

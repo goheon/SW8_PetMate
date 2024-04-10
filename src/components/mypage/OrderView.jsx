@@ -5,7 +5,9 @@ function OrderView() {
   const { id } = useParams();
   const allOrderList = useSelector((state) => state.allOrderList);
   const order = allOrderList.find((el) => el.orderId == id);
-
+  const startObject = new Date(order.start);
+  const endObject = new Date(order.end);
+  const createdAtObject = new Date(order.createdAt);
   return (
     <>
       <div className="mypage-order-view">
@@ -24,27 +26,25 @@ function OrderView() {
                 <td>예약일시</td>
                 <td>
                   <p>
-                    {order.createdAt.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}{' '}
-                    {order.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    {createdAtObject.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}{' '}
+                    {createdAtObject.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                   </p>
                 </td>
               </tr>
               <tr>
                 <td>예약상태</td>
                 <td>
-                  <p>
-                    {order.state}
-                  </p>
+                  <p>{order.state}</p>
                 </td>
               </tr>
               <tr>
                 <td>시팅시간</td>
                 <td>
                   <p>
-                    {order.start.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}{' '}
-                    {order.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}~{' '}
-                    {order.end.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}{' '}
-                    {order.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}{' '}
+                    {startObject.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}{' '}
+                    {startObject.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}~{' '}
+                    {endObject.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}{' '}
+                    {endObject.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}{' '}
                   </p>
                 </td>
               </tr>
@@ -60,7 +60,7 @@ function OrderView() {
               <tr>
                 <td>요청사항</td>
                 <td>
-                <p>{order.detailInfo}</p>
+                  <p>{order.detailInfo}</p>
                 </td>
               </tr>
 
@@ -140,6 +140,13 @@ function OrderView() {
             </tbody>
           </table>
         </div>
+        {/* && 담당 펫시터에게만 노출 */}
+        {order.state === '예약 요청' ? (
+          <div className="accept-reject-buttons">
+            <button type="button">예약 확정</button>
+            <button type="button">예약 거절</button>
+          </div>
+        ) : undefined}
       </div>
     </>
   );

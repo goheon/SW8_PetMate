@@ -24,17 +24,19 @@ const Day = ({ inputDate, setInputDate }) => {
 //필터 옵션
 const options = [
   { value: 'all', label: '전체상품' },
+  { value: 'requested', label: '예약 요청' },
   { value: 'ongoing', label: '진행중' },
   { value: 'completion', label: '완료' },
   { value: 'cancellation', label: '취소' },
 ];
 
 //예약내역 리스트 컴포넌트
-const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
+const OrderList = ({ orderId, state, createdAt, totalPrice, end }) => {
   return (
     <li key={orderId}>
       <div className="mypage-reservation-list_state">
         <h6>{state}</h6>
+        {state === '예약 요청' ? <span>NEW</span> : undefined}
         <p>
           예약일시
           <span>{new Date(createdAt).toLocaleDateString()}</span>
@@ -55,7 +57,6 @@ const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
           </div>
           <div className="btn-box">
             <Link to={`/mypage/order-view/${orderId}`}>상세내용</Link>
-            <Link to={`/mypage/review-write/${orderId}`}>리뷰작성</Link>
           </div>
         </div>
       </div>
@@ -87,7 +88,7 @@ function Reservation() {
   return (
     <>
       <div className="mypage-reservation">
-        <h4>예약내역</h4>
+        <h4>펫시터 예약내역</h4>
         <ul className="mypage-board">
           <li>
             <p>진행중</p>
