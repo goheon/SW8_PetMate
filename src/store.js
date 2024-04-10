@@ -157,15 +157,15 @@ export const { setEndTime } = reservationEndTime.actions;
 
 const loginUserInfo = createSlice({
   name: 'loginUserInfo',
-  initialState: {
-    username: '이승철',
-    email: 'dltmd1502@naver.com',
-    phone: undefined,
-    address: '부천시 원미구 중2동',
-    detailAddress: '쿵야마을',
-    isRole: null,
+  initialState: null,
+  reducers: {
+    setUserInfo: (state, action) => {
+      return action.payload;
+    },
   },
 });
+
+export const { setUserInfo } = loginUserInfo.actions
 
 const allOrderList = createSlice({
   name: 'allOrderList',
