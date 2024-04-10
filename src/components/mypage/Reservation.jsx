@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
 import Select from 'react-select';
 import { useSelector } from 'react-redux';
 
@@ -8,6 +7,17 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 //날짜 설정 컴포넌트
 const Day = ({ inputDate, setInputDate }) => {
+  const [DatePicker, setDatePicker] = useState(null);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('react-datepicker')
+        .then((module) => {
+          setDatePicker(() => module.default);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
+  if (!DatePicker) return <div>Loading date picker...</div>;
   return <DatePicker showIcon dateFormat="yyyy/MM/dd" selected={inputDate} onChange={(date) => setInputDate(date)} />;
 };
 
@@ -126,7 +136,7 @@ function Reservation() {
           <button
             onClick={() => {
               const filterArr = allOrderList.filter((el) => {
-                if (selectedOption.value === 'all'|| selectedOption.label === el.state) {
+                if (selectedOption.value === 'all' || selectedOption.label === el.state) {
                   if (startDate.getTime() <= el.createdAt.getTime() && el.createdAt.getTime() <= endDate.getTime()) {
                     return true;
                   }

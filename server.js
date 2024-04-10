@@ -23,7 +23,7 @@ let vite;
 if (!isProduction) {
   const { createServer } = await import('vite');
   vite = await createServer({
-    server: { middlewareMode: true },
+    server: { middlewareMode: 'ssr' },
     appType: 'custom',
     base,
   });
@@ -38,7 +38,8 @@ if (!isProduction) {
 // Serve HTML
 app.use('*', async (req, res) => {
   try {
-    const url = req.originalUrl.replace(base, '');
+    const url = req.originalUrl;
+    // .replace(base, '');
 
     let template;
     let render;

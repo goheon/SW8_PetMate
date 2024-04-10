@@ -1,31 +1,37 @@
-import DatePicker from 'react-datepicker';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
 import './DatePicker.scss';
 
 import { setStartDate, setEndDate, setStartTime, setEndTime } from '../../store';
-import { useDispatch, useSelector } from 'react-redux';
 
 export const MyDatePicker = ({ type }) => {
-  const [newDate, setNewDate] = useState(new Date());
   const dispatch = useDispatch();
   const startDate = useSelector((state) => state.reservationStartDate.startDate);
   const endDate = useSelector((state) => state.reservationEndDate.endDate);
-
-  const handleOnChange = (date, type) => {
-    setNewDate(date);
+  const [DatePicker, setDatePicker] = useState(null);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('react-datepicker')
+        .then((module) => {
+          setDatePicker(() => module.default);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
+  const handleOnChange = async (date, type) => {
     type === 'start' ? dispatch(setStartDate(date.toString())) : dispatch(setEndDate(date.toString()));
-
     const endDateObject = new Date(Date.parse(endDate));
-    //startDate가 endDate보다 큰 경우 endDate의 상태 변경 필요..
-    //불가능한 경우 alert로 대체
-    // if (type === 'start' && date > endDateObject) {
-    // }
-  };
 
+    //startDate가 endDate보다 뒤인 경우 endDate를 같게 변경
+    if (type === 'start' && date > endDateObject) {
+      dispatch(setEndDate(date.toString()));
+    }
+  };
+  if (!DatePicker) return <div>Loading date picker...</div>;
   return (
     <DatePicker
-      selected={newDate}
+      selected={type === 'start' ? new Date(startDate) : new Date(endDate)}
       onChange={(date) => handleOnChange(date, type)}
       dateFormat="yyyy/MM/dd"
       minDate={type === 'start' ? new Date() : startDate}
@@ -37,12 +43,12 @@ export const MyDatePicker = ({ type }) => {
         nextMonthButtonDisabled,
       }) => (
         <div>
-          <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+          <button type="button" onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
             {'<'}
           </button>
-          <span className="cutom-month">{date.getMonth(date) + 1}월</span>
-          <span className="custom-year">{date.getFullYear(date)}</span>
-          <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+          <span className="cutom-month">{date.getMonth() + 1}월</span>
+          <span className="custom-year">{date.getFullYear()}</span>
+          <button type="button" onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
             {'>'}
           </button>
         </div>
@@ -52,32 +58,54 @@ export const MyDatePicker = ({ type }) => {
 };
 
 export const TimePicker = ({ type }) => {
-  const [newTime, setNewTime] = useState(new Date());
   const dispatch = useDispatch();
   const startDate = useSelector((state) => state.reservationStartDate.startDate);
   const endDate = useSelector((state) => state.reservationEndDate.endDate);
   const startTime = useSelector((state) => state.reservationStartTime.startTime);
   const endTime = useSelector((state) => state.reservationEndTime.endTime);
+  const [DatePicker, setDatePicker] = useState(null);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('react-datepicker')
+        .then((module) => {
+          setDatePicker(() => module.default);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
 
   const handleOnChange = (time, type) => {
-    setNewTime(time);
     type === 'start' ? dispatch(setStartTime(time.toString())) : dispatch(setEndTime(time.toString()));
+
+    const endTimeObject = new Date(Date.parse(endTime));
+
+    if (type === 'start' && time >= endTimeObject) {
+      const newEndtime = new Date(time.setHours(new Date(time).getHours() + 1));
+
+      dispatch(setEndTime(time.toString()));
+    }
   };
-
+  new Date(startTime).setHours(new Date(startTime).getHours() + 1);
   const shouldSetTimeBounds = type === 'end' && new Date(endDate).getTime() <= new Date(startDate).getTime();
-
+  if (!DatePicker) return <div>Loading date picker...</div>;
   return (
     <DatePicker
       onChange={(time) => {
         handleOnChange(time, type);
       }}
-      selected={newTime}
+      selected={type === 'start' ? new Date(startTime) : new Date(endTime)}
       showTimeSelect
       showTimeSelectOnly
       timeIntervals={60}
       timeCaption={type === 'start' ? '시작 시간' : '종료 시간'}
       dateFormat="h:mm aa"
-      minTime={shouldSetTimeBounds ? (type === 'start' ? undefined : new Date(startTime)) : undefined}
+      minTime={
+        shouldSetTimeBounds
+          ? type === 'start'
+            ? undefined
+            : new Date(startTime).setHours(new Date(startTime).getHours() + 1)
+          : undefined
+      }
       maxTime={shouldSetTimeBounds ? (type === 'start' ? undefined : new Date().setHours(23, 59, 0)) : undefined}
     />
   );
