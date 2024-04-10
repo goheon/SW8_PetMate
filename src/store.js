@@ -241,6 +241,27 @@ const allOrderList = createSlice({
       start: new Date(),
       end: new Date(),
     },
+    {
+      orderId: 4,
+      userId: '유저고유id값',
+      sitterId: '펫시터고유id값',
+      pets: [
+        {
+          type: '강아지',
+          size: '중형',
+          name: '쿵야',
+          age: 5,
+          gender: '남',
+          variety: '시바',
+        },
+      ],
+      totalPrice: 30000,
+      createdAt: new Date(2024, 3, 4),
+      state: '예약 요청',
+      detailInfo: '상세 요청사항입니다 어쩌구 저쩌꾸',
+      start: new Date(),
+      end: new Date(),
+    },
   ],
 });
 

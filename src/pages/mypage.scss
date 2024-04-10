@@ -163,6 +163,7 @@
       justify-content: space-between;
       gap: 15px;
       margin-bottom: 20px;
+
       li {
         flex: 1 0;
         background-color: #f4f6fe;
@@ -274,15 +275,27 @@
       }
       &_state {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         margin-bottom: 10px;
         color: #888;
+
         h6 {
           font-weight: 500;
           font-size: 14px;
         }
+
+        > span {
+          margin-left: 5px;
+          padding: 3px 5px;
+          background-color: #ffc800;
+          color: #fff;
+          border-radius: 45%;
+          font-size: 14px;
+        }
+
         p {
+          margin-left: auto;
+          margin-right: 0;
           font-weight: 500;
           font-size: 14px;
           span {
@@ -336,8 +349,30 @@
         .btn-box {
           display: flex;
           flex-direction: column;
+          justify-content: center;
+
           a {
             background-color: #ffc800;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 12px;
+            font-weight: bold;
+          }
+
+          span {
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+            background-color: #fff;
+            border: 1px solid #ffc800;
+          }
+
+          button {
+            background-color: #632ed8;
+            color: #fff;
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 5px;
@@ -348,6 +383,7 @@
       }
     }
   }
+
   &-account {
     &_setting {
       margin-bottom: 50px;
@@ -609,7 +645,9 @@
         padding: 8px 12px;
         border-radius: 5px;
         margin-right: 5px;
-        &:last-child {margin-right: 0;}
+        &:last-child {
+          margin-right: 0;
+        }
         &.cancel {
           background-color: #f15746;
         }
@@ -618,6 +656,44 @@
   }
 
   &-order-view {
+    .accept-reject-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-weight: 600;
+
+      button {
+        padding: 15px;
+      }
+
+      :first-child {
+        border-radius: 8px;
+        color: #632ed8;
+        font-size: 13px;
+        border: 2px solid #632ed8;
+        font-weight: 500;
+        margin-right: 20px;
+
+        &:hover {
+          background-color: #632ed8;
+          color: #fff;
+        }
+      }
+
+      :last-child {
+        border-radius: 8px;
+        color: #f15746;
+        font-size: 13px;
+        border: 2px solid #f15746;
+        font-weight: 500;
+        margin-right: 30px;
+
+        &:hover {
+          background-color: #f15746;
+          color: #fff;
+        }
+      }
+    }
     > div {
       display: flex;
       flex-wrap: wrap;
