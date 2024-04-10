@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { API_URL, getCookie } from '../../util/constants';
 
 const phoneAutoHyphen = (target) => {
   target.value = target.value
@@ -21,27 +22,22 @@ function JoinExpert() {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  async function registrationPetSitter(data) {
+  async function registrationPetSitter(formData) {
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const JWT = getCookie('jwt');
+      const response = await fetch(`${API_URL}/mypage/sitter`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          Authorization: `Bearer ` + JWT,
+        },
+        body: formData,
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
 
       console.log(response);
-
-      
     } catch (error) {
       console.error('Error:', error);
-      /* Swal.fire({
-        title: '로그인 실패',
-        text: `이메일 또는 비밀번호를 확인하세요.`,
-        icon: 'error',
-        customClass: { container: 'custom-popup' },
-      }); */
     }
   }
 
@@ -54,24 +50,30 @@ function JoinExpert() {
     if (e.target.m.checked) types.push('중형');
     if (e.target.l.checked) types.push('대형');
 
-    let formData = new FormData();
-    formData.append('image', fileInput.current.files[0]);
+    const formData = new FormData();
+    formData.append('img', fileInput.current.files[0]);
+    formData.append('type', types);
+    formData.append('hourlyRate', {
+      priceS: Number(e.target.priceS.value),
+      priceM: Number(e.target.priceM.value),
+      priceL: Number(e.target.priceL.value),
+    });
+    formData.append('experience', experienceList);
+    formData.append('introduction', e.target.introduction.value);
+    formData.append('title', e.target.title.value);
+    console.log({
+      priceS: Number(e.target.priceS.value),
+      priceM: Number(e.target.priceM.value),
+      priceL: Number(e.target.priceL.value),
+    });
 
-    const data = {
-      type: types,
-      hourlyRate: {
-        priceS: Number(e.target.priceS.value),
-        priceM: Number(e.target.priceM.value),
-        priceL: Number(e.target.priceL.value),
-      },
-      experience: experienceList,
-      introduction: e.target.introduction.value,
-      title: e.target.title.value,
-      image: formData,
-    };
+    registrationPetSitter(formData);
 
-    console.log(data);
+    /* for (var pair of formData.entries()) {
+      console.log(pair[0] + ', ' + pair[1]);
+    } */
   };
+
   return (
     <>
       <div className="mypage-join-expert">

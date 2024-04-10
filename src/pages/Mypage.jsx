@@ -12,7 +12,6 @@ function Mypage() {
   const dispath = useDispatch();
   const JWT = getCookie('jwt');
   const loginUserInfo = useSelector((state) => state.loginUserInfo) ?? getUserInfo(JWT);
-  console.log(loginUserInfo);
 
   async function getUserInfo(JWT) {
     try {

@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import { API_URL, getCookie } from '../../util/constants';
 
 //날짜 설정 컴포넌트
 const Day = ({ inputDate, setInputDate }) => {
@@ -24,6 +25,7 @@ const Day = ({ inputDate, setInputDate }) => {
 //필터 옵션
 const options = [
   { value: 'all', label: '전체상품' },
+  { value: 'request', label: '예약요청' },
   { value: 'ongoing', label: '진행중' },
   { value: 'completion', label: '완료' },
   { value: 'cancellation', label: '취소' },
@@ -84,11 +86,39 @@ function Reservation() {
     setEndDate(endTime);
   }, []);
 
+  //
+  const dispath = useDispatch();
+  const JWT = getCookie('jwt');
+  async function getBookList(JWT) {
+    try {
+      const response = await fetch(`${API_URL}/booklist`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ` + JWT,
+        },
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      console.log(response);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   return (
     <>
       <div className="mypage-reservation">
         <h4>예약내역</h4>
         <ul className="mypage-board">
+          <li>
+            <p>예약요청</p>
+            <strong>
+              {onFilter
+                ? filterOrderList.filter((el) => el.state === '예약요청').length
+                : allOrderList.filter((el) => el.state === '예약요청').length}
+            </strong>
+          </li>
           <li>
             <p>진행중</p>
             <strong>
