@@ -55,7 +55,7 @@ const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
           </div>
           <div className="btn-box">
             <Link to={`/mypage/order-view/${orderId}`}>상세내용</Link>
-            <Link>리뷰쓰기</Link>
+            <Link to={`/mypage/review-write/${orderId}`}>리뷰작성</Link>
           </div>
         </div>
       </div>
