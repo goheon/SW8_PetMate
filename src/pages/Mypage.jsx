@@ -10,7 +10,6 @@ import { getCookie } from '../util/constants';
 function Mypage() {
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
 
-
   return (
     <>
       <Header />
@@ -65,6 +64,10 @@ function Mypage() {
                 </li>
                 <li>
                   <Link to={'/mypage/point'}>포인트관리</Link>
+                </li>
+                {/* 펫시터 회원 체크 후 아래 메뉴 노출 */}
+                <li>
+                  <Link to={'/mypage/petSitter-reservation'}>펫시터 예약 관리</Link>
                 </li>
               </ul>
             </div>

@@ -32,9 +32,7 @@ function OrderView() {
               <tr>
                 <td>예약상태</td>
                 <td>
-                  <p>
-                    {order.state}
-                  </p>
+                  <p>{order.state}</p>
                 </td>
               </tr>
               <tr>
@@ -60,7 +58,7 @@ function OrderView() {
               <tr>
                 <td>요청사항</td>
                 <td>
-                <p>{order.detailInfo}</p>
+                  <p>{order.detailInfo}</p>
                 </td>
               </tr>
 
@@ -140,6 +138,13 @@ function OrderView() {
             </tbody>
           </table>
         </div>
+        {/* && 담당 펫시터에게만 노출 */}
+        {order.state === '예약 요청' ? (
+          <div className="accept-reject-buttons">
+            <button type="button">예약 확정</button>
+            <button type="button">예약 거절</button>
+          </div>
+        ) : undefined}
       </div>
     </>
   );
