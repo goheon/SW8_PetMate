@@ -1,13 +1,7 @@
 import { useRef, useState } from 'react';
 
-const phoneAutoHyphen = (target) => {
-  target.value = target.value
-    .replace(/[^0-9]/g, '')
-    .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
-    .replace(/(\-{1,2})$/g, '');
-};
 
-function JoinExpert() {
+function PetssiterInfo() {
   const [experienceList, setExperienceList] = useState([]);
   const [experienceValue, setExperienceValue] = useState();
   const [preview, setPreview] = useState();
@@ -20,30 +14,6 @@ function JoinExpert() {
     };
     reader.readAsDataURL(e.target.files[0]);
   };
-
-  async function registrationPetSitter(data) {
-    try {
-      const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) throw new Error('Network response was not ok');
-
-      console.log(response);
-
-      
-    } catch (error) {
-      console.error('Error:', error);
-      /* Swal.fire({
-        title: '로그인 실패',
-        text: `이메일 또는 비밀번호를 확인하세요.`,
-        icon: 'error',
-        customClass: { container: 'custom-popup' },
-      }); */
-    }
-  }
 
   const handleSummit = (e) => {
     e.preventDefault();
@@ -75,8 +45,8 @@ function JoinExpert() {
   return (
     <>
       <div className="mypage-join-expert">
-        <h4>펫시터 전환</h4>
-        <form enctype="multipart/form-data" action="" onSubmit={handleSummit}>
+        <h4>펫시터 정보관리</h4>
+        <form action="" onSubmit={handleSummit}>
           <div>
             <h6>돌봄 가능한 동물 / 사이즈</h6>
             <input type="checkbox" name="dog" id="dog" />
@@ -192,21 +162,12 @@ function JoinExpert() {
               placeholder="예시) 안녕하세요~! 동물을 사랑하는 13년차 주부 (세식구) 파트너 홍이맘 입니다. 외로움을 달래주고 한 가족처럼 지내는 반려견들. 하지만 우리 반려견들과 24시간 함께하기 힘든게 현실이지요. 출장도 가야하고 여행도 가야하는데 그럴때마다 부모님이나 지인들에게 부탁하기도 힘들고... 홍이네 집에 맡겨주세요^^ 강아지만 보면 좋아서 시간 가는줄도 모르는 초등학생 아들과 정성스럽게 돌봐 드립니다. 세 마리를 직접 키우고 경험한 노하우로 견주님의 사랑스러운 반려견을 안전하게 돌봐드리겠습니다. * 1박 이상 펫시팅 맡기실 경우 강남구에 사는 반려견은 차로 무료 픽업/드랍 서비스 해드려요. * 사정상 소형견만 케어 가능합니다. * 당일 예약은 힘들어요. * 산책시 사람이나 동물에게 공격성이나 짖음이 심한 아이는 산책 시간이 짧아질 수 있습니다. * 12세 이상 노견은 조심스러워 단기간 1박2일 까지만 받고 있는 점 이해해주세요. *한가정에 한마리씩만 케어합니다."
             ></textarea>
           </div>
-          <div>
-            <h6>본인인증 / 이용약관 동의</h6>
-            <label htmlFor="phone">휴대폰 번호</label>
-            <input type="text" name="phone" id="phone" placeholder="010-1234-5678" />
-            <button className="phone-certified">휴대폰 번호인증</button>
-            <input type="checkbox" name="" id="agreement" />
-            <label className="checkbox_label" htmlFor="agreement">
-              펫메이트 이용약관에 동의합니다. (필수)
-            </label>
-          </div>
-          <button className="registration">펫시터 등록</button>
+         
+          <button className="registration">정보수정</button>
         </form>
       </div>
     </>
   );
 }
 
-export default JoinExpert;
+export default PetssiterInfo;

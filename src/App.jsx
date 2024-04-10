@@ -18,6 +18,8 @@ import Review from './components/mypage/Review';
 import JoinExpert from './components/mypage/JoinExpert';
 import OrderView from './components/mypage/OrderView';
 import PetSitterReservation from './components/mypage/PetSitterReservation';
+import ReviewWrite from './components/mypage/ReviewWrite';
+import PetssiterInfo from './components/mypage/PetssiterInfo';
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
           <Route path="join-expert" element={<JoinExpert />} />
           <Route path="order-view/:id" element={<OrderView />} />
           <Route path="petSitter-reservation" element={<PetSitterReservation />} />
+          <Route path="review-write/:id" element={<ReviewWrite />} />
+          <Route path="petssiter-info" element={<PetssiterInfo />} />
         </Route>
         <Route path="/pet-sitter" element={<PetSitterList />} />
         <Route path="/pet-sitter/:sitterId" element={<PetSitterInfo />} />
