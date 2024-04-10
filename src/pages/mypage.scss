@@ -609,7 +609,9 @@
         padding: 8px 12px;
         border-radius: 5px;
         margin-right: 5px;
-        &:last-child {margin-right: 0;}
+        &:last-child {
+          margin-right: 0;
+        }
         &.cancel {
           background-color: #f15746;
         }
@@ -644,6 +646,116 @@
               margin-bottom: 0;
             }
           }
+        }
+      }
+    }
+  }
+
+  &-review-write {
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      > div {
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+        flex-wrap: wrap;
+        margin-bottom: 50px;
+
+        > h6 {
+          width: 100%;
+          margin-bottom: 10px;
+          font-size: 18px;
+        }
+        > p {
+          width: 100%;
+          margin-bottom: 10px;
+          font-size: 14px;
+          color: #555;
+        }
+        img {
+          max-width: 100%;
+        }
+      }
+      label {
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 14px 20px;
+        background-color: #f4f6fe;
+        margin-right: 5px;
+        font-size: 14px;
+        color: #555;
+      }
+      input {
+        width: 180px;
+        flex: 0 1;
+        border: none;
+        background-color: #f4f6fe;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        &:focus {
+          outline-color: #632ed8;
+        }
+        &.mypage-review-write_title {
+          flex: 1 0;
+        }
+      }
+
+      button {
+        background-color: #632ed8;
+        padding: 10px 14px;
+        color: #fff;
+        border-radius: 5px;
+        margin-left: 5px;
+        margin-right: 10px;
+      }
+      input[type='file'] {
+        min-width: 100%;
+        flex: 1 0;
+        font-size: 15px;
+      }
+      .file_img-box {
+        font-size: 0;
+        padding: 15px;
+        background-color: #f4f6fe;
+        margin-top: 10px;
+        border-radius: 10px;
+      }
+
+      .registration {
+        margin-left: auto;
+        padding: 11px 14px;
+        background-color: #ffc800;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 15px;
+        color: #111;
+      }
+      .review-write_wrap {
+        width: 100%;
+        display: flex;
+        margin-bottom: 10px;
+        align-items: center;
+        h6 {
+          font-size: 18px;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .mypage-review-write_stars {
+      min-width: 115px;
+      margin-right: 10px;
+      &-rate {
+        > div {
+          cursor: pointer;
+          border: 1px solid #eee;
+          background-color: #fffdf4;
+          border-radius: 10px;
+          font-size: 14px;
+          font-weight: 500;
         }
       }
     }
