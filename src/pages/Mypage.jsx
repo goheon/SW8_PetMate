@@ -66,6 +66,10 @@ function Mypage() {
                 <li>
                   <Link to={'/mypage/point'}>포인트관리</Link>
                 </li>
+
+                <li>
+                  <Link to={'/mypage/petssiter-info'}>펫시터 정보관리</Link>
+                </li>
               </ul>
             </div>
           </div>
