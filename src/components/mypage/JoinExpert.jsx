@@ -21,6 +21,30 @@ function JoinExpert() {
     reader.readAsDataURL(e.target.files[0]);
   };
 
+  async function registrationPetSitter(data) {
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      console.log(response);
+
+      
+    } catch (error) {
+      console.error('Error:', error);
+      /* Swal.fire({
+        title: '로그인 실패',
+        text: `이메일 또는 비밀번호를 확인하세요.`,
+        icon: 'error',
+        customClass: { container: 'custom-popup' },
+      }); */
+    }
+  }
+
   const handleSummit = (e) => {
     e.preventDefault();
     let types = [];
@@ -52,7 +76,7 @@ function JoinExpert() {
     <>
       <div className="mypage-join-expert">
         <h4>펫시터 전환</h4>
-        <form action="" onSubmit={handleSummit}>
+        <form enctype="multipart/form-data" action="" onSubmit={handleSummit}>
           <div>
             <h6>돌봄 가능한 동물 / 사이즈</h6>
             <input type="checkbox" name="dog" id="dog" />

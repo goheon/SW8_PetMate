@@ -555,6 +555,9 @@
     resize: none;
     height: 220px;
     border: none;
+    &:focus {
+      outline-color: #632ed8;
+    }
   }
 
   table {
