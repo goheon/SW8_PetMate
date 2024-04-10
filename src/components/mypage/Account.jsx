@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { API_URL, getCookie } from '../../util/constants';
+import { setUserInfo } from '../../store';
 
 function Account() {
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
@@ -10,7 +12,39 @@ function Account() {
   const [isNameModify, setIsNameModify] = useState(false);
   const [isEmailModify, setIsEmailModify] = useState(false);
   const [isPassWordModify, setIsPassWordModify] = useState(false);
-  
+
+  const dispath = useDispatch();
+  const JWT = getCookie('jwt');
+
+  async function updateUser(userInfo) {
+    try {
+      const response = await fetch(`${API_URL}//mypage`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ` + JWT },
+        body: JSON.stringify(userInfo),
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      /* Swal.fire({
+        title: '수정 완료',
+        text: `축하염ㅋ`,
+        icon: 'success',
+        customClass: { container: 'custom-popup' },
+      }); */
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  const updateName = () => {
+    const userInfo = {
+      name,
+      email: loginUserInfo.email,
+    };
+    updateUser(userInfo);
+  };
+
   return (
     <>
       <div className="mypage-account">
@@ -40,7 +74,9 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button className="">수정</button>
+                      <button className="" onClick={updateName}>
+                        수정
+                      </button>
                     </>
                   ) : (
                     <>
