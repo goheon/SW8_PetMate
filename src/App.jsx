@@ -17,6 +17,8 @@ import Point from './components/mypage/Point';
 import Review from './components/mypage/Review';
 import JoinExpert from './components/mypage/JoinExpert';
 import OrderView from './components/mypage/OrderView';
+import ReviewWrite from './components/mypage/ReviewWrite';
+
 
 function App() {
   return (
@@ -32,6 +34,7 @@ function App() {
           <Route path="reservation" element={<Reservation />} />
           <Route path="join-expert" element={<JoinExpert />} />
           <Route path="order-view/:id" element={<OrderView />} />
+          <Route path="review-write/:id" element={<ReviewWrite />} />
         </Route>
         <Route path="/pet-sitter" element={<PetSitterList />} />
         <Route path="/pet-sitter/:sitterId" element={<PetSitterInfo />} />
