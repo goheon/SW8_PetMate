@@ -9,7 +9,7 @@ import { API_URL, getCookie } from '../util/constants';
 import { setUserInfo } from '../store';
 
 function Mypage() {
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const JWT = getCookie('jwt');
   const loginUserInfo = useSelector((state) => state.loginUserInfo) ?? getUserInfo(JWT);
 
@@ -18,14 +18,16 @@ function Mypage() {
       const response = await fetch(`${API_URL}/mypage`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ` + JWT,
+          'Content-Type': 'application/json',
+          // Authorization: `Bearer ${JWT}`,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
       const resData = await response.json();
 
-      dispath(setUserInfo(resData));
+      dispatch(setUserInfo(resData));
     } catch (error) {
       console.error('Error:', error);
     }

@@ -165,7 +165,7 @@ const loginUserInfo = createSlice({
   },
 });
 
-export const { setUserInfo } = loginUserInfo.actions
+export const { setUserInfo } = loginUserInfo.actions;
 
 const allOrderList = createSlice({
   name: 'allOrderList',
@@ -280,11 +280,18 @@ const allOrderList = createSlice({
       createdAt: new Date(2024, 3, 4).toString(),
       state: '예약 요청',
       detailInfo: '상세 요청사항입니다 어쩌구 저쩌꾸',
-      start: new Date(),
-      end: new Date(),
+      start: new Date().toString(),
+      end: new Date().toString(),
     },
   ],
+  reducers: {
+    setAllOrderList: (state, action) => {
+      return action.payload;
+    },
+  },
 });
+
+export const { setAllOrderList } = allOrderList.actions;
 
 const jwt = createSlice({
   name: 'jwt',

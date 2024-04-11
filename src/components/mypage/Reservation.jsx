@@ -4,7 +4,8 @@ import Select from 'react-select';
 import { useSelector, useDispatch } from 'react-redux';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { API_URL, getCookie } from '../../util/constants';
+import { API_URL, getCookie, parseJwt } from '../../util/constants';
+import { setAllOrderList } from '../../store';
 
 //날짜 설정 컴포넌트
 const Day = ({ inputDate, setInputDate }) => {
@@ -68,7 +69,6 @@ const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
 function Reservation() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
-  const allOrderList = useSelector((state) => state.allOrderList);
 
   const [onFilter, setOnFilter] = useState(false);
   const [filterOrderList, setFilterOrderList] = useState([]);
@@ -84,23 +84,30 @@ function Reservation() {
     let endTime = new Date();
     endTime.setHours(23, 59, 59);
     setEndDate(endTime);
+
+    getBookList();
   }, []);
 
   //
-  const dispath = useDispatch();
-  const JWT = getCookie('jwt');
-  async function getBookList(JWT) {
+  const dispatch = useDispatch();
+
+  const allOrderList = useSelector((state) => state.allOrderList);
+
+  async function getBookList() {
     try {
       const response = await fetch(`${API_URL}/booklist`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ` + JWT,
+          'Content-Type': 'application/json',
+          // Authorization: `Bearer ` + JWT,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
+      const { data } = await response.json();
 
-      console.log(response);
+      dispatch(setAllOrderList(data));
     } catch (error) {
       console.error('Error:', error);
     }
@@ -167,7 +174,11 @@ function Reservation() {
             onClick={() => {
               const filterArr = allOrderList.filter((el) => {
                 if (selectedOption.value === 'all' || selectedOption.label === el.state) {
-                  if (startDate.getTime() <= el.createdAt.getTime() && el.createdAt.getTime() <= endDate.getTime()) {
+                  const createdAtObject = new Date(el.createdAt);
+                  if (
+                    startDate.getTime() <= createdAtObject.getTime() &&
+                    createdAtObject.getTime() <= endDate.getTime()
+                  ) {
                     return true;
                   }
                 }
