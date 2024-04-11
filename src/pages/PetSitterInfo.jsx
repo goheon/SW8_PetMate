@@ -12,12 +12,19 @@ PetSitterInfo.defaultProps = {
   sitterId: 1,
   name: '이하은',
   img: 'https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg',
-  type: ['강아지', '고양이'],
+  type: ['소형견', '중형견', '대형견', '고양이'],
   location: '서울시 강서구',
   title: '안전하고 편안하게 돌봐주는 펫시팅',
   introduction:
     '안녕하세요! 저는 동물을 사랑하고 책임감을 가지고 행동하는 펫시터입니다. 애완동물의 행복과 안전을 최우선으로 생각하며, 신뢰할 수 있는 돌봄을 제공합니다.',
-  experience: '8봤고 1 교육으로 뭐를 했고 ~~~..........',
+  experience: [
+    '펫시터 전문가 교육 수료',
+    '전문 펫시터 자격증 보유',
+    '펫시터 직업 훈련 교육 수료',
+    '반려동물행동교정사 2급 자격증 보유',
+    '강아지 반려 경험 (14년) 인증 완료',
+    '고양이 반려 경험 (8년) 인증 완료',
+  ],
   check: ['신원 인증', '인성 검사', '촬영 동의'],
   hourlyRate: { small: 15000, medium: 20000, large: 25000, cat: 10000 },
 };
@@ -79,6 +86,24 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
     calculateTotalPrice('remove', type, count);
   };
 
+  const typeSetter = (type) => {
+    switch (type) {
+      case '소형견':
+        type = 'small';
+        break;
+      case '중형견':
+        type = 'medium';
+        break;
+      case '대형견':
+        type = 'large';
+        break;
+      default:
+        type = 'cat';
+    }
+
+    return type;
+  };
+
   // 예약 카드 총액 계산
   const calculateTotalPrice = (msg, type, count) => {
     //시간 계산
@@ -98,18 +123,21 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
         hours = differenceInHours + (24 - startTimeHours) + endTimeHours;
       }
     }
-
     //시간만 바뀌면 선택된 펫리스트를 순회해서 시간 반영된 가격을 계산해서 합친 걸로 재설정
     if (!msg || !type || !count) {
       let timeChangedPrice = 0;
       selectedPetList.forEach((el) => {
-        const type = el[0];
+        let type = el[0];
         const count = el[1];
+
+        type = typeSetter(type);
 
         timeChangedPrice += hourlyRate[type] * count * hours;
       });
       return setTotalPrice(timeChangedPrice);
     }
+
+    type = typeSetter(type);
 
     switch (msg) {
       case 'add':
@@ -128,27 +156,31 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
   const optionCheck = (type) => {
     const options = []; // 옵션을 저장할 배열 초기화
 
-    // type 배열 내에 강아지나 고양이가 있는지 확인 후, 해당하는 옵션 추가
-    if (type.includes('강아지')) {
+    // type 배열 내 확인 후, 해당하는 옵션 추가
+    if (type.includes('소형견')) {
       options.push(
-        <option key="small" value="small">
+        <option key="small" value="소형견">
           소형견
         </option>,
       );
+    }
+    if (type.includes('중형견')) {
       options.push(
-        <option key="medium" value="medium">
+        <option key="medium" value="중형견">
           중형견
         </option>,
       );
+    }
+    if (type.includes('대형견')) {
       options.push(
-        <option key="large" value="large">
+        <option key="large" value="대형견">
           대형견
         </option>,
       );
     }
     if (type.includes('고양이')) {
       options.push(
-        <option key="cat" value="cat">
+        <option key="cat" value="고양이">
           고양이
         </option>,
       );
@@ -173,10 +205,11 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
           <section className="pet-sitter-info-section">
             <div className="pet-sitter-info-card_inner">
               <img src={img} alt="프로필 이미지" />
-              <p className="sitterId">{sitterId}</p>
               <p className="name">{name} 펫시터</p>
               <div className="info-text">
-                <p className="type">{type.join(', ')} 펫시터</p>
+                <p className="type">
+                  {type.includes('소형견' || '중형견' || '대형견') ? '강아지, 고양이' : '고양이'} 펫시터
+                </p>
                 <p className="location">{location}</p>
               </div>
               <p className="title">" {title} "</p>
@@ -187,7 +220,11 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
               </div>
               <div className="experience">
                 <h6>{name} 님의 경력</h6>
-                <p>{experience}</p>
+                <ul>
+                  {experience.map((el, i) => {
+                    return <li key={i}>{el}</li>;
+                  })}
+                </ul>
               </div>
               <p className="check">
                 {check.map((check, i) => {
@@ -253,26 +290,9 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                   <div className="pet-select_pet-list">
                     <ul>
                       {selectedPetList.map((el, i) => {
-                        let text;
-                        switch (el[0]) {
-                          case 'small':
-                            text = '소형견';
-                            break;
-                          case 'medium':
-                            text = '중형견';
-                            break;
-                          case 'large':
-                            text = '대형견';
-                            break;
-                          case 'cat':
-                            text = '고양이';
-                            break;
-                          default:
-                            break;
-                        }
                         return (
                           <li key={i}>
-                            {text} {el[1]} 마리
+                            {el} {el[1]} 마리
                             <button onClick={() => handleRemove(i)}>X</button>
                           </li>
                         );
