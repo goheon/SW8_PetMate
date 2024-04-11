@@ -4,30 +4,32 @@ import Footer from '../components/Footer';
 import { Link, Outlet } from 'react-router-dom';
 import infoImg from '../assets/mypage_info.png';
 import infoImg02 from '../assets/mypage_info_02.png';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { API_URL, getCookie } from '../util/constants';
-
-async function getUserInfo(JWT) {
-  try {
-    const response = await fetch(`${API_URL}/mypage`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${JWT}`,
-      },
-    });
-
-    if (!response.ok) throw new Error('Network response was not ok');
-    const resData = await response.json();
-
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
+import { setUserInfo } from '../store';
 
 function Mypage() {
+  const dispath = useDispatch();
   const JWT = getCookie('jwt');
-  const loginUserInfo = useSelector((state) => state.loginUserInfo);
-  // getUserInfo(JWT);
+  const loginUserInfo = useSelector((state) => state.loginUserInfo) ?? getUserInfo(JWT);
+
+  async function getUserInfo(JWT) {
+    try {
+      const response = await fetch(`${API_URL}/mypage`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ` + JWT,
+        },
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+      const resData = await response.json();
+
+      dispath(setUserInfo(resData));
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   return (
     <>
