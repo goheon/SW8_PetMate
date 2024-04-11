@@ -32,10 +32,6 @@
         height: 240px;
       }
 
-      .sitterId {
-        display: none;
-      }
-
       .name {
         font-size: 28px;
         font-weight: 600;
@@ -78,6 +74,14 @@
         width: 100%;
 
         & > p {
+          background-color: #fffdf4;
+          padding: 40px 45px;
+          border-radius: 15px;
+          font-size: 18px;
+          line-height: 28px;
+        }
+
+        & > ul {
           background-color: #fffdf4;
           padding: 40px 45px;
           border-radius: 15px;
