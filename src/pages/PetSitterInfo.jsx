@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { getCookie, parseJwt } from '../util/constants';
 import { MyDatePicker, TimePicker } from '../components/datepicker/DatePicker';
 import InquiryWriteModal from '../components/petSitterInfo/InquiryWriteModal';
 import './PetSitterInfo.scss';
@@ -12,12 +13,19 @@ PetSitterInfo.defaultProps = {
   sitterId: 1,
   name: '이하은',
   img: 'https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg',
-  type: ['강아지', '고양이'],
+  type: ['소형견', '중형견', '대형견', '고양이'],
   location: '서울시 강서구',
   title: '안전하고 편안하게 돌봐주는 펫시팅',
   introduction:
     '안녕하세요! 저는 동물을 사랑하고 책임감을 가지고 행동하는 펫시터입니다. 애완동물의 행복과 안전을 최우선으로 생각하며, 신뢰할 수 있는 돌봄을 제공합니다.',
-  experience: '8봤고 1 교육으로 뭐를 했고 ~~~..........',
+  experience: [
+    '펫시터 전문가 교육 수료',
+    '전문 펫시터 자격증 보유',
+    '펫시터 직업 훈련 교육 수료',
+    '반려동물행동교정사 2급 자격증 보유',
+    '강아지 반려 경험 (14년) 인증 완료',
+    '고양이 반려 경험 (8년) 인증 완료',
+  ],
   check: ['신원 인증', '인성 검사', '촬영 동의'],
   hourlyRate: { small: 15000, medium: 20000, large: 25000, cat: 10000 },
 };
@@ -40,7 +48,7 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
 
   //모달 상태 핸들링
   const openModal = () => {
-    setIsModalOpen(true);
+    parseJwt(getCookie('jwt')).userId ? setIsModalOpen(true) : alert('로그인 후 이용해주세요.');
   };
 
   const closeModal = () => {
@@ -79,6 +87,24 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
     calculateTotalPrice('remove', type, count);
   };
 
+  const typeSetter = (type) => {
+    switch (type) {
+      case '소형견':
+        type = 'small';
+        break;
+      case '중형견':
+        type = 'medium';
+        break;
+      case '대형견':
+        type = 'large';
+        break;
+      default:
+        type = 'cat';
+    }
+
+    return type;
+  };
+
   // 예약 카드 총액 계산
   const calculateTotalPrice = (msg, type, count) => {
     //시간 계산
@@ -98,18 +124,21 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
         hours = differenceInHours + (24 - startTimeHours) + endTimeHours;
       }
     }
-
     //시간만 바뀌면 선택된 펫리스트를 순회해서 시간 반영된 가격을 계산해서 합친 걸로 재설정
     if (!msg || !type || !count) {
       let timeChangedPrice = 0;
       selectedPetList.forEach((el) => {
-        const type = el[0];
+        let type = el[0];
         const count = el[1];
+
+        type = typeSetter(type);
 
         timeChangedPrice += hourlyRate[type] * count * hours;
       });
       return setTotalPrice(timeChangedPrice);
     }
+
+    type = typeSetter(type);
 
     switch (msg) {
       case 'add':
@@ -128,27 +157,31 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
   const optionCheck = (type) => {
     const options = []; // 옵션을 저장할 배열 초기화
 
-    // type 배열 내에 강아지나 고양이가 있는지 확인 후, 해당하는 옵션 추가
-    if (type.includes('강아지')) {
+    // type 배열 내 확인 후, 해당하는 옵션 추가
+    if (type.includes('소형견')) {
       options.push(
-        <option key="small" value="small">
+        <option key="small" value="소형견">
           소형견
         </option>,
       );
+    }
+    if (type.includes('중형견')) {
       options.push(
-        <option key="medium" value="medium">
+        <option key="medium" value="중형견">
           중형견
         </option>,
       );
+    }
+    if (type.includes('대형견')) {
       options.push(
-        <option key="large" value="large">
+        <option key="large" value="대형견">
           대형견
         </option>,
       );
     }
     if (type.includes('고양이')) {
       options.push(
-        <option key="cat" value="cat">
+        <option key="cat" value="고양이">
           고양이
         </option>,
       );
@@ -160,9 +193,52 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
   // 폼 제출시 handleSubmit으로 처리
   const handleSubmit = (e) => {
     e.preventDefault();
-    const request = requestRef.current.value;
-    selectedPetList.forEach((el) => console.log(el));
-    // selectedPetList, startDate, endDate, startTime, endTime, totalPrice
+
+    //로그인 상태 확인
+    const userId = parseJwt(getCookie('jwt')).userId;
+    if (!userId) return alert('로그인 후 이용해주세요.');
+
+    //요청사항
+    const detailInfo = requestRef.current.value;
+
+    //반려동물 목록
+    let pets = [];
+    selectedPetList.map((el) => {
+      pets.push({ type: el[0], count: el[1] });
+    });
+
+    //시작일
+    const formedStartDate = new Date(
+      new Date(startDate).getFullYear(),
+      new Date(startDate).getMonth(),
+      new Date(startDate).getDate(),
+      new Date(startTime).getHours(),
+    );
+
+    //종료일
+    const formedEndDate = new Date(
+      new Date(endDate).getFullYear(),
+      new Date(endDate).getMonth(),
+      new Date(endDate).getDate(),
+      new Date(endTime).getHours(),
+    );
+
+    console.log(
+      'pets: ',
+      pets,
+      'userId: ',
+      userId,
+      'sitterId: ',
+      sitterId,
+      'totalPrice: ',
+      totalPrice,
+      'detailInfo: ',
+      detailInfo,
+      'formedStartDate: ',
+      formedStartDate,
+      'formedEndDate: ',
+      formedEndDate,
+    );
   };
 
   return (
@@ -173,10 +249,11 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
           <section className="pet-sitter-info-section">
             <div className="pet-sitter-info-card_inner">
               <img src={img} alt="프로필 이미지" />
-              <p className="sitterId">{sitterId}</p>
               <p className="name">{name} 펫시터</p>
               <div className="info-text">
-                <p className="type">{type.join(', ')} 펫시터</p>
+                <p className="type">
+                  {type.includes('소형견' || '중형견' || '대형견') ? '강아지, 고양이' : '고양이'} 펫시터
+                </p>
                 <p className="location">{location}</p>
               </div>
               <p className="title">" {title} "</p>
@@ -187,7 +264,11 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
               </div>
               <div className="experience">
                 <h6>{name} 님의 경력</h6>
-                <p>{experience}</p>
+                <ul>
+                  {experience.map((el, i) => {
+                    return <li key={i}>{el}</li>;
+                  })}
+                </ul>
               </div>
               <p className="check">
                 {check.map((check, i) => {
@@ -205,7 +286,6 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
           </section>
           <section className="reservation-section">
             <div className="reservation-card_inner">
-              {/* 문의 모달 로그인 상태에만 동작하게 수정 */}
               <InquiryWriteModal isOpen={isModalOpen} onClose={closeModal} name={name} />
               <form action="#" id="reservation" method="post" onSubmit={handleSubmit}>
                 <h6>언제 펫시터가 필요한가요?</h6>
@@ -253,26 +333,9 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                   <div className="pet-select_pet-list">
                     <ul>
                       {selectedPetList.map((el, i) => {
-                        let text;
-                        switch (el[0]) {
-                          case 'small':
-                            text = '소형견';
-                            break;
-                          case 'medium':
-                            text = '중형견';
-                            break;
-                          case 'large':
-                            text = '대형견';
-                            break;
-                          case 'cat':
-                            text = '고양이';
-                            break;
-                          default:
-                            break;
-                        }
                         return (
                           <li key={i}>
-                            {text} {el[1]} 마리
+                            {el[0]} {el[1]} 마리
                             <button onClick={() => handleRemove(i)}>X</button>
                           </li>
                         );
@@ -280,7 +343,6 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                     </ul>
                   </div>
                   <div className="pet-select_calculator">
-                    {/* 캘린더 완성 후 시간 값 연결 */}
                     <p>총액: {totalPrice.toLocaleString()} 원</p>
                   </div>
                   <div className="pet-select_price-list">
