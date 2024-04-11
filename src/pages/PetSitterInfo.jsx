@@ -21,7 +21,6 @@ PetSitterInfo.defaultProps = {
   check: ['신원 인증', '인성 검사', '촬영 동의'],
   hourlyRate: { small: 15000, medium: 20000, large: 25000, cat: 10000 },
 };
-
 function PetSitterInfo({ img, sitterId, name, type, location, title, introduction, experience, check, hourlyRate }) {
   const petTypeRef = useRef();
   const petCountRef = useRef();

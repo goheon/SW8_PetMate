@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { API_URL, getCookie } from '../util/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../store';
+
 function validateEmail(email) {
   const re =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -21,8 +22,6 @@ function validPassword(password) {
 
 function Login() {
   const dispatch = useDispatch();
-  const JWT = getCookie('jwt');
-  // const JWT = useSelector((state) => state.jwt.token);
   const nav = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -31,11 +30,6 @@ function Login() {
   const [isInputStarted, setIsInputStarted] = useState(false);
 
   //jwt토큰 있으면 홈으로 리다이렉트
-  useEffect(() => {
-    if (JWT) {
-      nav('/', { replace: true });
-    }
-  }, []);
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -53,15 +47,10 @@ function Login() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
-
-      const resData = await response.json();
-      const jwt = resData.JWT;
-
-      document.cookie = `jwt=${jwt}; path=/`;
-      dispatch(loginSuccess({ token: jwt }));
 
       Swal.fire({
         title: '로그인 성공',
@@ -72,7 +61,7 @@ function Login() {
         nav('/', { replace: true });
       });
     } catch (error) {
-      console.error('Error:', error);
+      console.log('Error:', error);
       Swal.fire({
         title: '로그인 실패',
         text: `이메일 또는 비밀번호를 확인하세요.`,

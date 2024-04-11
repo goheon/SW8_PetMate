@@ -277,7 +277,7 @@ const allOrderList = createSlice({
         },
       ],
       totalPrice: 30000,
-      createdAt: new Date(2024, 3, 4),
+      createdAt: new Date(2024, 3, 4).toString(),
       state: '예약 요청',
       detailInfo: '상세 요청사항입니다 어쩌구 저쩌꾸',
       start: new Date(),
