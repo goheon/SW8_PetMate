@@ -5,10 +5,17 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding-top: 100px;
-  display: grid;
-  grid-template-columns: 58% 42%;
-  grid-template-rows: 1fr 1fr;
+  padding: 120px 30px 0px;
+  display: flex;
+  align-items: start;
+
+  &_left {
+    width: 66%;
+    margin-right: 2%;
+  }
+  &_right {
+    width: 32%;
+  }
 
   .pet-sitter-info-section {
     display: flex;
@@ -120,55 +127,57 @@
   }
 
   .reservation-section {
-    grid-column: 2/3;
-    grid-row: 1/3;
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    flex-wrap: wrap;
 
     .reservation-card_inner {
-      min-width: 200px;
-      margin: 20px 20px;
       width: 100%;
       background-color: #ffffff;
       box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
       border-radius: 15px;
+      padding: 30px;
+
+      form {
+        > div {
+          margin-bottom: 40px;
+
+          &:nth-last-of-type(2) {
+            margin-bottom: 10px;
+          }
+          &:last-child {
+            display: flex;
+            justify-content: right;
+            margin-bottom: 0;
+          }
+        }
+      }
 
       h6 {
         display: inline-block;
-        font-size: 24px;
-        margin-left: 30px;
-        padding: 30px 0 10px 0;
-        border-bottom: 5px solid #632ed8;
-        border-radius: 3px;
+        font-size: 18px;
+        margin-bottom: 20px;
       }
       .date-time-select {
-        padding: 15px;
+        > p {
+          font-size: 15px;
+          margin-bottom: 10px;
+          font-weight: 500;
+        }
 
         .date-select,
         .time-select {
-          padding: 10px;
           display: flex;
           align-items: center;
-
-          * {
-            margin: 3px;
-          }
-
-          span {
-            width: 50px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 500;
-          }
+          margin-bottom: 10px;
+          gap: 5px;
 
           input {
             padding: 10px;
-            width: 120px;
+            width: 100%;
             text-align: center;
             border: none;
             border-radius: 5px;
-            background-color: #fffdf4;
+            background-color: #f4f6fe;
             font-size: 16px;
             font-weight: 400;
           }
@@ -176,26 +185,21 @@
       }
 
       .pet-select {
-        padding: 30px;
         select {
           margin-right: 5px;
         }
 
         .pet-select_options {
-          height: 30px;
-          margin-bottom: 20px;
-
-          * {
-            margin-right: 15px;
-          }
+          display: flex;
+          margin-bottom: 5px;
 
           select {
-            width: 120px;
-            height: 30px;
+            flex: 1 0;
             border-radius: 5px;
-            background-color: #fffdf4;
+            background-color: #f4f6fe;
             border: none;
             font-size: 16px;
+            padding-left: 10px;
           }
 
           & > button {
@@ -207,10 +211,9 @@
         }
 
         .pet-select_pet-list {
-          background-color: #fffdf4;
-          border-radius: 10px;
-          margin: 10px 0 10px 0;
-          padding: 50px;
+          background-color: #f4f6fe;
+          border-radius: 5px;
+          padding: 10px 15px;
 
           ul > li {
             display: flex;
@@ -219,7 +222,8 @@
             height: 25px;
             text-align: center;
             border-radius: 5px;
-            font-size: 17px;
+            font-size: 14px;
+            font-weight: 700;
           }
 
           button {
@@ -231,40 +235,15 @@
           }
         }
         .pet-select_calculator {
-          padding: 15px;
-          font-size: 18px;
-        }
-        .pet-select_price-list {
-          background-color: #fffdf4;
-          border-radius: 10px;
           margin-top: 10px;
-          padding: 20px;
+          padding-top: 15px;
+          border-top: 1px solid #a9b0eb;
+          font-size: 17px;
           font-weight: 700;
-
-          .pet-select_price-list_text {
-            display: flex;
-            padding-left: 20px;
-            padding-top: 20px;
-
-            :last-child {
-              margin-left: auto;
-              margin-right: 60px;
-            }
-          }
-
-          & > ul {
-            font-weight: 500;
-            margin-top: 20px;
-            padding: 20px;
-
-            li {
-              line-height: 25px;
-              display: flex;
-
-              :last-child {
-                margin: 0 20px 0 auto;
-              }
-            }
+          text-align: right;
+          span {
+            color: #632ed8;
+            font-weight: 800;
           }
         }
       }
@@ -274,46 +253,75 @@
         align-items: center;
 
         textarea {
+          width: 100%;
           resize: none;
-          background-color: #fffdf4;
+          background-color: #f4f6fe;
+          padding: 20px;
 
-          margin-top: 20px;
-          padding: 30px;
-
-          width: 85%;
-          height: 200px;
+          height: 120px;
           font-size: 16px;
 
           border: none;
-          border-radius: 20px;
+          border-radius: 10px;
+          line-height: 1.5;
         }
       }
 
       button[type='submit'] {
-        border-radius: 15px;
-        margin: 10px;
-        margin-top: 30px;
+        border-radius: 5px;
         background-color: #632ed8;
         color: #ffffff;
-        font-size: 22px;
-        width: 40%;
-        height: 50px;
+        font-size: 18px;
+        padding: 8px 14px;
+        width: 50%;
       }
 
       .inquiryWrite {
-        border-radius: 15px;
-        margin: 30px 10px 10px 35px;
-        margin-top: 30px;
+        border-radius: 5px;
         background-color: #ffc800;
-        color: #ffffff;
-        font-size: 22px;
-        width: 40%;
-        height: 50px;
+        color: #222;
+        font-size: 18px;
+        padding: 8px 14px;
+        font-weight: 600;
+        width: 50%;
+        margin-right: 5px;
       }
     }
   }
 }
+.pet-select_price-list {
+  background-color: #fffdf4;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 20px;
+  font-weight: 700;
 
+  .pet-select_price-list_text {
+    display: flex;
+    padding-left: 20px;
+    padding-top: 20px;
+
+    :last-child {
+      margin-left: auto;
+      margin-right: 60px;
+    }
+  }
+
+  & > ul {
+    font-weight: 500;
+    margin-top: 20px;
+    padding: 20px;
+
+    li {
+      line-height: 25px;
+      display: flex;
+
+      :last-child {
+        margin: 0 20px 0 auto;
+      }
+    }
+  }
+}
 .review-section {
   display: flex;
   height: 800px;
@@ -392,6 +400,114 @@
           background-color: #f4f6fe;
         }
       }
+    }
+  }
+}
+
+.petsitter-info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 30px 20px;
+  border-radius: 20px;
+  background-color: #fffdf4;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.07);
+  transition: all 0.3s;
+  margin-bottom: 20px;
+
+  .petsitter_top {
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  .pt_img {
+    width: 70px;
+    height: 70px;
+    background-color: #ffc800;
+    border-radius: 20px;
+    margin-right: 15px;
+    overflow: hidden;
+
+    > img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      object-position: top;
+    }
+  }
+  .pt_detail {
+    h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      letter-spacing: -0.8px;
+    }
+    p {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+
+      > span {
+        color: #632ed8;
+        font-weight: 700;
+        margin-left: 5px;
+      }
+    }
+    svg {
+      width: 18px;
+      fill: #ffc800;
+      margin: 0px 5px;
+      &:nth-of-type(1) {
+        margin-left: 0;
+      }
+    }
+  }
+  .petsitter_mid {
+    flex: 1 0;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    > ul {
+      list-style-type: disc;
+      padding-left: 20px;
+      > li {
+        margin-bottom: 15px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        p {
+          color: #222;
+          font-weight: 500;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+  .petsitter_btm {
+    p {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      span {
+        display: flex;
+        align-items: center;
+        background-color: #ffc800;
+        padding: 6px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        margin-right: 10px;
+        font-weight: 500;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+    svg {
+      width: 12px;
+      margin-right: 5px;
     }
   }
 }

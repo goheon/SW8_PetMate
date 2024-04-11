@@ -29,6 +29,7 @@ PetSitterInfo.defaultProps = {
   check: ['신원 인증', '인성 검사', '촬영 동의'],
   hourlyRate: { small: 15000, medium: 20000, large: 25000, cat: 10000 },
 };
+
 function PetSitterInfo({ img, sitterId, name, type, location, title, introduction, experience, check, hourlyRate }) {
   const petTypeRef = useRef();
   const petCountRef = useRef();
@@ -246,7 +247,266 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
       <section className="page-wrapper">
         <Header />
         <section className="container">
-          <section className="pet-sitter-info-section">
+          <div className="container_left">
+            <section className="review-section">
+              <div className="review-card_inner">
+                <div className="review">
+                  <div className="review_user-profile">
+                    <img
+                      alt="user-img"
+                      className="review_user-profile_img"
+                      src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
+                    />
+                    <span className="review_user-profile_name">이고헌</span>
+                  </div>
+                  <p className="review_user-comment">
+                    Pariatur mollit magna commodo qui culpa Lorem qui esse culpa minim nisi. Esse laboris reprehenderit
+                    magna consectetur ullamco nisi sit. Eu ullamco ad elit cupidatat sint enim pariatur nostrud sit
+                    nostrud sit deserunt laborum proident. Consequat anim mollit nulla nulla labore pariatur
+                    exercitation irure fugiat et culpa velit proident velit.
+                  </p>
+                  <div className="review_images">
+                    <img
+                      alt="user-img"
+                      className="review_user-profile_img"
+                      src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
+                    />
+                    <img
+                      alt="user-img"
+                      className="review_user-profile_img"
+                      src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
+                    />
+                  </div>
+                  <div className="review_pet-sitter">
+                    <div className="review_pet-sitter_profile">
+                      <img
+                        className="review_pet-sitter_img"
+                        src="https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg"
+                        alt="pet-siiter-img"
+                      />
+                      <span>{name}</span>
+                    </div>
+                    <div className="review_pet-siiter_comment">
+                      Voluptate laboris incididunt elit quis sit fugiat. Quis id do consectetur non id do tempor esse
+                      mollit et ullamco reprehenderit qui. Veniam nisi reprehenderit laborum non. Ad exercitation amet
+                      dolor exercitation. Duis consectetur sint sunt in esse velit aute mollit nulla eu et. Magna ad
+                      nulla aliqua sint reprehenderit.
+                    </div>
+                  </div>
+                </div>
+                <div className="review">
+                  <div className="review_user-profile">
+                    <img
+                      alt="user-img"
+                      className="review_user-profile_img"
+                      src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
+                    />
+                    <span className="review_user-profile_name">이고헌</span>
+                  </div>
+                  <p className="review_user-comment">
+                    Pariatur mollit magna commodo qui culpa Lorem qui esse culpa minim nisi. Esse laboris reprehenderit
+                    magna consectetur ullamco nisi sit. Eu ullamco ad elit cupidatat sint enim pariatur nostrud sit
+                    nostrud sit deserunt laborum proident. Consequat anim mollit nulla nulla labore pariatur
+                    exercitation irure fugiat et culpa velit proident velit.
+                  </p>
+                  <div className="review_images">
+                    <img
+                      alt="user-img"
+                      className="review_user-profile_img"
+                      src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
+                    />
+                    <img
+                      alt="user-img"
+                      className="review_user-profile_img"
+                      src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
+                    />
+                  </div>
+                  <div className="review_pet-sitter">
+                    <div className="review_pet-sitter_profile">
+                      <img
+                        className="review_pet-sitter_img"
+                        src="https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg"
+                        alt="pet-siiter-img"
+                      />
+                      <span>{name}</span>
+                    </div>
+                    <div className="review_pet-siiter_comment">
+                      Voluptate laboris incididunt elit quis sit fugiat. Quis id do consectetur non id do tempor esse
+                      mollit et ullamco reprehenderit qui. Veniam nisi reprehenderit laborum non. Ad exercitation amet
+                      dolor exercitation. Duis consectetur sint sunt in esse velit aute mollit nulla eu et. Magna ad
+                      nulla aliqua sint reprehenderit.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div className="container_right">
+            <div className="petsitter-info">
+              <div className="petsitter_top">
+                <div className="pt_img">
+                  <img src={img} alt="" />
+                </div>
+                <div className="pt_detail">
+                  <h4>{name} 펫시터</h4>
+                  <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
+                    </svg>
+                    후기<span>210</span>개
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
+                    </svg>
+                    단골 고객 <span>145</span>명
+                  </p>
+                </div>
+              </div>
+              <div className="petsitter_mid">
+                <ul>
+                  {experience.map((info, i) => {
+                    return (
+                      <li key={i}>
+                        <p>{info}</p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div className="petsitter_btm">
+                <p>
+                  {check.map((check, i) => {
+                    return (
+                      <span key={i}>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                          <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                        </svg>
+                        {check}
+                      </span>
+                    );
+                  })}
+                </p>
+              </div>
+            </div>
+            <section className="reservation-section">
+              <div className="reservation-card_inner">
+                <InquiryWriteModal isOpen={isModalOpen} onClose={closeModal} name={name} />
+
+                <form action="#" id="reservation" method="post" onSubmit={handleSubmit}>
+                  <div>
+                    <h6>언제 펫시터가 필요한가요?</h6>
+                    <div className="date-time-select">
+                      <p>시작일</p>
+                      <div className="date-select">
+                        <MyDatePicker className="start-date" type="start" />
+                        <TimePicker className="start-time" type="start" />
+                      </div>
+                      <p>종료일</p>
+                      <div className="time-select">
+                        <MyDatePicker className="end-date" type="end" />
+                        <TimePicker className="end-time" type="end" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h6>맡기시는 반려동물</h6>
+                    <div className="pet-select">
+                      <div className="pet-select_options">
+                        <select name="pet-type" ref={petTypeRef}>
+                          <option default>선택</option>
+                          {optionCheck(type)}
+                        </select>
+                        <select name="pet-count" ref={petCountRef}>
+                          <option default>선택</option>
+                          {Array(5)
+                            .fill('')
+                            .map((_, i) => (
+                              <option key={i + 1}>{i + 1}</option>
+                            ))}
+                        </select>
+                        <button type="button" onClick={handleAdd}>
+                          추가
+                        </button>
+                      </div>
+
+                      {selectedPetList.length > 0 ? (
+                        <div className="pet-select_pet-list">
+                          <ul>
+                            {selectedPetList.map((el, i) => {
+                              return (
+                                <li key={i}>
+                                  {el[0]} {el[1]} 마리
+                                  <button onClick={() => handleRemove(i)}>X</button>
+                                </li>
+                              );
+                            })}
+                          </ul>
+
+                          <div className="pet-select_calculator">
+                            <p>
+                              총액: <span>{totalPrice.toLocaleString()}</span>원
+                            </p>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h6>요청사항</h6>
+                    <div className="request">
+                      <textarea
+                        ref={requestRef}
+                        name="request_text"
+                        id=""
+                        cols="30"
+                        rows="10"
+                        placeholder="펫시팅에 필요한 상세 내용을 적어주세요."
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div>
+                    <button type="button" className="inquiryWrite" onClick={openModal}>
+                      문의하기
+                    </button>
+                    <button type="submit">예약 요청</button>
+                  </div>
+                </form>
+              </div>
+              <div className="pet-select_price-list">
+                <div className="pet-select_price-list_text">
+                  <span>이용 요금</span>
+                  <span>1시간</span>
+                </div>
+                <ul>
+                  {hourlyRate.cat ? (
+                    <li>
+                      <span>고양이</span> <span>{hourlyRate.cat.toLocaleString()} 원</span>
+                    </li>
+                  ) : undefined}
+                  {hourlyRate.small ? (
+                    <li>
+                      <span>소형견</span> <span>{hourlyRate.small.toLocaleString()} 원</span>
+                    </li>
+                  ) : undefined}
+                  {hourlyRate.medium ? (
+                    <li>
+                      <span>중형견</span> <span>{hourlyRate.medium.toLocaleString()} 원</span>
+                    </li>
+                  ) : undefined}
+                  {hourlyRate.large ? (
+                    <li>
+                      <span>대형견</span> <span>{hourlyRate.large.toLocaleString()} 원</span>
+                    </li>
+                  ) : undefined}
+                </ul>
+              </div>
+            </section>
+          </div>
+
+          {/* <section className="pet-sitter-info-section">
             <div className="pet-sitter-info-card_inner">
               <img src={img} alt="프로필 이미지" />
               <p className="name">{name} 펫시터</p>
@@ -283,207 +543,7 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                 })}
               </p>
             </div>
-          </section>
-          <section className="reservation-section">
-            <div className="reservation-card_inner">
-              <InquiryWriteModal isOpen={isModalOpen} onClose={closeModal} name={name} />
-              <form action="#" id="reservation" method="post" onSubmit={handleSubmit}>
-                <h6>언제 펫시터가 필요한가요?</h6>
-                <div className="date-time-select">
-                  <div className="date-select">
-                    <span>시작일</span>
-                    <MyDatePicker className="start-date" type="start" />
-                    <span>종료일</span>
-                    <MyDatePicker className="end-date" type="end" />
-                  </div>
-                  <div className="time-select">
-                    <span>
-                      시작
-                      <br />
-                      시간
-                    </span>
-                    <TimePicker className="start-time" type="start" />
-                    <span>
-                      종료
-                      <br />
-                      시간
-                    </span>
-                    <TimePicker className="end-time" type="end" />
-                  </div>
-                </div>
-                <h6>맡기시는 반려동물</h6>
-                <div className="pet-select">
-                  <div className="pet-select_options">
-                    <select name="pet-type" ref={petTypeRef}>
-                      <option default>선택</option>
-                      {optionCheck(type)}
-                    </select>
-                    <select name="pet-count" ref={petCountRef}>
-                      <option default>선택</option>
-                      {Array(5)
-                        .fill('')
-                        .map((_, i) => (
-                          <option key={i + 1}>{i + 1}</option>
-                        ))}
-                    </select>
-                    <button type="button" onClick={handleAdd}>
-                      추가
-                    </button>
-                  </div>
-                  <div className="pet-select_pet-list">
-                    <ul>
-                      {selectedPetList.map((el, i) => {
-                        return (
-                          <li key={i}>
-                            {el[0]} {el[1]} 마리
-                            <button onClick={() => handleRemove(i)}>X</button>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                  <div className="pet-select_calculator">
-                    <p>총액: {totalPrice.toLocaleString()} 원</p>
-                  </div>
-                  <div className="pet-select_price-list">
-                    <div className="pet-select_price-list_text">
-                      <span>이용 요금</span>
-                      <span>1시간</span>
-                    </div>
-                    <ul>
-                      {hourlyRate.cat ? (
-                        <li>
-                          <span>고양이</span> <span>{hourlyRate.cat.toLocaleString()} 원</span>
-                        </li>
-                      ) : undefined}
-                      {hourlyRate.small ? (
-                        <li>
-                          <span>소형견</span> <span>{hourlyRate.small.toLocaleString()} 원</span>
-                        </li>
-                      ) : undefined}
-                      {hourlyRate.medium ? (
-                        <li>
-                          <span>중형견</span> <span>{hourlyRate.medium.toLocaleString()} 원</span>
-                        </li>
-                      ) : undefined}
-                      {hourlyRate.large ? (
-                        <li>
-                          <span>대형견</span> <span>{hourlyRate.large.toLocaleString()} 원</span>
-                        </li>
-                      ) : undefined}
-                    </ul>
-                  </div>
-                </div>
-                <h6>요청사항</h6>
-                <div className="request">
-                  <textarea
-                    ref={requestRef}
-                    name="request_text"
-                    id=""
-                    cols="30"
-                    rows="10"
-                    placeholder="펫시팅에 필요한 상세 내용을 적어주세요."
-                  ></textarea>
-                </div>
-                <button type="button" className="inquiryWrite" onClick={openModal}>
-                  문의하기
-                </button>
-                <button type="submit">예약 요청</button>
-              </form>
-            </div>
-          </section>
-          <section className="review-section">
-            <div className="review-card_inner">
-              <div className="review">
-                <div className="review_user-profile">
-                  <img
-                    alt="user-img"
-                    className="review_user-profile_img"
-                    src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
-                  />
-                  <span className="review_user-profile_name">이고헌</span>
-                </div>
-                <p className="review_user-comment">
-                  Pariatur mollit magna commodo qui culpa Lorem qui esse culpa minim nisi. Esse laboris reprehenderit
-                  magna consectetur ullamco nisi sit. Eu ullamco ad elit cupidatat sint enim pariatur nostrud sit
-                  nostrud sit deserunt laborum proident. Consequat anim mollit nulla nulla labore pariatur exercitation
-                  irure fugiat et culpa velit proident velit.
-                </p>
-                <div className="review_images">
-                  <img
-                    alt="user-img"
-                    className="review_user-profile_img"
-                    src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
-                  />
-                  <img
-                    alt="user-img"
-                    className="review_user-profile_img"
-                    src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
-                  />
-                </div>
-                <div className="review_pet-sitter">
-                  <div className="review_pet-sitter_profile">
-                    <img
-                      className="review_pet-sitter_img"
-                      src="https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg"
-                      alt="pet-siiter-img"
-                    />
-                    <span>{name}</span>
-                  </div>
-                  <div className="review_pet-siiter_comment">
-                    Voluptate laboris incididunt elit quis sit fugiat. Quis id do consectetur non id do tempor esse
-                    mollit et ullamco reprehenderit qui. Veniam nisi reprehenderit laborum non. Ad exercitation amet
-                    dolor exercitation. Duis consectetur sint sunt in esse velit aute mollit nulla eu et. Magna ad nulla
-                    aliqua sint reprehenderit.
-                  </div>
-                </div>
-              </div>
-              <div className="review">
-                <div className="review_user-profile">
-                  <img
-                    alt="user-img"
-                    className="review_user-profile_img"
-                    src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
-                  />
-                  <span className="review_user-profile_name">이고헌</span>
-                </div>
-                <p className="review_user-comment">
-                  Pariatur mollit magna commodo qui culpa Lorem qui esse culpa minim nisi. Esse laboris reprehenderit
-                  magna consectetur ullamco nisi sit. Eu ullamco ad elit cupidatat sint enim pariatur nostrud sit
-                  nostrud sit deserunt laborum proident. Consequat anim mollit nulla nulla labore pariatur exercitation
-                  irure fugiat et culpa velit proident velit.
-                </p>
-                <div className="review_images">
-                  <img
-                    alt="user-img"
-                    className="review_user-profile_img"
-                    src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
-                  />
-                  <img
-                    alt="user-img"
-                    className="review_user-profile_img"
-                    src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
-                  />
-                </div>
-                <div className="review_pet-sitter">
-                  <div className="review_pet-sitter_profile">
-                    <img
-                      className="review_pet-sitter_img"
-                      src="https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg"
-                      alt="pet-siiter-img"
-                    />
-                    <span>{name}</span>
-                  </div>
-                  <div className="review_pet-siiter_comment">
-                    Voluptate laboris incididunt elit quis sit fugiat. Quis id do consectetur non id do tempor esse
-                    mollit et ullamco reprehenderit qui. Veniam nisi reprehenderit laborum non. Ad exercitation amet
-                    dolor exercitation. Duis consectetur sint sunt in esse velit aute mollit nulla eu et. Magna ad nulla
-                    aliqua sint reprehenderit.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          </section> */}
         </section>
         <Footer />
       </section>
