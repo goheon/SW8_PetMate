@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { getCookie, parseJwt } from '../util/constants';
 import { MyDatePicker, TimePicker } from '../components/datepicker/DatePicker';
 import InquiryWriteModal from '../components/petSitterInfo/InquiryWriteModal';
 import './PetSitterInfo.scss';
@@ -47,7 +48,7 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
 
   //모달 상태 핸들링
   const openModal = () => {
-    setIsModalOpen(true);
+    parseJwt(getCookie('jwt')).userId ? setIsModalOpen(true) : alert('로그인 후 이용해주세요.');
   };
 
   const closeModal = () => {
@@ -192,9 +193,52 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
   // 폼 제출시 handleSubmit으로 처리
   const handleSubmit = (e) => {
     e.preventDefault();
-    const request = requestRef.current.value;
-    selectedPetList.forEach((el) => console.log(el));
-    // selectedPetList, startDate, endDate, startTime, endTime, totalPrice
+
+    //로그인 상태 확인
+    const userId = parseJwt(getCookie('jwt')).userId;
+    if (!userId) return alert('로그인 후 이용해주세요.');
+
+    //요청사항
+    const detailInfo = requestRef.current.value;
+
+    //반려동물 목록
+    let pets = [];
+    selectedPetList.map((el) => {
+      pets.push({ type: el[0], count: el[1] });
+    });
+
+    //시작일
+    const formedStartDate = new Date(
+      new Date(startDate).getFullYear(),
+      new Date(startDate).getMonth(),
+      new Date(startDate).getDate(),
+      new Date(startTime).getHours(),
+    );
+
+    //종료일
+    const formedEndDate = new Date(
+      new Date(endDate).getFullYear(),
+      new Date(endDate).getMonth(),
+      new Date(endDate).getDate(),
+      new Date(endTime).getHours(),
+    );
+
+    console.log(
+      'pets: ',
+      pets,
+      'userId: ',
+      userId,
+      'sitterId: ',
+      sitterId,
+      'totalPrice: ',
+      totalPrice,
+      'detailInfo: ',
+      detailInfo,
+      'formedStartDate: ',
+      formedStartDate,
+      'formedEndDate: ',
+      formedEndDate,
+    );
   };
 
   return (
@@ -242,7 +286,6 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
           </section>
           <section className="reservation-section">
             <div className="reservation-card_inner">
-              {/* 문의 모달 로그인 상태에만 동작하게 수정 */}
               <InquiryWriteModal isOpen={isModalOpen} onClose={closeModal} name={name} />
               <form action="#" id="reservation" method="post" onSubmit={handleSubmit}>
                 <h6>언제 펫시터가 필요한가요?</h6>
@@ -292,7 +335,7 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                       {selectedPetList.map((el, i) => {
                         return (
                           <li key={i}>
-                            {el} {el[1]} 마리
+                            {el[0]} {el[1]} 마리
                             <button onClick={() => handleRemove(i)}>X</button>
                           </li>
                         );
@@ -300,7 +343,6 @@ function PetSitterInfo({ img, sitterId, name, type, location, title, introductio
                     </ul>
                   </div>
                   <div className="pet-select_calculator">
-                    {/* 캘린더 완성 후 시간 값 연결 */}
                     <p>총액: {totalPrice.toLocaleString()} 원</p>
                   </div>
                   <div className="pet-select_price-list">
