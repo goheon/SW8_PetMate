@@ -4,10 +4,13 @@ import { useSelector } from 'react-redux';
 function OrderView() {
   const { id } = useParams();
   const allOrderList = useSelector((state) => state.allOrderList);
+  const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const order = allOrderList.find((el) => el.orderId == id);
-  const startObject = new Date(order.start);
-  const endObject = new Date(order.end);
+  const startObject = new Date(order.startDate);
+  const endObject = new Date(order.endDate);
   const createdAtObject = new Date(order.createdAt);
+
+  console.log(loginUserInfo, order);
   return (
     <>
       <div className="mypage-order-view">
@@ -52,8 +55,11 @@ function OrderView() {
                 <td>반려동물 정보</td>
                 <td>
                   {order.pets.map((obj) => {
-                    const text = Object.values(obj).join(' / ');
-                    return <p style={{ width: '100%' }}>{...text}</p>;
+                    return (
+                      <p style={{ width: '100%' }}>
+                        {obj.type} / {obj.count}
+                      </p>
+                    );
                   })}
                 </td>
               </tr>
@@ -80,19 +86,19 @@ function OrderView() {
               <tr>
                 <td>이름</td>
                 <td>
-                  <p>이승철</p>
+                  <p>{loginUserInfo.username}</p>
                 </td>
               </tr>
               <tr>
                 <td>연락처</td>
                 <td>
-                  <p>010-7252-7544</p>
+                  <p>{loginUserInfo.phone}</p>
                 </td>
               </tr>
               <tr>
                 <td>주소</td>
                 <td>
-                  <p>경기도 부천시 중동 쿵야마을</p>
+                  <p>{`${loginUserInfo.address} ${loginUserInfo.detailAddress}`}</p>
                 </td>
               </tr>
             </tbody>
@@ -106,34 +112,32 @@ function OrderView() {
               <tr>
                 <td>이름</td>
                 <td>
-                  <p>이승철</p>
+                  <p>펫시터 이름</p>
                 </td>
               </tr>
               <tr>
                 <td>연락처</td>
                 <td>
-                  <p>010-7252-7544</p>
+                  <p>펫시터 핸드폰 번호</p>
                 </td>
               </tr>
               <tr>
                 <td>주소</td>
                 <td>
-                  <p>경기도 부천시 중동 쿵야마을</p>
+                  <p>펫시터 address</p>
                 </td>
               </tr>
               <tr>
                 <td>반려 경험 및 경력</td>
                 <td>
                   <ul>
-                    <li>
-                      <p>펫시터 전문가 교육 수료 전문</p>
-                    </li>
-                    <li>
-                      <p>전문 펫시터 자격증 보유</p>
-                    </li>
-                    <li>
-                      <p>강아지 반려 경험 (14년) 인증 완료</p>
-                    </li>
+                    {order.petSitterInfo.experience.map((el) => {
+                      return (
+                        <li>
+                          <p>{el}</p>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </td>
               </tr>
@@ -141,7 +145,7 @@ function OrderView() {
           </table>
         </div>
         {/* && 담당 펫시터에게만 노출 */}
-        {order.state === '예약 요청' ? (
+        {order.state === '예약요청' && loginUserInfo.userId === order.petSitterInfo.userId ? (
           <div className="accept-reject-buttons">
             <button type="button">예약 확정</button>
             <button type="button">예약 거절</button>
