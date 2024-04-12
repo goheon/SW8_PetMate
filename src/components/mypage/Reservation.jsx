@@ -33,14 +33,14 @@ const options = [
 ];
 
 //예약내역 리스트 컴포넌트
-const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
+const OrderList = (props) => {
   return (
-    <li key={orderId}>
+    <li key={props.orderId}>
       <div className="mypage-reservation-list_state">
-        <h6>{state}</h6>
+        <h6>{props.state}</h6>
         <p>
           예약일시
-          <span>{new Date(createdAt).toLocaleDateString()}</span>
+          <span>{new Date(props.createdAt).toLocaleDateString()}</span>
         </p>
       </div>
       <div className="mypage-reservation-list_info">
@@ -49,16 +49,16 @@ const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
         </div>
         <div className="mypage-reservation-list_info_right">
           <div className="text-box">
-            <p className="title">
-              <span>#{orderId}</span>
-              사랑이넘치는1:1맞춤케어😍
-            </p>
-            <h5>{totalPrice.toLocaleString()}원</h5>
-            <h6>서울 동작구 파트너 · 정◯선 님</h6>
+            <p className="title">{props.petSitterInfo.title}</p>
+            <h5>{props.totalPrice.toLocaleString()}원</h5>
+            <h6>
+              {props.userInfo.address} 파트너 · {props.userInfo.username} 님
+            </h6>
           </div>
           <div className="btn-box">
-            <Link to={`/mypage/order-view/${orderId}`}>상세내용</Link>
-            <Link to={`/mypage/review-write/${orderId}`}>리뷰작성</Link>
+            <Link to={`/mypage/order-view/${props.orderId}`}>상세내용</Link>
+            {props.state === '진행중' ? <button type="button">완료하기</button> : undefined}
+            {props.state === '완료' ? <Link to={`/mypage/review-write/${props.orderId}`}>리뷰작성</Link> : undefined}
           </div>
         </div>
       </div>
@@ -69,13 +69,15 @@ const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
 function Reservation() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
-
+  const allOrderList = useSelector((state) => state.allOrderList);
   const [onFilter, setOnFilter] = useState(false);
   const [filterOrderList, setFilterOrderList] = useState([]);
+  const dispatch = useDispatch();
 
   //필터 날짜
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+
   useEffect(() => {
     let beginTime = new Date();
     beginTime.setHours(0, 0, 0);
@@ -86,12 +88,11 @@ function Reservation() {
     setEndDate(endTime);
 
     getBookList();
-  }, []);
+  }, [dispatch]);
 
-  //
-  const dispatch = useDispatch();
-
-  const allOrderList = useSelector((state) => state.allOrderList);
+  useEffect(() => {
+    setFilterOrderList(allOrderList);
+  }, [allOrderList]);
 
   async function getBookList() {
     try {

@@ -11,7 +11,7 @@ import { setUserInfo } from '../store';
 function Mypage() {
   const dispatch = useDispatch();
   const JWT = getCookie('jwt');
-  const loginUserInfo = useSelector((state) => state.loginUserInfo) ?? getUserInfo(JWT);
+  const loginUserInfo = useSelector((state) => state.loginUserInfo) ?? getUserInfo();
 
   async function getUserInfo(JWT) {
     try {
