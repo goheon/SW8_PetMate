@@ -36,6 +36,10 @@ const options = [
 const OrderList = (props) => {
   const addressList = props.sitteraddress ? props.sitteraddress.split(' ') : undefined;
   const formedSitterAddress = addressList ? `${addressList[0]} ${addressList[1]}` : undefined;
+  const handleComplete = async (e) => {
+    // const orderId = e.target.value;
+    //주문 상태 변경 API 연결(진행중 -> 완료)
+  };
 
   return (
     <li key={props.orderId}>
@@ -60,7 +64,11 @@ const OrderList = (props) => {
           </div>
           <div className="btn-box">
             <Link to={`/mypage/order-view/${props.orderId}`}>상세내용</Link>
-            {props.state === '진행중' ? <button type="button">완료하기</button> : undefined}
+            {props.state === '진행중' ? (
+              <button type="button" value={props.orderId} onClick={handleComplete}>
+                완료하기
+              </button>
+            ) : undefined}
             {props.state === '완료' ? <Link to={`/mypage/review-write/${props.orderId}`}>리뷰작성</Link> : undefined}
           </div>
         </div>
