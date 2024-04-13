@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import bcrypt from 'bcrypt';
-import Swal from 'sweetalert2';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
-
-import { API_URL } from '../util/constants';
 import './Login.scss';
+import Footer from '../components/Footer';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import { API_URL, getCookie } from '../util/constants';
 
 function validateEmail(email) {
   const re =
@@ -110,14 +108,12 @@ function Login() {
       return;
     }
 
-    async () => {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const data = {
-        email,
-        hashedPassword,
-      };
-      loginAPI(data);
+    const data = {
+      email,
+      password,
     };
+
+    loginAPI(data);
   };
 
   useEffect(() => {

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import bcrypt from 'bcrypt';
 import Header from '../components/Header';
+import './signUp.scss';
 import Footer from '../components/Footer';
 import AddressAPI from '../components/AddressAPI';
+import Swal from 'sweetalert2';
 import { API_URL } from '../util/constants';
-import './signUp.scss';
+
+import { useNavigate } from 'react-router-dom';
 
 function validateName(name) {
   // 한글, 알파벳 대소문자만 허용하는 정규식
@@ -26,6 +26,7 @@ function validatePassword(password) {
   const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,16}$/;
   return regex.test(password);
 }
+
 
 function SignUp() {
   const nav = useNavigate();
@@ -68,9 +69,9 @@ function SignUp() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userInfo),
       });
-
+  
       if (!response.ok) throw new Error('Network response was not ok');
-
+  
       Swal.fire({
         title: '회원가입을 축하합니다!',
         text: `환영합니다`,
@@ -141,19 +142,16 @@ function SignUp() {
       return;
     }
 
-    async () => {
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      const userInfo = {
-        username,
-        email,
-        address,
-        detailAddress,
-        hashedPassword,
-      };
-
-      registerNewUser(userInfo);
+    const userInfo = {
+      username,
+      email,
+      address,
+      detailAddress,
+      password,
     };
+
+    registerNewUser(userInfo);
+
   };
 
   return (
