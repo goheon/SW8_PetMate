@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import './PetSitterList.scss';
@@ -7,7 +7,8 @@ function PetSitterList() {
     const petsitter = useState([1, 2]); // api 연결전 임시로 작성 (수정 예정)
     const [activeModal, setActiveModal] = useState(null);
     const [selectLocation, setSelectLocation] = useState('지역');
-    const [selectType, setSelectType] = useState('전체 🐶🐱');
+    const [selectedType, setSelectedType] = useState('전체 🐶🐱');
+    const [selectedSizes, setSelectedSizes] = useState(['소형견', '중형견', '대형견']);
 
     const toggleModal = (modalId) => {
         if (activeModal === modalId) {
@@ -26,8 +27,8 @@ function PetSitterList() {
                     <div className='search_left'>
                         <div className='sl_button'>
                             <button
-                                onClick={() => toggleModal('locationModal')}
-                                style={{ border: activeModal === 'locationModal' ? '1px solid #632ed8' : null }}>
+                                className={activeModal === 'locationModal' ? 'selected-button' : null}
+                                onClick={() => toggleModal('locationModal')}>
                                 {selectLocation}
                             </button>
                             {
@@ -36,12 +37,13 @@ function PetSitterList() {
                         </div>
                         <div className='sl_button'>
                             <button
-                                onClick={() => toggleModal('typeModal')}
-                                style={{ border: activeModal === 'typeModal' ? '1px solid #632ed8' : null }}>
-                                {selectType}
+                                className={activeModal === 'typeModal' ? 'selected-button' : null}
+                                onClick={() => toggleModal('typeModal')}>
+                                {selectedType}
                             </button>
                             {
-                                activeModal === 'typeModal' && <TypeModal />
+                                activeModal === 'typeModal' && <TypeModal setActiveModal={setActiveModal} selectedType={selectedType}
+                                    setSelectedType={setSelectedType} selectedSizes={selectedSizes} setSelectedSizes={setSelectedSizes} />
                             }
                         </div>
                     </div>
@@ -129,8 +131,8 @@ function LocationModal() {
         {
             city: '서울특별시',
             details: ['서울 전체', '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구',
-                      '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구',
-                      '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구']
+                '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구',
+                '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구']
         },
         {
             city: '경기도',
@@ -171,20 +173,63 @@ function LocationModal() {
     )
 }
 
-function TypeModal() {
+function TypeModal(props) {
     const TYPE = ['전체 🐶🐱', '강아지', '고양이'];
     const SIZE = ['소형견', '중형견', '대형견'];
+    const [tempSelectedType, setTempSelectedType] = useState(props.selectedType);
+    const [tempSelectedSizes, setTempSelectedSizes] = useState([]);
+
+    const handleTypeChange = (type) => {
+        setTempSelectedType(type);
+        if (TYPE.indexOf(type) === 1) {
+            setTempSelectedSizes(SIZE);
+        } else {
+            setTempSelectedSizes([]);
+        }
+    };
+
+    const handleSizeChange = (size, isChecked) => {
+        if (isChecked) { // 체크
+            setTempSelectedSizes([...tempSelectedSizes, size]);
+        } else { // 체크 해제
+            setTempSelectedSizes(tempSelectedSizes.filter(s => s !== size));
+        };
+    }
+
+    const handleResetClick = () => {
+        props.setSelectedType('전체 🐶🐱');
+        props.setActiveModal(null);
+    };
+
+    const handleApplyClick = () => {
+        console.log(tempSelectedType, tempSelectedSizes);
+        props.setSelectedType(tempSelectedType);
+        props.setSelectedSizes(tempSelectedSizes);
+        props.setActiveModal(null);
+
+    };
+
+    useEffect(() => {
+        // 강아지가 선택여부 확인 후 상태 업데이트
+        if (props.selectedType === '강아지') {
+            setTempSelectedSizes(props.selectedSizes.length > 0 ? props.selectedSizes : SIZE);
+        } else {
+            setTempSelectedSizes([]);
+        }
+    }, [props.selectedType, props.selectedSizes]);
+
     return (
         <div className='type-modal'>
             <div className='apply-box'>
                 <p>반려동물 종류</p>
                 <div className='apply-radio-box'>
                     {
-                        TYPE.map((type, index) => {
+                        TYPE.map((type) => {
                             return (
-                                <div className='radio-box' key={index}>
+                                <div className='radio-box' key={type}>
                                     <label className='radio-label'>
-                                        <input type="radio" name="radio" value={index} defaultChecked={index === 0} />
+                                        <input type="radio" name="radio" checked={tempSelectedType === type}
+                                            onChange={() => handleTypeChange(type)} />
                                         <span>{type}</span>
                                     </label>
                                 </div>
@@ -193,27 +238,31 @@ function TypeModal() {
                     }
                 </div>
 
-                <div className='dog-checked'>
-                    <p>강아지 크기</p>
-                    <div className='apply-check-box'>
-                        {
-                            SIZE.map((size, index) => {
-                                return (
-                                    <div className='apply-check' key={index}>
-                                        <label className='check-label'>
-                                            <input type="checkbox" name="checkbox" defaultChecked='true' />
-                                            <span>{size}</span>
-                                        </label>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
+                {tempSelectedType === '강아지' ?
+                    <div className='dog-checked'>
+                        <p>강아지 크기</p>
+                        <div className='apply-check-box'>
+                            {
+                                SIZE.map((size) => {
+                                    return (
+                                        <div className='apply-check' key={size}>
+                                            <label className='check-label'>
+                                                <input type="checkbox" name="checkbox" checked={tempSelectedSizes.includes(size)}
+                                                    onChange={(e) => handleSizeChange(size, e.target.checked)} />
+                                                <span>{size}</span>
+                                            </label>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div> : null
+                }
+
             </div>
 
-            <button className='reset-button'>초기화</button>
-            <button className='apply-button'>적용하기</button>
+            <button className='reset-button' onClick={handleResetClick}>초기화</button>
+            <button className='apply-button' onClick={handleApplyClick}>적용하기</button>
         </div>
     )
 }
