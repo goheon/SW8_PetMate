@@ -169,36 +169,7 @@ export const { setUserInfo } = loginUserInfo.actions;
 
 const allOrderList = createSlice({
   name: 'allOrderList',
-  initialState: [
-    {
-      orderId: 1,
-      userId: '유저고유id값',
-      sitterId: '펫시터고유id값',
-      pets: [
-        {
-          type: '고양이',
-          size: '소형',
-          name: '참치',
-          age: 3,
-          gender: '여',
-          variety: '페르시안',
-        },
-      ],
-      totalPrice: 50000,
-      createdAt: new Date(2024, 3, 1).toString(),
-      state: '진행중',
-      detailInfo: '상세 요청사항 / 저희 집 강아지 무니깐 조심쿵야 하세요',
-      start: date.toString(),
-      end: date.toString(),
-      petSitterInfo: {
-        title: 'as',
-      },
-      userInfo: {
-        address: '원더랜드',
-        username: '모장장수',
-      },
-    },
-  ],
+  initialState: [],
   reducers: {
     setAllOrderList: (state, action) => {
       return action.payload;

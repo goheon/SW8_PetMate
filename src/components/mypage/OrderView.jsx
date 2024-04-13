@@ -10,7 +10,6 @@ function OrderView() {
   const endObject = new Date(order.endDate);
   const createdAtObject = new Date(order.createdAt);
 
-  console.log(loginUserInfo, order);
   return (
     <>
       <div className="mypage-order-view">
@@ -112,19 +111,19 @@ function OrderView() {
               <tr>
                 <td>이름</td>
                 <td>
-                  <p>펫시터 이름</p>
+                  <p>{order.sittername}</p>
                 </td>
               </tr>
               <tr>
                 <td>연락처</td>
                 <td>
-                  <p>펫시터 핸드폰 번호</p>
+                  <p>{order.sitterphone}</p>
                 </td>
               </tr>
               <tr>
                 <td>주소</td>
                 <td>
-                  <p>펫시터 address</p>
+                  <p>{order.sitteraddress}</p>
                 </td>
               </tr>
               <tr>

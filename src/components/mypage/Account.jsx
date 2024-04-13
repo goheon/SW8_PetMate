@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+
 import { API_URL, getCookie } from '../../util/constants';
 import { setUserInfo } from '../../store';
 
 function Account() {
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
-  const [name, setName] = useState(loginUserInfo.username);
-  const [email, setEmail] = useState(loginUserInfo.email);
-  const [password, setPassword] = useState();
+
+  const [name, setName] = useState(loginUserInfo ? loginUserInfo.username : '');
+  const [email, setEmail] = useState(loginUserInfo ? loginUserInfo.email : '');
+  const [password, setPassword] = useState('');
 
   const [isNameModify, setIsNameModify] = useState(false);
   const [isEmailModify, setIsEmailModify] = useState(false);
@@ -18,7 +21,7 @@ function Account() {
 
   async function updateUser(userInfo) {
     try {
-      const response = await fetch(`${API_URL}//mypage`, {
+      const response = await fetch(`${API_URL}/mypage`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ` + JWT },
         body: JSON.stringify(userInfo),
@@ -26,12 +29,12 @@ function Account() {
 
       if (!response.ok) throw new Error('Network response was not ok');
 
-      /* Swal.fire({
+      Swal.fire({
         title: '수정 완료',
         text: `축하염ㅋ`,
         icon: 'success',
         customClass: { container: 'custom-popup' },
-      }); */
+      });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -67,7 +70,7 @@ function Account() {
                       />
                       <button
                         onClick={() => {
-                          setName(loginUserInfo.username);
+                          setName(loginUserInfo ? loginUserInfo.username : '');
                           setIsNameModify(false);
                         }}
                         className="cancel"
@@ -80,7 +83,7 @@ function Account() {
                     </>
                   ) : (
                     <>
-                      <p>{loginUserInfo.username}</p>
+                      <p>{loginUserInfo ? loginUserInfo.username : ''}</p>
                       <svg
                         onClick={() => {
                           setIsNameModify(true);
@@ -109,7 +112,7 @@ function Account() {
                       />
                       <button
                         onClick={() => {
-                          setEmail(loginUserInfo.email);
+                          setEmail(loginUserInfo ? loginUserInfo.email : '');
                           setIsEmailModify(false);
                         }}
                         className="cancel"
@@ -120,7 +123,7 @@ function Account() {
                     </>
                   ) : (
                     <>
-                      <p>{loginUserInfo.email}</p>
+                      <p>{loginUserInfo ? loginUserInfo.email : ''}</p>
                       <svg
                         onClick={() => {
                           setIsEmailModify(true);

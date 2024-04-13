@@ -34,6 +34,9 @@ const options = [
 
 //예약내역 리스트 컴포넌트
 const OrderList = (props) => {
+  const addressList = props.sitteraddress ? props.sitteraddress.split(' ') : undefined;
+  const formedSitterAddress = addressList ? `${addressList[0]} ${addressList[1]}` : undefined;
+
   return (
     <li key={props.orderId}>
       <div className="mypage-reservation-list_state">
@@ -52,7 +55,7 @@ const OrderList = (props) => {
             <p className="title">{props.petSitterInfo.title}</p>
             <h5>{props.totalPrice.toLocaleString()}원</h5>
             <h6>
-              {props.userInfo.address} 파트너 · {props.userInfo.username} 님
+              {formedSitterAddress} 파트너 · {props.sittername} 님
             </h6>
           </div>
           <div className="btn-box">
@@ -194,9 +197,10 @@ function Reservation() {
           </button>
         </div>
         <ul className="mypage-reservation-list">
-          {onFilter
-            ? filterOrderList.map((el) => <OrderList {...el} />)
-            : allOrderList.map((el) => <OrderList {...el} />)}
+          {allOrderList.length > 0 &&
+            (onFilter
+              ? filterOrderList.map((el) => <OrderList key={el.orderId} {...el} />)
+              : allOrderList.map((el) => <OrderList key={el.orderId} {...el} />))}
         </ul>
       </div>
     </>
