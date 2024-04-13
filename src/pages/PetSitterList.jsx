@@ -243,9 +243,9 @@ function TypeModal(props) {
                         <p>강아지 크기</p>
                         <div className='apply-check-box'>
                             {
-                                SIZE.map((size, index) => {
+                                SIZE.map((size) => {
                                     return (
-                                        <div className='apply-check' key={index}>
+                                        <div className='apply-check' key={size}>
                                             <label className='check-label'>
                                                 <input type="checkbox" name="checkbox" checked={tempSelectedSizes.includes(size)}
                                                     onChange={(e) => handleSizeChange(size, e.target.checked)} />
