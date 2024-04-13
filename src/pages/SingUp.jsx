@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Header from '../components/Header';
-import './signUp.scss';
-import Footer from '../components/Footer';
-import AddressAPI from '../components/AddressAPI';
 import Swal from 'sweetalert2';
+import Footer from '../components/Footer';
+import Header from '../components/Header';
+import AddressAPI from '../components/AddressAPI';
 import { API_URL } from '../util/constants';
+import './signUp.scss';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -26,7 +26,6 @@ function validatePassword(password) {
   const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,16}$/;
   return regex.test(password);
 }
-
 
 function SignUp() {
   const nav = useNavigate();
@@ -69,9 +68,9 @@ function SignUp() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userInfo),
       });
-  
+
       if (!response.ok) throw new Error('Network response was not ok');
-  
+
       Swal.fire({
         title: '회원가입을 축하합니다!',
         text: `환영합니다`,
@@ -147,11 +146,10 @@ function SignUp() {
       email,
       address,
       detailAddress,
-      password,
+      password: CryptoJS.SHA256(password).toString(),
     };
 
     registerNewUser(userInfo);
-
   };
 
   return (

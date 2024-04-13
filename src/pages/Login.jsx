@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { API_URL, getCookie } from '../util/constants';
+import { API_URL } from '../util/constants';
 
 function validateEmail(email) {
   const re =
@@ -110,7 +110,7 @@ function Login() {
 
     const data = {
       email,
-      password,
+      password: CryptoJS.SHA256(password).toString(),
     };
 
     loginAPI(data);
