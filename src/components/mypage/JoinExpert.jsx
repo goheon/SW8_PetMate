@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { API_URL, getCookie } from '../../util/constants';
+import Swal from 'sweetalert2';
 
 const phoneAutoHyphen = (target) => {
   target.value = target.value
@@ -12,6 +14,8 @@ function JoinExpert() {
   const [experienceList, setExperienceList] = useState([]);
   const [experienceValue, setExperienceValue] = useState();
   const [preview, setPreview] = useState();
+  const [phoneNum, setPhoneNum] = useState('');
+  const nav = useNavigate();
   const fileInput = useRef();
 
   const handleImageUpload = (e) => {
@@ -24,18 +28,22 @@ function JoinExpert() {
 
   async function registrationPetSitter(formData) {
     try {
-      const JWT = getCookie('jwt');
       const response = await fetch(`${API_URL}/mypage/sitter`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ` + JWT,
-        },
         body: formData,
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
 
-      console.log(response);
+      Swal.fire({
+        title: '성공',
+        text: '펫시터 등록이 완료되었습니다!',
+        icon: 'success',
+        customClass: { container: 'custom-popup' },
+      }).then(() => {
+        nav('/', { replace: true });
+      });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -43,35 +51,73 @@ function JoinExpert() {
 
   const handleSummit = (e) => {
     e.preventDefault();
-    let types = [];
-    if (e.target.dog.checked) types.push('강아지');
-    if (e.target.cat.checked) types.push('고양이');
-    if (e.target.s.checked) types.push('소형');
-    if (e.target.m.checked) types.push('중형');
-    if (e.target.l.checked) types.push('대형');
 
-    const formData = new FormData();
-    formData.append('img', fileInput.current.files[0]);
-    formData.append('type', types);
-    formData.append('hourlyRate', {
-      priceS: Number(e.target.priceS.value),
-      priceM: Number(e.target.priceM.value),
-      priceL: Number(e.target.priceL.value),
+    Swal.fire({
+      title: '전환 전 작성하신 내용이 맞는지 확인해주세요!',
+      text: '펫시터로 전환할까요?',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: '확인',
+      cancelButtonText: '취소',
+      customClass: { container: 'custom-popup' },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let types = [];
+        if (e.target.cat.checked) types.push('고양이');
+        if (e.target.s.checked) types.push('소형견');
+        if (e.target.m.checked) types.push('중형견');
+        if (e.target.l.checked) types.push('대형견');
+
+        if (types.length < 1) {
+          Swal.fire({
+            title: '',
+            text: '돌봄 가능한 동물 / 사이즈를 선택해주세요.',
+            icon: 'warning',
+            confirmButtonText: '확인',
+            customClass: { container: 'custom-popup' },
+          });
+          return;
+        }
+
+        if (
+          (e.target.priceC.value === '' && e.target.cat.checked) ||
+          (e.target.priceC.value !== '' && !e.target.cat.checked) ||
+          (e.target.priceS.value === '' && e.target.s.checked) ||
+          (e.target.priceS.value !== '' && !e.target.s.checked) ||
+          (e.target.priceM.value === '' && e.target.m.checked) ||
+          (e.target.priceM.value !== '' && !e.target.m.checked) ||
+          (e.target.priceL.value === '' && e.target.l.checked) ||
+          (e.target.priceL.value !== '' && !e.target.l.checked)
+        ) {
+          Swal.fire({
+            title: '',
+            text: '희망 펫시팅 가격을 바르게 입력해주세요.',
+            icon: 'warning',
+            confirmButtonText: '확인',
+            customClass: { container: 'custom-popup' },
+          });
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('img', fileInput.current.files[0]);
+        formData.append('type', types);
+
+        const formedHourlyRate = {};
+        if (e.target.cat.checked) formedHourlyRate.cat = Number(e.target.priceC.value);
+        if (e.target.s.checked) formedHourlyRate.small = Number(e.target.priceS.value);
+        if (e.target.m.checked) formedHourlyRate.medium = Number(e.target.priceM.value);
+        if (e.target.l.checked) formedHourlyRate.large = Number(e.target.priceL.value);
+        formData.append('hourlyRate', JSON.stringify(formedHourlyRate));
+
+        formData.append('experience', experienceList);
+        formData.append('introduction', e.target.introduction.value);
+        formData.append('title', e.target.title.value);
+        formData.append('phone', e.target.phone.value);
+
+        registrationPetSitter(formData);
+      }
     });
-    formData.append('experience', experienceList);
-    formData.append('introduction', e.target.introduction.value);
-    formData.append('title', e.target.title.value);
-    console.log({
-      priceS: Number(e.target.priceS.value),
-      priceM: Number(e.target.priceM.value),
-      priceL: Number(e.target.priceL.value),
-    });
-
-    registrationPetSitter(formData);
-
-    /* for (var pair of formData.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
-    } */
   };
 
   return (
@@ -81,36 +127,35 @@ function JoinExpert() {
         <form enctype="multipart/form-data" action="" onSubmit={handleSummit}>
           <div>
             <h6>돌봄 가능한 동물 / 사이즈</h6>
-            <input type="checkbox" name="dog" id="dog" />
-            <label className="checkbox_label" htmlFor="dog">
-              강아지
-            </label>
             <input type="checkbox" name="" id="cat" />
             <label className="checkbox_label" htmlFor="cat">
               고양이
             </label>
             <input type="checkbox" name="" id="s" />
             <label className="checkbox_label" htmlFor="s">
-              소형
+              소형견
             </label>
             <input type="checkbox" name="" id="m" />
             <label className="checkbox_label" htmlFor="m">
-              중형
+              중형견
             </label>
             <input type="checkbox" name="" id="l" />
             <label className="checkbox_label" htmlFor="l">
-              대형
+              대형견
             </label>
           </div>
           <div className="mypage-join-expert_price">
             <h6>희망 펫시팅 가격</h6>
-            <label htmlFor="priceS">소형</label>
+            <label htmlFor="priceC">고양이</label>
+            <input type="number" name="priceC" id="priceC" placeholder="15,000" />
+
+            <label htmlFor="priceS">소형견</label>
             <input type="number" name="priceS" id="priceS" placeholder="20,000" />
 
-            <label htmlFor="priceM">중형</label>
+            <label htmlFor="priceM">중형견</label>
             <input type="number" name="priceM" id="priceM" placeholder="30,000" />
 
-            <label htmlFor="priceL">대형</label>
+            <label htmlFor="priceL">대형견</label>
             <input type="number" name="priceL" id="priceL" placeholder="40,000" />
           </div>
           <div>
@@ -150,6 +195,7 @@ function JoinExpert() {
               }}
             />
             <button
+              type="button"
               style={{
                 marginRight: 0,
               }}
@@ -197,7 +243,15 @@ function JoinExpert() {
           <div>
             <h6>본인인증 / 이용약관 동의</h6>
             <label htmlFor="phone">휴대폰 번호</label>
-            <input type="text" name="phone" id="phone" placeholder="010-1234-5678" />
+            <input
+              type="text"
+              name="phone"
+              id="phone"
+              placeholder="010-1234-5678"
+              value={phoneNum}
+              maxLength={13}
+              onChange={(e) => setPhoneNum(phoneAutoHyphen(e.target))}
+            />
             <button className="phone-certified">휴대폰 번호인증</button>
             <input type="checkbox" name="" id="agreement" />
             <label className="checkbox_label" htmlFor="agreement">
