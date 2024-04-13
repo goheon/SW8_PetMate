@@ -1,37 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 
-import { API_URL, getCookie } from '../../util/constants';
 import { setUserInfo } from '../../store';
+import { API_URL, getCookie } from '../../util/constants';
 
 function Account() {
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
-
   const [name, setName] = useState(loginUserInfo ? loginUserInfo.username : '');
   const [email, setEmail] = useState(loginUserInfo ? loginUserInfo.email : '');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (loginUserInfo) {
+      setName(loginUserInfo.username);
+      setEmail(loginUserInfo.email);
+    }
+  }, [loginUserInfo]);
 
   const [isNameModify, setIsNameModify] = useState(false);
   const [isEmailModify, setIsEmailModify] = useState(false);
   const [isPassWordModify, setIsPassWordModify] = useState(false);
 
-  const dispath = useDispatch();
   const JWT = getCookie('jwt');
 
+  //수정요청
   async function updateUser(userInfo) {
     try {
       const response = await fetch(`${API_URL}/mypage`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ` + JWT },
         body: JSON.stringify(userInfo),
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
 
       Swal.fire({
         title: '수정 완료',
-        text: `축하염ㅋ`,
+        text: '',
         icon: 'success',
         customClass: { container: 'custom-popup' },
       });
@@ -40,13 +48,40 @@ function Account() {
     }
   }
 
+  //이름수정 버튼 핸들링
   const updateName = () => {
     const userInfo = {
-      name,
-      email: loginUserInfo.email,
+      ...loginUserInfo,
+      username: name,
     };
+    dispatch(setUserInfo(userInfo));
+    setIsNameModify(false);
     updateUser(userInfo);
   };
+
+  //이메일 수정 버튼 핸들링
+  const updateEmail = () => {
+    const userInfo = {
+      ...loginUserInfo,
+      email: email,
+    };
+    dispatch(setUserInfo(userInfo));
+    setIsEmailModify(false);
+    updateUser(userInfo);
+  };
+
+  //비밀번호 수정 버튼 핸들링
+  const updatePassword = () => {
+    const userInfo = {
+      ...loginUserInfo,
+      password: password,
+    };
+    dispatch(setUserInfo(userInfo));
+    setIsPassWordModify(false);
+    updateUser(userInfo);
+  };
+
+  const handleWithdrawal = () => {};
 
   return (
     <>
@@ -58,7 +93,7 @@ function Account() {
               <tr>
                 <td>이름</td>
                 <td>
-                  {isNameModify ? (
+                  {isNameModify && loginUserInfo ? (
                     <>
                       <input
                         type="text"
@@ -77,9 +112,7 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button className="" onClick={updateName}>
-                        수정
-                      </button>
+                      <button onClick={updateName}>수정</button>
                     </>
                   ) : (
                     <>
@@ -119,7 +152,7 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button className="">수정</button>
+                      <button onClick={updateEmail}>수정</button>
                     </>
                   ) : (
                     <>
@@ -159,7 +192,7 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button className="">수정</button>
+                      <button onClick={updatePassword}>수정</button>
                     </>
                   ) : (
                     <>

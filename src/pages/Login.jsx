@@ -5,8 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { API_URL, getCookie } from '../util/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginSuccess } from '../store';
 
 function validateEmail(email) {
   const re =
@@ -21,7 +19,6 @@ function validPassword(password) {
 }
 
 function Login() {
-  const dispatch = useDispatch();
   const nav = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
