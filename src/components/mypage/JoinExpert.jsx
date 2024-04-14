@@ -53,8 +53,8 @@ function JoinExpert() {
     e.preventDefault();
 
     Swal.fire({
-      title: '전환 전 작성하신 내용이 맞는지 확인해주세요!',
-      text: '펫시터로 전환할까요?',
+      title: '펫시터로 전환할까요?',
+      text: '전환 전 작성한 내용이 맞는지 확인해주세요!',
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: '확인',
