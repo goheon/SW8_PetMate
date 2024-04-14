@@ -1,0 +1,102 @@
+.type-modal {
+    width: 380px;
+    margin-top: 12px;
+    border: 1px solid #dddddd;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #ffffff;
+    position: relative;
+
+    .apply-box {
+        margin: 18px 0;
+        padding: 30px;
+
+        p {
+            padding-left: 3px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #7a7a7a;
+        }
+
+        .dog-checked {
+            p {
+                margin: 30px 0 8px 0;
+            }
+        }
+
+        .apply-radio-box {
+            display: flex;
+            justify-content: space-between;
+
+            .radio-label [type='radio'] {
+                display: none;
+
+                +span {
+                    width: 100px;
+                    height: 40px;
+                    font-size: 15px;
+                    color: #632ed8;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #ededed;
+                    border-radius: 6px;
+                    cursor: pointer;
+                }
+
+                &:checked+span {
+                    background-color: #632ed8;
+                    color: #ffffff;
+                }
+            }
+        }
+
+        .apply-check-box {
+            display: flex;
+
+            .check-label [type='checkbox'] {
+                display: none;
+
+                +span {
+                    width: 60px;
+                    height: 26px;
+                    padding: 5px 10px;
+                    font-size: 13px;
+                    color: #dddddd;
+                    border: 1px solid #dddddd;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 6px;
+                    overflow: hidden;
+                    margin-right: 4px;
+                    cursor: pointer;
+                }
+
+                &:checked+span {
+                    background-color: #632ed8;
+                    color: #ffffff;
+                }
+            }
+        }
+    }
+
+    .reset-button {
+        width: 50%;
+        height: 46px;
+        background-color: #ffc800;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .apply-button {
+        width: 50%;
+        height: 46px;
+        background-color: #632ed8;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 600;
+    }
+}
