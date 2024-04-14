@@ -1,21 +1,87 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import LocationModal from '../components/petSitterList/LocationModal';
+import TypeModal from '../components/petSitterList/TypeModal';
+import PetSitterCard from '../components/petSitterList/PetSitterCard';
 import './PetSitterList.scss';
 
+const data = [
+    {
+        userId: 1,
+        sitterId: 1,
+        name: '박진솔',
+        img: 'https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg',
+        type: ['소형견', '중형견', '대형견', '고양이'],
+        location: '서울 강서구',
+        title: '안전하고 편안하게 돌봐주는 펫시팅',
+        introduction:
+            '안녕하세요! 저는 동물을 사랑하고 책임감을 가지고 행동하는 펫시터입니다. 애완동물의 행복과 안전을 최우선으로 생각하며, 신뢰할 수 있는 돌봄을 제공합니다.',
+        experience: [
+            '펫시터 전문가 교육 수료',
+            '전문 펫시터 자격증 보유',
+            '펫시터 직업 훈련 교육 수료',
+            '반려동물행동교정사 2급 자격증 보유',
+            '강아지 반려 경험 (14년) 인증 완료',
+            '고양이 반려 경험 (8년) 인증 완료',
+        ],
+        check: ['신원 인증', '인성 검사', '촬영 동의'],
+        hourlyRate: { small: 15000, medium: 20000, large: 25000, cat: 10000 },
+    },
+    {
+        userId: 2,
+        sitterId: 2,
+        name: '엘리스',
+        img: 'https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg',
+        type: ['소형견', '중형견'],
+        location: '서울 동작구',
+        title: '테스트 / 여기 제목들어감',
+        introduction:
+            '안녕하세요! 저는 동물을 사랑하고 책임감을 가지고 행동하는 펫시터입니다. 애완동물의 행복과 안전을 최우선으로 생각하며, 신뢰할 수 있는 돌봄을 제공합니다.',
+        experience: [
+            '펫시터 전문가 교육 수료',
+            '전문 펫시터 자격증 보유',
+            '펫시터 직업 훈련 교육 수료',
+            '반려동물행동교정사 2급 자격증 보유',
+            '강아지 반려 경험 (14년) 인증 완료',
+            '고양이 반려 경험 (8년) 인증 완료',
+        ],
+        check: ['신원 인증', '인성 검사', '촬영 동의'],
+        hourlyRate: { small: 15000, medium: 20000},
+    },
+    {
+        userId: 3,
+        sitterId: 3,
+        name: '이고헌',
+        img: 'https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg',
+        type: ['고양이'],
+        location: '경기 고양시',
+        title: '엘리스 펫시터 <- 보단 title 들어가는게 나은듯?',
+        introduction:
+            '안녕하세요! 저는 동물을 사랑하고 책임감을 가지고 행동하는 펫시터입니다. 애완동물의 행복과 안전을 최우선으로 생각하며, 신뢰할 수 있는 돌봄을 제공합니다.',
+        experience: [
+            '펫시터 전문가 교육 수료',
+            '전문 펫시터 자격증 보유',
+            '펫시터 직업 훈련 교육 수료',
+            '반려동물행동교정사 2급 자격증 보유',
+            '강아지 반려 경험 (14년) 인증 완료',
+            '고양이 반려 경험 (8년) 인증 완료',
+        ],
+        check: ['신원 인증', '인성 검사', '촬영 동의'],
+        hourlyRate: { cat: 15000},
+    },
+];
+
 function PetSitterList() {
-    const petsitter = useState([1, 2]); // api 연결전 임시로 작성 (수정 예정)
-    const [activeModal, setActiveModal] = useState(null);
-    const [selectLocation, setSelectLocation] = useState('지역');
+    const [petsitter] = useState(data); // api 연결전 임시로 작성 (수정 예정)
+    const [activeModal, setActiveModal] = useState('');
+    const [selectedLocation, setSelectLocation] = useState('지역');
     const [selectedType, setSelectedType] = useState('전체 🐶🐱');
     const [selectedSizes, setSelectedSizes] = useState(['소형견', '중형견', '대형견']);
 
+    // 모달창(지역, 타입) 토글
     const toggleModal = (modalId) => {
-        if (activeModal === modalId) {
-            setActiveModal(null);
-        } else {
-            setActiveModal(modalId);
-        }
+        setActiveModal((preModal) => preModal === modalId ? '' : modalId);
     };
 
     return (
@@ -27,12 +93,12 @@ function PetSitterList() {
                     <div className='search_left'>
                         <div className='sl_button'>
                             <button
-                                className={activeModal === 'locationModal' ? 'selected-button' : null}
+                                className={`${activeModal === 'locationModal' ? 'selected-button' : ''} ${selectedLocation !== '지역' ? 'selected-location-button' : ''}`}
                                 onClick={() => toggleModal('locationModal')}>
-                                {selectLocation}
+                                {selectedLocation}
                             </button>
                             {
-                                activeModal === 'locationModal' && <LocationModal />
+                                activeModal === 'locationModal' && <LocationModal setActiveModal={setActiveModal} setSelectLocation={setSelectLocation} />
                             }
                         </div>
                         <div className='sl_button'>
@@ -54,7 +120,7 @@ function PetSitterList() {
                 {
                     petsitter.map((el, i) => {
                         return (
-                            <Petsitter />
+                            <PetSitterCard petsitter={petsitter[i]}/>
                         )
                     })
                 }
@@ -63,207 +129,6 @@ function PetSitterList() {
             <Footer />
 
         </>
-    )
-}
-
-function Petsitter(props) {
-    return (
-        <div className='search-list_inner'>
-            <div className='search_wrap'>
-                <div className='img-box'>
-                    <img src='public/main02_review_01.jpg' />
-                </div>
-                <div className='text-box'>
-                    <div className='text-box_top'>
-                        <p>서울 강남구</p>
-                        <h4>엘리스 펫시터</h4>
-                    </div>
-                    <div className='text-box_bottom'>
-                        <div className='tb_left'>
-                            <div className='tb_keyword'>
-                                <span>강아지</span>
-                                <span>대형견</span>
-                                <span>중형견</span>
-                                <span>소형견</span>
-                            </div>
-                            <div className='tb_review'>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
-                                </svg>
-                                <p>후기 8개</p>
-                            </div>
-                        </div>
-                        <div className='tb_right'>
-                            <div className='tr_price'>
-                                <p>₩60,000</p>
-                                <div>
-                                    <p>24시</p>
-                                </div>
-                            </div>
-                            <div className='tr_price'>
-                                <p>₩45,000</p>
-                                <div>
-                                    <p>당일</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-function LocationModal() {
-    const LOCATIONS = [
-        {
-            city: '서울특별시',
-            details: ['서울 전체', '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구',
-                '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구',
-                '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구']
-        },
-        {
-            city: '경기도',
-            details: []
-        },
-        {
-            city: '인천광역시',
-            details: []
-        },
-        {
-            city: '부산광역시',
-            details: []
-        },
-        {
-            city: '대구광역시',
-            details: []
-        },
-    ];
-    return (
-        <div className='location-modal'>
-            <ul className='location-box'>
-                {LOCATIONS.map((location, index) => (
-                    <li key={index} className='location-list'>
-                        <button>{location.city}</button>
-                        {location.details.length > 0 && (
-                            <ul className='location-detail-box'>
-                                {location.details.map((detail, detailIndex) => (
-                                    <li key={detailIndex} className='detail-list'>
-                                        <button>{detail}</button>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    )
-}
-
-function TypeModal(props) {
-    const TYPE = ['전체 🐶🐱', '강아지', '고양이'];
-    const SIZE = ['소형견', '중형견', '대형견'];
-    const [tempSelectedType, setTempSelectedType] = useState(props.selectedType);
-    const [tempSelectedSizes, setTempSelectedSizes] = useState([]);
-
-    const handleTypeChange = (type) => {
-        setTempSelectedType(type);
-        if (TYPE.indexOf(type) === 1) {
-            setTempSelectedSizes(SIZE);
-        } else {
-            setTempSelectedSizes([]);
-        }
-    };
-
-    const handleSizeChange = (size, isChecked) => {
-        if (isChecked) { // 체크
-            setTempSelectedSizes([...tempSelectedSizes, size]);
-        } else { // 체크 해제
-            setTempSelectedSizes(tempSelectedSizes.filter(s => s !== size));
-        };
-    }
-
-    const handleResetClick = () => {
-        props.setSelectedType('전체 🐶🐱');
-        props.setActiveModal(null);
-    };
-
-    const handleApplyClick = () => {
-        console.log(tempSelectedType, tempSelectedSizes);
-        props.setSelectedType(tempSelectedType);
-        props.setSelectedSizes(tempSelectedSizes);
-        props.setActiveModal(null);
-
-    };
-
-    useEffect(() => {
-        // 강아지가 선택여부 확인 후 상태 업데이트
-        if (props.selectedType === '강아지') {
-            setTempSelectedSizes(props.selectedSizes.length > 0 ? props.selectedSizes : SIZE);
-        } else {
-            setTempSelectedSizes([]);
-        }
-    }, [props.selectedType, props.selectedSizes]);
-
-    return (
-        <div className='type-modal'>
-            <div className='apply-box'>
-                <p>반려동물 종류</p>
-                <div className='apply-radio-box'>
-                    {
-                        TYPE.map((type) => {
-                            return (
-                                <div className='radio-box' key={type}>
-                                    <label className='radio-label'>
-                                        <input type="radio" name="radio" checked={tempSelectedType === type}
-                                            onChange={() => handleTypeChange(type)} />
-                                        <span>{type}</span>
-                                    </label>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-
-                {tempSelectedType === '강아지' ?
-                    <div className='dog-checked'>
-                        <p>강아지 크기</p>
-                        <div className='apply-check-box'>
-                            {
-                                SIZE.map((size) => {
-                                    return (
-                                        <div className='apply-check' key={size}>
-                                            <label className='check-label'>
-                                                <input type="checkbox" name="checkbox" checked={tempSelectedSizes.includes(size)}
-                                                    onChange={(e) => handleSizeChange(size, e.target.checked)} />
-                                                <span>{size}</span>
-                                            </label>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div> : null
-                }
-
-            </div>
-
-            <button className='reset-button' onClick={handleResetClick}>초기화</button>
-            <button className='apply-button' onClick={handleApplyClick}>적용하기</button>
-        </div>
     )
 }
 
