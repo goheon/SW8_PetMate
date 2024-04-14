@@ -70,8 +70,7 @@ function JoinExpert() {
 
         if (types.length < 1) {
           Swal.fire({
-            title: '',
-            text: '돌봄 가능한 동물 / 사이즈를 선택해주세요.',
+            title: '돌봄 가능한 동물 / 사이즈를 선택해주세요.',
             icon: 'warning',
             confirmButtonText: '확인',
             customClass: { container: 'custom-popup' },
@@ -90,8 +89,7 @@ function JoinExpert() {
           (e.target.priceL.value !== '' && !e.target.l.checked)
         ) {
           Swal.fire({
-            title: '',
-            text: '희망 펫시팅 가격을 바르게 입력해주세요.',
+            title: '희망 펫시팅 가격을 바르게 입력해주세요.',
             icon: 'warning',
             confirmButtonText: '확인',
             customClass: { container: 'custom-popup' },
