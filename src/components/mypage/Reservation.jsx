@@ -2,10 +2,9 @@ import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { useSelector, useDispatch } from 'react-redux';
-
-import 'react-datepicker/dist/react-datepicker.css';
-import { API_URL, getCookie, parseJwt } from '../../util/constants';
 import { setAllOrderList } from '../../store';
+import { fetchGetBookList } from './util/APIrequest';
+import 'react-datepicker/dist/react-datepicker.css';
 
 //날짜 설정 컴포넌트
 const Day = ({ inputDate, setInputDate }) => {
@@ -69,7 +68,9 @@ const OrderList = (props) => {
                 완료하기
               </button>
             ) : undefined}
-            {props.state === '완료' ? <Link to={`/mypage/review-write/${props.orderId}`}>리뷰작성</Link> : undefined}
+            {props.state === '완료' && props.reviewWritten !== '1' ? (
+              <Link to={`/mypage/review-write/${props.orderId}`}>리뷰작성</Link>
+            ) : undefined}
           </div>
         </div>
       </div>
@@ -79,7 +80,6 @@ const OrderList = (props) => {
 
 function Reservation() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
-  const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const allOrderList = useSelector((state) => state.allOrderList);
   const [onFilter, setOnFilter] = useState(false);
   const [filterOrderList, setFilterOrderList] = useState([]);
@@ -99,31 +99,18 @@ function Reservation() {
     setEndDate(endTime);
 
     getBookList();
+
+    async function getBookList() {
+      const response = await fetchGetBookList();
+      if (!response.ok) throw new Error('Network response was not ok');
+      const { data } = await response.json();
+      dispatch(setAllOrderList(data));
+    }
   }, [dispatch]);
 
   useEffect(() => {
     setFilterOrderList(allOrderList);
   }, [allOrderList]);
-
-  async function getBookList() {
-    try {
-      const response = await fetch(`${API_URL}/booklist`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          // Authorization: `Bearer ` + JWT,
-        },
-        credentials: 'include',
-      });
-
-      if (!response.ok) throw new Error('Network response was not ok');
-      const { data } = await response.json();
-
-      dispatch(setAllOrderList(data));
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
 
   return (
     <>

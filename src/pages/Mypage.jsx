@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import infoImg from '../assets/mypage_info.png';
 import infoImg02 from '../assets/mypage_info_02.png';
-import { API_URL } from '../util/constants';
+import { fetchUserInfo } from '../components/mypage/util/APIrequest';
 import { setUserInfo } from '../store';
 import './mypage.scss';
 
@@ -13,26 +13,12 @@ function Mypage() {
   const [isPmenuOn, setIsPmenuOn] = useState(false);
   const dispatch = useDispatch();
   const nav = useNavigate();
-  const loginUserInfo = useSelector((state) => state.loginUserInfo) ?? getUserInfo();
 
-  async function getUserInfo() {
-    try {
-      const response = await fetch(`${API_URL}/mypage`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          // Authorization: `Bearer ${JWT}`,
-        },
-        credentials: 'include',
-      });
+  const loginUserInfo = useSelector((state) => state.loginUserInfo) ?? setLoginUserInfo();
 
-      if (!response.ok) throw new Error('Network response was not ok');
-      const resData = await response.json();
-
-      dispatch(setUserInfo(resData));
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  async function setLoginUserInfo() {
+    const resData = await fetchUserInfo();
+    dispatch(setUserInfo(resData));
   }
 
   //펫시터 메뉴 클릭의 Pmenu 핸들링
