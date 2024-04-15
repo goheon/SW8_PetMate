@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
-import Select from 'react-select';
 import { useParams, useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import Swal from 'sweetalert2';
-import { API_URL } from '../../util/constants';
 import Stars from '../Stars';
+import { fetchPostReview } from './util/APIrequest';
 
 //필터 옵션
 const options = [
@@ -29,7 +29,7 @@ function ReviewWrite() {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const handleSummit = (e) => {
+  const handleSummit = async (e) => {
     e.preventDefault();
 
     //작성이 안된 경우
@@ -49,10 +49,6 @@ function ReviewWrite() {
     formData.append('comment', e.target.reviewText.value);
     formData.append('starRate', Number(selectedOption.value));
 
-    postReview(formData);
-  };
-
-  async function postReview(data) {
     Swal.fire({
       title: '리뷰를 작성중입니다...',
       text: '잠시만 기다려주세요.',
@@ -63,18 +59,21 @@ function ReviewWrite() {
       },
     });
 
-    try {
-      const response = await fetch(`${API_URL}/booklist/review/${id}`, {
-        method: 'POST',
-        body: data,
-        credentials: 'include',
+    const response = await fetchPostReview(formData, id);
+
+    if (!response.ok) {
+      Swal.fire({
+        title: '오류 발생',
+        text: '리뷰를 전송하는 동안 문제가 발생했습니다.',
+        icon: 'error',
+        customClass: { container: 'custom-popup' },
       });
+      throw new Error('Network response was not ok');
+    }
 
-      if (!response.ok) throw new Error('Network response was not ok');
-
-      //response가 정상일 경우 로딩창 닫기
+    //response가 정상일 경우 로딩창 닫기, 응답이 빠르면 로딩창이 반짝여서 0.5초 대기
+    setTimeout(() => {
       Swal.close();
-
       //완료 알림
       Swal.fire({
         title: '리뷰 작성 완료',
@@ -82,16 +81,8 @@ function ReviewWrite() {
         icon: 'success',
         customClass: { container: 'custom-popup' },
       }).then((result) => nav('/mypage/review'));
-    } catch (error) {
-      console.error('Error:', error);
-      Swal.fire({
-        title: '오류 발생',
-        text: '리뷰를 전송하는 동안 문제가 발생했습니다.',
-        icon: 'error',
-        customClass: { container: 'custom-popup' },
-      });
-    }
-  }
+    }, 500);
+  };
 
   return (
     <>
