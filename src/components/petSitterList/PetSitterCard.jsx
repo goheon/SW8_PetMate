@@ -11,9 +11,13 @@ function PetSitterCard(props) {
         cat: '고양이',
     };
 
+function handleCardClick(sitterId) {
+    console.log(sitterId);
+}
+
     return (
         <div className='search-list_inner'>
-            <div className='search_wrap'>
+            <div className='search_wrap' onClick={() => (handleCardClick(props.petsitter.sitterId))}>
                 <div className='img-box'>
                     <img src='public/main02_review_01.jpg' />
                 </div>
