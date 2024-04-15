@@ -14,55 +14,65 @@
 }
 
 .modal {
+  min-width: 400px;
   position: relative;
   background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
+  padding: 30px;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  width: 600px;
-  height: 600px;
 
   .modal_form {
     display: flex;
     flex-direction: column;
-    padding: 40px;
-
-    * {
-      margin-left: 20px;
-    }
-
-    span {
-      margin-top: 20px;
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
 
     .inquiry {
-      font-size: 24px;
+      font-size: 18px;
       margin-bottom: 20px;
+      font-weight: 700;
+    }
+    span {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 10px;
     }
 
     .title {
-      height: 30px;
-      width: 90%;
       border-radius: 5px;
-      font-size: 18px;
+      font-size: 16px;
       line-height: 20px;
+      border: none;
+      background-color: #f4f6fe;
+      padding: 8px 12px;
+      margin-bottom: 20px;
     }
 
     .content {
       resize: none;
-      width: 90%;
-      font-size: 18px;
+      font-size: 16px;
       border-radius: 5px;
       line-height: 20px;
+      border: none;
+      background-color: #f4f6fe;
+      padding: 8px 12px;
+      height: 150px;
+      margin-bottom: 10px;
     }
 
     .submit-button-wrapper {
-      margin-left: 0;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      > button.modal_submit {
+        border-radius: 5px;
+        color: #222;
+        font-weight: 600;
+        font-size: 16px;
+        padding: 12px 14px;
+        width: 100%;
+        background-color: #ffc800;
+      }
     }
   }
 }
@@ -70,9 +80,13 @@
 .modal-close-btn {
   position: absolute;
   top: 15px;
-  right: 20px;
+  right: 15px;
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 0;
+  > svg {
+    width: 30px;
+    fill: #f15746;
+  }
 }
