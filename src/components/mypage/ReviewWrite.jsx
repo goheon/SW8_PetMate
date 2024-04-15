@@ -48,10 +48,21 @@ function ReviewWrite() {
     formData.append('title', e.target.title.value);
     formData.append('comment', e.target.reviewText.value);
     formData.append('starRate', Number(selectedOption.value));
+
     postReview(formData);
   };
 
   async function postReview(data) {
+    Swal.fire({
+      title: '리뷰를 작성중입니다...',
+      text: '잠시만 기다려주세요.',
+      icon: 'info',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading(); // 로딩 애니메이션을 보여줌
+      },
+    });
+
     try {
       const response = await fetch(`${API_URL}/booklist/review/${id}`, {
         method: 'POST',
@@ -61,14 +72,24 @@ function ReviewWrite() {
 
       if (!response.ok) throw new Error('Network response was not ok');
 
+      //response가 정상일 경우 로딩창 닫기
+      Swal.close();
+
+      //완료 알림
       Swal.fire({
         title: '리뷰 작성 완료',
         text: '',
         icon: 'success',
         customClass: { container: 'custom-popup' },
-      }).then((result) => nav(-1));
+      }).then((result) => nav('/mypage/review'));
     } catch (error) {
       console.error('Error:', error);
+      Swal.fire({
+        title: '오류 발생',
+        text: '리뷰를 전송하는 동안 문제가 발생했습니다.',
+        icon: 'error',
+        customClass: { container: 'custom-popup' },
+      });
     }
   }
 

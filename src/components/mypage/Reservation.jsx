@@ -69,7 +69,9 @@ const OrderList = (props) => {
                 완료하기
               </button>
             ) : undefined}
-            {props.state === '완료' ? <Link to={`/mypage/review-write/${props.orderId}`}>리뷰작성</Link> : undefined}
+            {props.state === '완료' && props.reviewWritten !== '1' ? (
+              <Link to={`/mypage/review-write/${props.orderId}`}>리뷰작성</Link>
+            ) : undefined}
           </div>
         </div>
       </div>
