@@ -4,7 +4,8 @@ import Select from 'react-select';
 import { useSelector, useDispatch } from 'react-redux';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { API_URL, getCookie } from '../../util/constants';
+import { API_URL, getCookie, parseJwt } from '../../util/constants';
+import { setAllOrderList } from '../../store';
 
 //날짜 설정 컴포넌트
 const Day = ({ inputDate, setInputDate }) => {
@@ -32,14 +33,21 @@ const options = [
 ];
 
 //예약내역 리스트 컴포넌트
-const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
+const OrderList = (props) => {
+  const addressList = props.sitteraddress ? props.sitteraddress.split(' ') : undefined;
+  const formedSitterAddress = addressList ? `${addressList[0]} ${addressList[1]}` : undefined;
+  const handleComplete = async (e) => {
+    // const orderId = e.target.value;
+    //주문 상태 변경 API 연결(진행중 -> 완료)
+  };
+
   return (
-    <li key={orderId}>
+    <li key={props.orderId}>
       <div className="mypage-reservation-list_state">
-        <h6>{state}</h6>
+        <h6>{props.state}</h6>
         <p>
           예약일시
-          <span>{new Date(createdAt).toLocaleDateString()}</span>
+          <span>{new Date(props.createdAt).toLocaleDateString()}</span>
         </p>
       </div>
       <div className="mypage-reservation-list_info">
@@ -48,16 +56,20 @@ const OrderList = ({ orderId, state, createdAt, totalPrice }) => {
         </div>
         <div className="mypage-reservation-list_info_right">
           <div className="text-box">
-            <p className="title">
-              <span>#{orderId}</span>
-              사랑이넘치는1:1맞춤케어😍
-            </p>
-            <h5>{totalPrice.toLocaleString()}원</h5>
-            <h6>서울 동작구 파트너 · 정◯선 님</h6>
+            <p className="title">{props.petSitterInfo.title}</p>
+            <h5>{props.totalPrice.toLocaleString()}원</h5>
+            <h6>
+              {formedSitterAddress} 파트너 · {props.sittername} 님
+            </h6>
           </div>
           <div className="btn-box">
-            <Link to={`/mypage/order-view/${orderId}`}>상세내용</Link>
-            <Link to={`/mypage/review-write/${orderId}`}>리뷰작성</Link>
+            <Link to={`/mypage/order-view/${props.orderId}`}>상세내용</Link>
+            {props.state === '진행중' ? (
+              <button type="button" value={props.orderId} onClick={handleComplete}>
+                완료하기
+              </button>
+            ) : undefined}
+            {props.state === '완료' ? <Link to={`/mypage/review-write/${props.orderId}`}>리뷰작성</Link> : undefined}
           </div>
         </div>
       </div>
@@ -69,13 +81,14 @@ function Reservation() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const allOrderList = useSelector((state) => state.allOrderList);
-
   const [onFilter, setOnFilter] = useState(false);
   const [filterOrderList, setFilterOrderList] = useState([]);
+  const dispatch = useDispatch();
 
   //필터 날짜
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+
   useEffect(() => {
     let beginTime = new Date();
     beginTime.setHours(0, 0, 0);
@@ -84,23 +97,29 @@ function Reservation() {
     let endTime = new Date();
     endTime.setHours(23, 59, 59);
     setEndDate(endTime);
-  }, []);
 
-  //
-  const dispath = useDispatch();
-  const JWT = getCookie('jwt');
-  async function getBookList(JWT) {
+    getBookList();
+  }, [dispatch]);
+
+  useEffect(() => {
+    setFilterOrderList(allOrderList);
+  }, [allOrderList]);
+
+  async function getBookList() {
     try {
       const response = await fetch(`${API_URL}/booklist`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ` + JWT,
+          'Content-Type': 'application/json',
+          // Authorization: `Bearer ` + JWT,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
+      const { data } = await response.json();
 
-      console.log(response);
+      dispatch(setAllOrderList(data));
     } catch (error) {
       console.error('Error:', error);
     }
@@ -167,7 +186,11 @@ function Reservation() {
             onClick={() => {
               const filterArr = allOrderList.filter((el) => {
                 if (selectedOption.value === 'all' || selectedOption.label === el.state) {
-                  if (startDate.getTime() <= el.createdAt.getTime() && el.createdAt.getTime() <= endDate.getTime()) {
+                  const createdAtObject = new Date(el.createdAt);
+                  if (
+                    startDate.getTime() <= createdAtObject.getTime() &&
+                    createdAtObject.getTime() <= endDate.getTime()
+                  ) {
                     return true;
                   }
                 }
@@ -182,9 +205,10 @@ function Reservation() {
           </button>
         </div>
         <ul className="mypage-reservation-list">
-          {onFilter
-            ? filterOrderList.map((el) => <OrderList {...el} />)
-            : allOrderList.map((el) => <OrderList {...el} />)}
+          {allOrderList.length > 0 &&
+            (onFilter
+              ? filterOrderList.map((el) => <OrderList key={el.orderId} {...el} />)
+              : allOrderList.map((el) => <OrderList key={el.orderId} {...el} />))}
         </ul>
       </div>
     </>

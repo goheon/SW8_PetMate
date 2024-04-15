@@ -1,21 +1,25 @@
 import { useRef, useState } from 'react';
-import Stars from '../Stars';
 import Select from 'react-select';
+import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { API_URL } from '../../util/constants';
+import Stars from '../Stars';
 
 //필터 옵션
 const options = [
-  { value: '1', label: <Stars rating={1}/> },
-  { value: '2', label: <Stars rating={2}/> },
-  { value: '3', label: <Stars rating={3}/> },
-  { value: '4', label: <Stars rating={4}/> },
-  { value: '5', label: <Stars rating={5}/> },
- 
+  { value: '1', label: <Stars rating={1} /> },
+  { value: '2', label: <Stars rating={2} /> },
+  { value: '3', label: <Stars rating={3} /> },
+  { value: '4', label: <Stars rating={4} /> },
+  { value: '5', label: <Stars rating={5} /> },
 ];
 
 function ReviewWrite() {
+  const { id } = useParams();
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const [preview, setPreview] = useState();
   const fileInput = useRef();
+  const nav = useNavigate();
 
   const handleImageUpload = (e) => {
     let reader = new FileReader();
@@ -28,18 +32,46 @@ function ReviewWrite() {
   const handleSummit = (e) => {
     e.preventDefault();
 
+    //작성이 안된 경우
+    if (e.target.title.value.length < 1 || e.target.reviewText.value < 1) {
+      Swal.fire({
+        title: '제목, 내용을 적어주세요.',
+        icon: 'warning',
+        confirmButtonText: '확인',
+        customClass: { container: 'custom-popup' },
+      });
+      return;
+    }
+
     let formData = new FormData();
-    formData.append('image', fileInput.current.files[0]);
-
-    const data = {
-      introduction: e.target.reviewText.value,
-      title: e.target.title.value,
-      image: formData,
-      rating : Number(selectedOption.value),
-    };
-
-    console.log(data);
+    formData.append('img', fileInput.current.files[0]);
+    formData.append('title', e.target.title.value);
+    formData.append('comment', e.target.reviewText.value);
+    formData.append('starRate', Number(selectedOption.value));
+    postReview(formData);
   };
+
+  async function postReview(data) {
+    try {
+      const response = await fetch(`${API_URL}/booklist/review/${id}`, {
+        method: 'POST',
+        body: data,
+        credentials: 'include',
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      Swal.fire({
+        title: '리뷰 작성 완료',
+        text: '',
+        icon: 'success',
+        customClass: { container: 'custom-popup' },
+      }).then((result) => nav(-1));
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   return (
     <>
       <div className="mypage-review-write">

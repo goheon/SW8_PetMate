@@ -1,35 +1,67 @@
+import { useState } from 'react';
+import { useNavigate, Link, Outlet } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Header from '../components/Header';
-import './mypage.scss';
 import Footer from '../components/Footer';
-import { Link, Outlet } from 'react-router-dom';
 import infoImg from '../assets/mypage_info.png';
 import infoImg02 from '../assets/mypage_info_02.png';
-import { useSelector, useDispatch } from 'react-redux';
-import { API_URL, getCookie } from '../util/constants';
+import { API_URL } from '../util/constants';
 import { setUserInfo } from '../store';
+import './mypage.scss';
 
 function Mypage() {
-  const dispath = useDispatch();
-  const JWT = getCookie('jwt');
-  const loginUserInfo = useSelector((state) => state.loginUserInfo) ?? getUserInfo(JWT);
+  const [isPmenuOn, setIsPmenuOn] = useState(false);
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+  const loginUserInfo = useSelector((state) => state.loginUserInfo) ?? getUserInfo();
 
-  async function getUserInfo(JWT) {
+  async function getUserInfo() {
     try {
       const response = await fetch(`${API_URL}/mypage`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ` + JWT,
+          'Content-Type': 'application/json',
+          // Authorization: `Bearer ${JWT}`,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
       const resData = await response.json();
 
-      dispath(setUserInfo(resData));
+      dispatch(setUserInfo(resData));
     } catch (error) {
       console.error('Error:', error);
     }
   }
+
+  //펫시터 메뉴 클릭의 Pmenu 핸들링
+  const handleButton = () => {
+    loginUserInfo.isRole === '1' ? setIsPmenuOn(!isPmenuOn) : nav('/mypage/join-expert');
+  };
+
+  //펫시터 메뉴 내부 상태
+  const PetSitterMenu = ({ isPmenuOn }) => {
+    const [isMenuOn, setIsMenuOn] = useState(isPmenuOn);
+
+    if (isPmenuOn !== isMenuOn) {
+      setIsMenuOn(isPmenuOn);
+    }
+    return (
+      <>
+        {isMenuOn && (
+          <>
+            <li>
+              <Link to={'/mypage/petSitter-reservation'}>펫시터 예약 관리</Link>
+            </li>
+            <li>
+              <Link to={'/mypage/petssiter-info'}>펫시터 정보관리</Link>
+            </li>
+          </>
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -63,12 +95,18 @@ function Mypage() {
               </div>
 
               <div className="mypage-expert">
-                <Link to={'/mypage/join-expert'}>
+                <button type="button" onClick={handleButton}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path d="M32 96l320 0V32c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l96 96c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-96 96c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6V160L32 160c-17.7 0-32-14.3-32-32s14.3-32 32-32zM480 352c17.7 0 32 14.3 32 32s-14.3 32-32 32H160v64c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-96-96c-6-6-9.4-14.1-9.4-22.6s3.4-16.6 9.4-22.6l96-96c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 64H480z" />
                   </svg>
-                  <p>펫시터 전환</p>
-                </Link>
+                  {loginUserInfo.isRole !== '1' ? (
+                    <p>펫시터 전환</p>
+                  ) : isPmenuOn === false ? (
+                    <p>펫시터 메뉴 열기</p>
+                  ) : (
+                    <p>펫시터 메뉴 닫기</p>
+                  )}
+                </button>
               </div>
             </div>
 
@@ -87,13 +125,7 @@ function Mypage() {
                   <Link to={'/mypage/point'}>포인트관리</Link>
                 </li>
                 {/* 펫시터 회원 체크 후 아래 메뉴 노출 */}
-                <li>
-                  <Link to={'/mypage/petSitter-reservation'}>펫시터 예약 관리</Link>
-                </li>
-
-                <li>
-                  <Link to={'/mypage/petssiter-info'}>펫시터 정보관리</Link>
-                </li>
+                <PetSitterMenu isPmenuOn={isPmenuOn} />
               </ul>
             </div>
           </div>

@@ -122,10 +122,13 @@
   }
   &-expert {
     width: 100%;
-    a {
+    button[type='button'] {
       display: flex;
       justify-content: center;
+      align-items: center;
       width: 100%;
+      font-size: 16px;
+      font-weight: 500;
       background-color: #632ed8;
       color: #fff;
       padding: 18px;
@@ -433,7 +436,7 @@
 
         &.mypage-join-expert_price {
           input[type='number'] {
-            width: 100px;
+            width: 80px;
             flex: 1 0;
             margin-right: 10px;
             &:last-child {

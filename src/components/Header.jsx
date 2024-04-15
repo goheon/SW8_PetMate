@@ -1,13 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import './Header.scss';
 import { getCookie } from '../util/constants';
+import { setUserInfo } from '../store';
 
 function Header() {
   const nav = useNavigate();
   const JWT = getCookie('jwt');
+  const dispatch = useDispatch();
 
   const logout = () => {
     document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    dispatch(setUserInfo(null));
   };
 
   return (

@@ -1,48 +1,129 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { API_URL, getCookie } from '../../util/constants';
+import Swal from 'sweetalert2';
+
 import { setUserInfo } from '../../store';
+import { API_URL } from '../../util/constants';
 
 function Account() {
+  const nav = useNavigate();
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
-  const [name, setName] = useState(loginUserInfo.username);
-  const [email, setEmail] = useState(loginUserInfo.email);
-  const [password, setPassword] = useState();
+  const [name, setName] = useState(loginUserInfo ? loginUserInfo.username : '');
+  const [email, setEmail] = useState(loginUserInfo ? loginUserInfo.email : '');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (loginUserInfo) {
+      setName(loginUserInfo.username);
+      setEmail(loginUserInfo.email);
+    }
+  }, [loginUserInfo]);
 
   const [isNameModify, setIsNameModify] = useState(false);
   const [isEmailModify, setIsEmailModify] = useState(false);
   const [isPassWordModify, setIsPassWordModify] = useState(false);
 
-  const dispath = useDispatch();
-  const JWT = getCookie('jwt');
+  //로그아웃
+  const logout = () => {
+    document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    dispatch(setUserInfo(null));
+  };
 
+  //수정요청
   async function updateUser(userInfo) {
     try {
-      const response = await fetch(`${API_URL}//mypage`, {
+      const response = await fetch(`${API_URL}/mypage`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ` + JWT },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userInfo),
+        credentials: 'include',
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
 
-      /* Swal.fire({
+      Swal.fire({
         title: '수정 완료',
-        text: `축하염ㅋ`,
+        text: '',
         icon: 'success',
         customClass: { container: 'custom-popup' },
-      }); */
+      });
     } catch (error) {
       console.error('Error:', error);
     }
   }
 
+  //이름수정 버튼 핸들링
   const updateName = () => {
     const userInfo = {
-      name,
-      email: loginUserInfo.email,
+      ...loginUserInfo,
+      username: name,
     };
-    updateUser(userInfo);
+    dispatch(setUserInfo(userInfo));
+    setIsNameModify(false);
+    updateUser({ username: name });
+  };
+
+  //이메일 수정 버튼 핸들링
+  const updateEmail = () => {
+    const userInfo = {
+      ...loginUserInfo,
+      email: email,
+    };
+    dispatch(setUserInfo(userInfo));
+    setIsEmailModify(false);
+    updateUser({ email: email });
+  };
+
+  //비밀번호 수정 버튼 핸들링
+  const updatePassword = () => {
+    const userInfo = {
+      ...loginUserInfo,
+      password: CryptoJS.SHA256(password).toString(),
+    };
+    dispatch(setUserInfo(userInfo));
+    setIsPassWordModify(false);
+    updateUser({ password: CryptoJS.SHA256(password).toString() });
+  };
+
+  //탈퇴버튼 핸들링
+  const handleWithdrawal = () => {
+    Swal.fire({
+      title: '정말로 탈퇴하시겠습니까?',
+      text: '',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: '확인',
+      cancelButtonText: '취소',
+      customClass: { container: 'custom-popup' },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          //탈퇴요청
+          const response = await fetch(`${API_URL}/mypage/resign`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+          });
+
+          if (!response.ok) throw new Error('Network response was not ok');
+
+          Swal.fire({
+            title: '탈퇴완료',
+            text: '서비스를 이용해주셔서 감사합니다.',
+            icon: 'success',
+            customClass: { container: 'custom-popup' },
+          });
+
+          //탈퇴 후 로그아웃, 홈 이동
+          logout();
+          nav('/', { replace: true });
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+    });
   };
 
   return (
@@ -55,7 +136,7 @@ function Account() {
               <tr>
                 <td>이름</td>
                 <td>
-                  {isNameModify ? (
+                  {isNameModify && loginUserInfo ? (
                     <>
                       <input
                         type="text"
@@ -67,20 +148,18 @@ function Account() {
                       />
                       <button
                         onClick={() => {
-                          setName(loginUserInfo.username);
+                          setName(loginUserInfo ? loginUserInfo.username : '');
                           setIsNameModify(false);
                         }}
                         className="cancel"
                       >
                         취소
                       </button>
-                      <button className="" onClick={updateName}>
-                        수정
-                      </button>
+                      <button onClick={updateName}>수정</button>
                     </>
                   ) : (
                     <>
-                      <p>{loginUserInfo.username}</p>
+                      <p>{loginUserInfo ? loginUserInfo.username : ''}</p>
                       <svg
                         onClick={() => {
                           setIsNameModify(true);
@@ -109,18 +188,18 @@ function Account() {
                       />
                       <button
                         onClick={() => {
-                          setEmail(loginUserInfo.email);
+                          setEmail(loginUserInfo ? loginUserInfo.email : '');
                           setIsEmailModify(false);
                         }}
                         className="cancel"
                       >
                         취소
                       </button>
-                      <button className="">수정</button>
+                      <button onClick={updateEmail}>수정</button>
                     </>
                   ) : (
                     <>
-                      <p>{loginUserInfo.email}</p>
+                      <p>{loginUserInfo ? loginUserInfo.email : ''}</p>
                       <svg
                         onClick={() => {
                           setIsEmailModify(true);
@@ -156,7 +235,7 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button className="">수정</button>
+                      <button onClick={updatePassword}>수정</button>
                     </>
                   ) : (
                     <>
@@ -185,7 +264,9 @@ function Account() {
               <td>
                 <p>탈퇴 후 복구할 수 없습니다. 신중하게 결정해주세요.</p>
                 <br />
-                <button className="withdrawal">탈퇴하기</button>
+                <button className="withdrawal" onClick={handleWithdrawal}>
+                  탈퇴하기
+                </button>
               </td>
             </tr>
           </tbody>
