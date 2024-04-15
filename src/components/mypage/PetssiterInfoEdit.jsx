@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from '../../util/constants';
+import { fetchEditPetSitter, fetchGetSitterInfo } from './util/APIrequest';
 import Swal from 'sweetalert2';
 
 function JoinExpert() {
@@ -17,20 +17,14 @@ function JoinExpert() {
   useEffect(() => {
     if (loginUserInfo) {
       const getSitterInfo = async () => {
-        try {
-          const response = await fetch(`${API_URL}/sitterpage/${loginUserInfo.userId}`, {
-            method: 'GET',
-            credentials: 'include',
-          });
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          const data = await response.json();
-          setSitterInfo(data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
+        const response = await fetchGetSitterInfo(loginUserInfo.userId);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+        const data = await response.json();
+        setSitterInfo(data);
       };
+
       getSitterInfo();
     }
 
@@ -73,31 +67,6 @@ function JoinExpert() {
     };
     reader.readAsDataURL(e.target.files[0]);
   };
-
-  //제출시 fetch
-  async function editPetSitter(formData) {
-    try {
-      const response = await fetch(`${API_URL}/sitterpage/${sitterInfo.sitterId}`, {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include',
-      });
-
-      if (!response.ok) throw new Error('Network response was not ok');
-
-      Swal.fire({
-        title: '성공',
-        text: '수정이 완료되었습니다!',
-        icon: 'success',
-        customClass: { container: 'custom-popup' },
-      }).then(() => {
-        // 수정이 완료된 후 본인 펫시터 상세페이지로 이동
-        // nav('/', { replace: true });
-      });
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
 
   //제출
   const handleSummit = (e) => {
@@ -163,9 +132,18 @@ function JoinExpert() {
         formData.append('experience', experienceList);
         formData.append('introduction', e.target.introduction.value);
         formData.append('title', e.target.title.value);
-        formData.append('phone', e.target.phone.value);
 
-        editPetSitter(formData);
+        const response = await fetchEditPetSitter(formData, sitterInfo.sitterId);
+        if (!response.ok) throw new Error('Network response was not ok');
+        Swal.fire({
+          title: '성공',
+          text: '수정이 완료되었습니다!',
+          icon: 'success',
+          customClass: { container: 'custom-popup' },
+        }).then(() => {
+          // 수정이 완료된 후 본인 펫시터 상세페이지로 이동
+          // nav('/', { replace: true });
+        });
       }
     });
   };

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_URL, getCookie } from '../../util/constants';
 import Swal from 'sweetalert2';
+import { fetchRegistrationPetSitter } from './util/APIrequest';
 
 const phoneAutoHyphen = (target) => {
   target.value = target.value
@@ -25,29 +25,6 @@ function JoinExpert() {
     };
     reader.readAsDataURL(e.target.files[0]);
   };
-
-  async function registrationPetSitter(formData) {
-    try {
-      const response = await fetch(`${API_URL}/mypage/sitter`, {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      });
-
-      if (!response.ok) throw new Error('Network response was not ok');
-
-      Swal.fire({
-        title: '성공',
-        text: '펫시터 등록이 완료되었습니다!',
-        icon: 'success',
-        customClass: { container: 'custom-popup' },
-      }).then(() => {
-        nav('/', { replace: true });
-      });
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
 
   const handleSummit = (e) => {
     e.preventDefault();
@@ -107,13 +84,23 @@ function JoinExpert() {
         if (e.target.m.checked) formedHourlyRate.medium = Number(e.target.priceM.value);
         if (e.target.l.checked) formedHourlyRate.large = Number(e.target.priceL.value);
         formData.append('hourlyRate', JSON.stringify(formedHourlyRate));
-
         formData.append('experience', experienceList);
         formData.append('introduction', e.target.introduction.value);
         formData.append('title', e.target.title.value);
         formData.append('phone', e.target.phone.value);
 
-        registrationPetSitter(formData);
+        const response = await fetchRegistrationPetSitter(formData);
+
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        Swal.fire({
+          title: '성공',
+          text: '펫시터 등록이 완료되었습니다!',
+          icon: 'success',
+          customClass: { container: 'custom-popup' },
+        }).then(() => {
+          nav('/', { replace: true });
+        });
       }
     });
   };

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 
 import { setUserInfo } from '../../store';
-import { API_URL } from '../../util/constants';
+import { fetchWithdrawal, fetchUpdateUser } from './util/APIrequest';
 
 function Account() {
   const nav = useNavigate();
@@ -25,66 +25,43 @@ function Account() {
   const [isEmailModify, setIsEmailModify] = useState(false);
   const [isPassWordModify, setIsPassWordModify] = useState(false);
 
-  //로그아웃
-  const logout = () => {
-    document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    dispatch(setUserInfo(null));
-  };
-
-  //수정요청
-  async function updateUser(userInfo) {
-    try {
-      const response = await fetch(`${API_URL}/mypage`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userInfo),
-        credentials: 'include',
-      });
-
-      if (!response.ok) throw new Error('Network response was not ok');
-
-      Swal.fire({
-        title: '수정 완료',
-        text: '',
-        icon: 'success',
-        customClass: { container: 'custom-popup' },
-      });
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-
   //이름수정 버튼 핸들링
-  const updateName = () => {
+  const updateName = async () => {
     const userInfo = {
       ...loginUserInfo,
       username: name,
     };
     dispatch(setUserInfo(userInfo));
     setIsNameModify(false);
-    updateUser({ username: name });
+    const response = await fetchUpdateUser({ username: name });
+    if (!response.ok) throw new Error('Network response was not ok');
+    alertEditComplete();
   };
 
   //이메일 수정 버튼 핸들링
-  const updateEmail = () => {
+  const updateEmail = async () => {
     const userInfo = {
       ...loginUserInfo,
       email: email,
     };
     dispatch(setUserInfo(userInfo));
     setIsEmailModify(false);
-    updateUser({ email: email });
+    const response = await fetchUpdateUser({ email: email });
+    if (!response.ok) throw new Error('Network response was not ok');
+    alertEditComplete();
   };
 
   //비밀번호 수정 버튼 핸들링
-  const updatePassword = () => {
+  const updatePassword = async () => {
     const userInfo = {
       ...loginUserInfo,
       password: CryptoJS.SHA256(password).toString(),
     };
     dispatch(setUserInfo(userInfo));
     setIsPassWordModify(false);
-    updateUser({ password: CryptoJS.SHA256(password).toString() });
+    const response = await fetchUpdateUser({ password: CryptoJS.SHA256(password).toString() });
+    if (!response.ok) throw new Error('Network response was not ok');
+    alertEditComplete();
   };
 
   //탈퇴버튼 핸들링
@@ -99,31 +76,37 @@ function Account() {
       customClass: { container: 'custom-popup' },
     }).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-          //탈퇴요청
-          const response = await fetch(`${API_URL}/mypage/resign`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-          });
+        const response = await fetchWithdrawal();
 
-          if (!response.ok) throw new Error('Network response was not ok');
+        if (!response.ok) throw new Error('Network response was not ok');
 
-          Swal.fire({
-            title: '탈퇴완료',
-            text: '서비스를 이용해주셔서 감사합니다.',
-            icon: 'success',
-            customClass: { container: 'custom-popup' },
-          });
+        Swal.fire({
+          title: '탈퇴완료',
+          text: '서비스를 이용해주셔서 감사합니다.',
+          icon: 'success',
+          customClass: { container: 'custom-popup' },
+        });
 
-          //탈퇴 후 로그아웃, 홈 이동
-          logout();
-          nav('/', { replace: true });
-        } catch (error) {
-          console.error('Error:', error);
-        }
+        //탈퇴 후 로그아웃, 홈 이동
+        logout();
+        nav('/', { replace: true });
       }
     });
+  };
+
+  //수정완료 알림
+  function alertEditComplete() {
+    Swal.fire({
+      title: '수정 완료',
+      text: '',
+      icon: 'success',
+      customClass: { container: 'custom-popup' },
+    });
+  }
+  //로그아웃
+  const logout = () => {
+    document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    dispatch(setUserInfo(null));
   };
 
   return (
