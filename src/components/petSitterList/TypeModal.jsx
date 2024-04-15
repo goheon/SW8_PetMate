@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import './TypeModal.scss';
 
 function TypeModal(props) {
@@ -20,7 +21,19 @@ function TypeModal(props) {
         if (isChecked) { // 체크
             setTempSelectedSizes([...tempSelectedSizes, size]);
         } else { // 체크 해제
-            setTempSelectedSizes(tempSelectedSizes.filter(s => s !== size));
+            // 현재 선택된 사이즈가 1개 이상일 경우에만 체크 해제를 수행
+            if (tempSelectedSizes.length > 1) {
+                setTempSelectedSizes(tempSelectedSizes.filter(s => s !== size));
+            } else {
+                // 선택된 사이즈가 하나뿐일 경우 체크 해제를 수행하지 않고,
+                // 사용자에게 최소 하나의 사이즈를 선택해야 한다는 것을 알립니다.
+                Swal.fire({
+                    title: '선택 확인',
+                    text: `강아지 크기는 최소 1개 이상 선택되어야 합니다.`,
+                    icon: 'warning',
+                    customClass: { container: 'custom-popup' },
+                  });
+            }
         };
     }
 
