@@ -179,6 +179,18 @@ const allOrderList = createSlice({
 
 export const { setAllOrderList } = allOrderList.actions;
 
+const allPetSitterOrderList = createSlice({
+  name: 'allPetSitterOrderList',
+  initialState: [],
+  reducers: {
+    setAllPetSitterOrderList: (state, action) => {
+      return action.payload;
+    },
+  },
+});
+
+export const { setAllPetSitterOrderList } = allPetSitterOrderList.actions;
+
 const jwt = createSlice({
   name: 'jwt',
   initialState: { token: null },
@@ -205,5 +217,6 @@ export default configureStore({
 
     loginUserInfo: loginUserInfo.reducer,
     allOrderList: allOrderList.reducer,
+    allPetSitterOrderList: allPetSitterOrderList.reducer,
   },
 });

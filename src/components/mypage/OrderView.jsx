@@ -1,17 +1,19 @@
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { setAllOrderList } from '../../store';
-import { fetchGetBookList } from './util/APIrequest';
-import Swal from 'sweetalert2';
+import { setAllOrderList, setAllPetSitterOrderList } from '../../store';
+import { fetchGetBookList, fetchGetPetSitterBookList, fetchGetSitterInfo } from './util/APIrequest';
 
 function OrderView() {
   const { id } = useParams();
   const allOrderList = useSelector((state) => state.allOrderList);
+  const allPetSitterOrderList = useSelector((state) => state.allPetSitterOrderList);
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
+  const [sitterInfo, setSitterInfo] = useState();
   const [order, setOrder] = useState(allOrderList.find((el) => el.orderId == id));
   const dispatch = useDispatch();
 
+  //회원 예약목록 우선 조회
   useEffect(() => {
     async function getBookList() {
       const response = await fetchGetBookList();
@@ -24,14 +26,33 @@ function OrderView() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (allOrderList.length > 0) {
-      const selectedOrder = allOrderList.find((el) => el.orderId === id);
-      if (selectedOrder) {
-        setOrder(selectedOrder);
-      } else {
-        // id에 해당하는 주문이 없는 경우 예외 처리
-        console.log('Order not found');
+    //회원의 예약목록인 경우
+    const selectedOrder = allOrderList.find((el) => el.orderId === id);
+    if (selectedOrder) {
+      setOrder(selectedOrder);
+    } else {
+      //시터의 예약목록인 경우
+      //로그인정보로 시터정보 조회
+      const getSitterInfo = async () => {
+        const response = await fetchGetSitterInfo();
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setSitterInfo(data);
+      };
+      getSitterInfo();
+      //시터의 예약목록 조회
+      async function getPestSitterBookList(sitterInfo) {
+        const response = await fetchGetPetSitterBookList(sitterInfo.sitterId);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const { data } = await response.json();
+        dispatch(setAllPetSitterOrderList(data));
       }
+      getPestSitterBookList(sitterInfo);
+      //시터예약목록에서 주문 반환
+      const selectedOrder = allPetSitterOrderList.find((el) => el.orderId === id);
+      setOrder(selectedOrder);
     }
   }, [id, allOrderList]);
 
@@ -118,19 +139,19 @@ function OrderView() {
               <tr>
                 <td>이름</td>
                 <td>
-                  <p>{loginUserInfo.username}</p>
+                  <p>{order.username}</p>
                 </td>
               </tr>
               <tr>
                 <td>연락처</td>
                 <td>
-                  <p>{loginUserInfo.phone}</p>
+                  <p>{order.userphone}</p>
                 </td>
               </tr>
               <tr>
                 <td>주소</td>
                 <td>
-                  <p>{`${loginUserInfo.address} ${loginUserInfo.detailAddress}`}</p>
+                  <p>{`${order.useraddress} ${order.userdetailaddress}`}</p>
                 </td>
               </tr>
             </tbody>

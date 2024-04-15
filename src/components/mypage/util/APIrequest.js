@@ -80,9 +80,9 @@ export async function fetchEditPetSitter(formData, sitterId) {
 }
 
 //펫시터 정보 요청(userId)
-export const fetchGetSitterInfo = async (userId) => {
+export const fetchGetSitterInfo = async () => {
   try {
-    const response = await fetch(`${API_URL}/sitterpage/${userId}`, {
+    const response = await fetch(`${API_URL}/sitterpage`, {
       method: 'GET',
       credentials: 'include',
     });
@@ -124,5 +124,22 @@ export async function fetchPostReview(data, id) {
     return response;
   } catch (error) {
     console.error('Error fetching data:', error);
+  }
+}
+
+//펫시터 회원 예약 목록 조회 요청 mypage/PetSitterReservation
+export async function fetchGetPetSitterBookList(sitterId) {
+  try {
+    const response = await fetch(`${API_URL}/sitterpage/orderlist/${sitterId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
   }
 }
