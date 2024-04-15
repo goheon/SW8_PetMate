@@ -143,3 +143,37 @@ export async function fetchGetPetSitterBookList(sitterId) {
     console.error('Error:', error);
   }
 }
+
+//펫시터회원 예약요청 확인 -> 진행중 요청
+export async function fetchOrderAccept(orderId) {
+  try {
+    const response = await fetch(`${API_URL}/sitterpage/${orderId}/accept`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+//펫시터회원 예약요청 거절 -> 취소 요청
+export async function fetchOrderReject(orderId) {
+  try {
+    const response = await fetch(`${API_URL}/sitterpage/${orderId}/reject`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}

@@ -64,11 +64,6 @@ const OrderList = (props) => {
           </div>
           <div className="btn-box">
             <Link to={`/mypage/order-view/${props.orderId}`}>상세내용</Link>
-            {props.state === '진행중' ? (
-              <button type="button" value={props.orderId} onClick={handleComplete}>
-                완료하기
-              </button>
-            ) : undefined}
             {props.state === '완료' && props.reviewWritten !== '1' ? (
               <Link to={`/mypage/review-write/${props.orderId}`}>리뷰작성</Link>
             ) : undefined}
