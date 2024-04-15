@@ -96,7 +96,7 @@ function OrderView() {
       customClass: { container: 'custom-popup' },
     }).then((result) => nav(-1));
   };
-
+  console.log(order);
   return (
     <>
       <div className="mypage-order-view">
@@ -217,7 +217,7 @@ function OrderView() {
                 <td>반려 경험 및 경력</td>
                 <td>
                   <ul>
-                    {order.petSitterInfo.experience.map((el) => {
+                    {order.petSitterInfo.sitterInfo.experience.map((el) => {
                       return (
                         <li>
                           <p>{el}</p>
@@ -231,7 +231,7 @@ function OrderView() {
           </table>
         </div>
         {/* && 담당 펫시터에게만 노출 */}
-        {order.state === '예약요청' && loginUserInfo.userId === order.petSitterInfo.userId ? (
+        {order.state === '예약요청' && loginUserInfo.userId === order.petSitterInfo.sitterInfo.userId ? (
           <div className="accept-reject-buttons">
             <button type="button" onClick={handleAccept}>
               예약 확정
