@@ -1,11 +1,44 @@
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { setAllOrderList } from '../../store';
+import { fetchGetBookList } from './util/APIrequest';
+import Swal from 'sweetalert2';
 
 function OrderView() {
   const { id } = useParams();
   const allOrderList = useSelector((state) => state.allOrderList);
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
-  const order = allOrderList.find((el) => el.orderId == id);
+  const [order, setOrder] = useState(allOrderList.find((el) => el.orderId == id));
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function getBookList() {
+      const response = await fetchGetBookList();
+      if (!response.ok) throw new Error('Network response was not ok');
+      const { data } = await response.json();
+      dispatch(setAllOrderList(data));
+    }
+    getBookList();
+    setOrder(allOrderList.find((el) => el.orderId == id));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (allOrderList.length > 0) {
+      const selectedOrder = allOrderList.find((el) => el.orderId === id);
+      if (selectedOrder) {
+        setOrder(selectedOrder);
+      } else {
+        // id에 해당하는 주문이 없는 경우 예외 처리
+        console.log('Order not found');
+      }
+    }
+  }, [id, allOrderList]);
+
+  if (!order) {
+    return;
+  }
+
   const startObject = new Date(order.startDate);
   const endObject = new Date(order.endDate);
   const createdAtObject = new Date(order.createdAt);
