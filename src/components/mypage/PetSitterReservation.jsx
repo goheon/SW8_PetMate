@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import Select from 'react-select';
+import Swal from 'sweetalert2';
 import { setAllPetSitterOrderList } from '../../store';
 import { fetchGetPetSitterBookList, fetchGetSitterInfo } from './util/APIrequest';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -82,13 +83,23 @@ function Reservation() {
   const [filterOrderList, setFilterOrderList] = useState([]);
   const [sitterInfo, setSitterInfo] = useState();
   const dispatch = useDispatch();
-
+  const nav = useNavigate();
   //필터 날짜
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
   useEffect(() => {
     if (loginUserInfo) {
+      //펫시터 회원이 아닌 경우
+      if (!loginUserInfo.isRole) {
+        Swal.fire({
+          title: '권한이 없습니다!',
+          text: '',
+          icon: 'warning',
+          customClass: { container: 'custom-popup' },
+        }).then((result) => nav('/', { replace: true }));
+      }
+
       const getSitterInfo = async () => {
         const response = await fetchGetSitterInfo();
         if (!response.ok) {
@@ -117,7 +128,7 @@ function Reservation() {
 
     async function getBookList() {
       if (sitterInfo) {
-        const responseBook = await fetchGetPetSitterBookList(sitterInfo.sitterInfo.sitterId);
+        const responseBook = await fetchGetPetSitterBookList(sitterInfo.sitterId);
         if (!responseBook.ok) throw new Error('Network response was not ok');
         const { data } = await responseBook.json();
 
