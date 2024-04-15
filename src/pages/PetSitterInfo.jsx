@@ -2,11 +2,12 @@ import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { API_URL, getCookie, parseJwt } from '../util/constants';
+import { API_URL, cutAddressToDistrict, getCookie, parseJwt } from '../util/constants';
 import { MyDatePicker, TimePicker } from '../components/datepicker/DatePicker';
 import InquiryWriteModal from '../components/petSitterInfo/InquiryWriteModal';
 import './PetSitterInfo.scss';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 //펫시터 정보 가지구오기
 async function getPetSitterInfo(sitterId) {
@@ -35,8 +36,6 @@ async function postRequest(sitterId, data) {
     });
 
     if (!response.ok) throw new Error('Network response was not ok');
-
-    console.log(response);
   } catch (error) {
     console.log('Error:', error);
   }
@@ -44,28 +43,12 @@ async function postRequest(sitterId, data) {
 
 // 리뷰(리뷰 수, 펫시터의 리뷰 목록), User(주소(활동범위)) 정보를 가져옴
 PetSitterInfo.defaultProps = {
-  userId: 1,
-  sitterId: 1,
-  name: '이하은',
   img: 'https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg',
-  type: ['소형견', '중형견', '대형견', '고양이'],
-  location: '서울시 강서구',
-  title: '안전하고 편안하게 돌봐주는 펫시팅',
-  introduction:
-    '안녕하세요! 저는 동물을 사랑하고 책임감을 가지고 행동하는 펫시터입니다. 애완동물의 행복과 안전을 최우선으로 생각하며, 신뢰할 수 있는 돌봄을 제공합니다.',
-  experience: [
-    '펫시터 전문가 교육 수료',
-    '전문 펫시터 자격증 보유',
-    '펫시터 직업 훈련 교육 수료',
-    '반려동물행동교정사 2급 자격증 보유',
-    '강아지 반려 경험 (14년) 인증 완료',
-    '고양이 반려 경험 (8년) 인증 완료',
-  ],
   check: ['신원 인증', '인성 검사', '촬영 동의'],
-  hourlyRate: { small: 15000, medium: 20000, large: 25000, cat: 10000 },
 };
 
-function PetSitterInfo({ img, name, type, location, title, introduction, experience, check, hourlyRate }) {
+function PetSitterInfo({ img, check }) {
+  const nav = useNavigate();
   const petTypeRef = useRef();
   const petCountRef = useRef();
   const requestRef = useRef();
@@ -85,7 +68,6 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
       setPetSitterData(data);
     });
   }, []);
-  console.log(petSitterData);
 
   //시간 변경을 감시
   useEffect(() => {
@@ -179,7 +161,7 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
 
         type = typeSetter(type);
 
-        timeChangedPrice += hourlyRate[type] * count * hours;
+        timeChangedPrice += petSitterData.sitterInfo.hourlyRate[type] * count * hours;
       });
       return setTotalPrice(timeChangedPrice);
     }
@@ -188,13 +170,13 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
 
     switch (msg) {
       case 'add':
-        setTotalPrice(totalPrice + hourlyRate[type] * count * hours);
+        setTotalPrice(totalPrice + petSitterData.sitterInfo.hourlyRate[type] * count * hours);
         break;
       case 'remove':
-        setTotalPrice(totalPrice - hourlyRate[type] * count * hours);
+        setTotalPrice(totalPrice - petSitterData.sitterInfo.hourlyRate[type] * count * hours);
         break;
       default:
-        setTotalPrice(totalPrice - hourlyRate[type] * count * hours);
+        setTotalPrice(totalPrice - petSitterData.sitterInfo.hourlyRate[type] * count * hours);
         break;
     }
   };
@@ -269,23 +251,6 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
       new Date(endTime).getHours(),
     );
 
-    /* console.log(
-      'pets: ',
-      pets,
-      'userId: ',
-      userId,
-      'sitterId: ',
-      sitterId,
-      'totalPrice: ',
-      totalPrice,
-      'detailInfo: ',
-      detailInfo,
-      'formedStartDate: ',
-      formedStartDate,
-      'formedEndDate: ',
-      formedEndDate,
-    ); */
-
     const data = {
       pets,
       totalPrice,
@@ -294,9 +259,26 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
       endDate: formedEndDate,
     };
 
-    console.log(data);
-
-    postRequest(sitterId, data);
+    if (data.pets && data.totalPrice && data.startDate && data.endDate) {
+      postRequest(sitterId, data).then((res) =>
+        Swal.fire({
+          title: '예약요청 완료',
+          text: `예약요청이 완료되었습니다`,
+          icon: 'success',
+          customClass: { container: 'custom-popup' },
+        }).then((result) => {
+          nav('/mypage/reservation', { replace: true });
+        }),
+      );
+    } else {
+      Swal.fire({
+        title: '예약요청 실패',
+        text: `필수값을 입력하세요.`,
+        icon: 'error',
+        customClass: { container: 'custom-popup' },
+      });
+      console.log(data);
+    }
   };
 
   if (!petSitterData) return <>로딩즁이거나 없는 펫시터 정보입니다</>;
@@ -309,17 +291,19 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
           <div className="container_left">
             <div className="pet-sitter-Introduction">
               <div className="pet-sitter-Introduction_title">
-                <p>서울 강남구 파트너 &middot; 이하은 님</p>
-                <h5>{petSitterData.title}</h5>
+                <p>
+                  {cutAddressToDistrict(petSitterData.value.address)} 펫시터 &middot; {petSitterData.value.username} 님
+                </p>
+                <h5>{petSitterData.sitterInfo.title}</h5>
                 <div className="pet-sitter-Introduction_tag">
-                  {petSitterData.type.map((el, index) => {
+                  {petSitterData.sitterInfo.type.map((el, index) => {
                     return <span key={index}>#{el}</span>;
                   })}
                 </div>
               </div>
               <div className="pet-sitter-Introduction_detail">
-                <h5>이하은 펫시터님을 소개합니다</h5>
-                <p>{petSitterData.introduction}</p>
+                <h5>{petSitterData.value.username} 펫시터님을 소개합니다</h5>
+                <p>{petSitterData.sitterInfo.introduction}</p>
               </div>
               <div className="pet-sitter-Introduction_service">
                 <h5>이용 가능 서비스</h5>
@@ -402,7 +386,7 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
                         src="https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg"
                         alt="pet-siiter-img"
                       />
-                      <span>{name}</span>
+                      <span>{petSitterData.value.username}</span>
                     </div>
                     <div className="review_pet-siiter_comment">
                       Voluptate laboris incididunt elit quis sit fugiat. Quis id do consectetur non id do tempor esse
@@ -440,7 +424,7 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
                         src="https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg"
                         alt="pet-siiter-img"
                       />
-                      <span>{name}</span>
+                      <span>{petSitterData.value.username}</span>
                     </div>
                     <div className="review_pet-siiter_comment">
                       Voluptate laboris incididunt elit quis sit fugiat. Quis id do consectetur non id do tempor esse
@@ -478,7 +462,7 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
                         src="https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg"
                         alt="pet-siiter-img"
                       />
-                      <span>{name}</span>
+                      <span>{petSitterData.value.username}</span>
                     </div>
                     <div className="review_pet-siiter_comment">
                       Voluptate laboris incididunt elit quis sit fugiat. Quis id do consectetur non id do tempor esse
@@ -499,7 +483,7 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
                   <img src={img} alt="" />
                 </div>
                 <div className="pt_detail">
-                  <h4>{name} 펫시터</h4>
+                  <h4>{petSitterData.value.username} 펫시터</h4>
                   <p>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                       <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
@@ -514,7 +498,7 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
               </div>
               <div className="petsitter_mid">
                 <ul>
-                  {petSitterData.experience.map((info, i) => {
+                  {petSitterData.sitterInfo.experience.map((info, i) => {
                     return (
                       <li key={i}>
                         <p>{info}</p>
@@ -541,7 +525,7 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
 
             <section className="reservation-section">
               <div className="reservation-card_inner">
-                <InquiryWriteModal isOpen={isModalOpen} onClose={closeModal} name={name} />
+                <InquiryWriteModal isOpen={isModalOpen} onClose={closeModal} name={petSitterData.value.username} />
 
                 <form action="#" id="reservation" method="post" onSubmit={handleSubmit}>
                   <div>
@@ -566,7 +550,7 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
                       <div className="pet-select_options">
                         <select name="pet-type" ref={petTypeRef}>
                           <option default>선택</option>
-                          {optionCheck(type)}
+                          {optionCheck(petSitterData.sitterInfo.type)}
                         </select>
                         <select name="pet-count" ref={petCountRef}>
                           <option default>선택</option>
@@ -634,44 +618,47 @@ function PetSitterInfo({ img, name, type, location, title, introduction, experie
                   <span>1시간</span>
                 </div>
                 <ul>
-                  {hourlyRate.cat ? (
+                  {petSitterData.sitterInfo.hourlyRate.cat ? (
                     <li>
                       <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                           <path d="M320 192h17.1c22.1 38.3 63.5 64 110.9 64c11 0 21.8-1.4 32-4v4 32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V339.2L280 448h56c17.7 0 32 14.3 32 32s-14.3 32-32 32H192c-53 0-96-43-96-96V192.5c0-16.1-12-29.8-28-31.8l-7.9-1c-17.5-2.2-30-18.2-27.8-35.7s18.2-30 35.7-27.8l7.9 1c48 6 84.1 46.8 84.1 95.3v85.3c34.4-51.7 93.2-85.8 160-85.8zm160 26.5v0c-10 3.5-20.8 5.5-32 5.5c-28.4 0-54-12.4-71.6-32h0c-3.7-4.1-7-8.5-9.9-13.2C357.3 164 352 146.6 352 128v0V32 12 10.7C352 4.8 356.7 .1 362.6 0h.2c3.3 0 6.4 1.6 8.4 4.2l0 .1L384 21.3l27.2 36.3L416 64h64l4.8-6.4L512 21.3 524.8 4.3l0-.1c2-2.6 5.1-4.2 8.4-4.2h.2C539.3 .1 544 4.8 544 10.7V12 32v96c0 17.3-4.6 33.6-12.6 47.6c-11.3 19.8-29.6 35.2-51.4 42.9zM432 128a16 16 0 1 0 -32 0 16 16 0 1 0 32 0zm48 16a16 16 0 1 0 0-32 16 16 0 1 0 0 32z" />
                         </svg>
                       </div>
-                      <span>고양이</span> <span>{hourlyRate.cat.toLocaleString()} 원</span>
+                      <span>고양이</span> <span>{petSitterData.sitterInfo.hourlyRate.cat.toLocaleString()} 원</span>
                     </li>
                   ) : undefined}
-                  {hourlyRate.small ? (
+                  {petSitterData.sitterInfo.hourlyRate.small ? (
                     <li>
                       <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                           <path d="M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32h52.1c12.7 0 24.9 5.1 33.9 14.1L496 64h56c13.3 0 24 10.7 24 24v24c0 44.2-35.8 80-80 80H464 448 426.7l-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V364.8c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2V480c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V249.8c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192h30 16H303.8L416 256.1zM464 80a16 16 0 1 0 -32 0 16 16 0 1 0 32 0z" />
                         </svg>
                       </div>
-                      <span>소형견</span> <span>7kg 미만</span> <span>{hourlyRate.small.toLocaleString()} 원</span>
+                      <span>소형견</span> <span>7kg 미만</span>{' '}
+                      <span>{petSitterData.sitterInfo.hourlyRate.small.toLocaleString()} 원</span>
                     </li>
                   ) : undefined}
-                  {hourlyRate.medium ? (
+                  {petSitterData.sitterInfo.hourlyRate.medium ? (
                     <li>
                       <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                           <path d="M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32h52.1c12.7 0 24.9 5.1 33.9 14.1L496 64h56c13.3 0 24 10.7 24 24v24c0 44.2-35.8 80-80 80H464 448 426.7l-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V364.8c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2V480c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V249.8c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192h30 16H303.8L416 256.1zM464 80a16 16 0 1 0 -32 0 16 16 0 1 0 32 0z" />
                         </svg>
                       </div>
-                      <span>중형견</span> <span>7~14.9kg</span> <span>{hourlyRate.medium.toLocaleString()} 원</span>
+                      <span>중형견</span> <span>7~14.9kg</span>{' '}
+                      <span>{petSitterData.sitterInfo.hourlyRate.medium.toLocaleString()} 원</span>
                     </li>
                   ) : undefined}
-                  {hourlyRate.large ? (
+                  {petSitterData.sitterInfo.hourlyRate.large ? (
                     <li>
                       <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                           <path d="M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32h52.1c12.7 0 24.9 5.1 33.9 14.1L496 64h56c13.3 0 24 10.7 24 24v24c0 44.2-35.8 80-80 80H464 448 426.7l-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V364.8c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2V480c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V249.8c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192h30 16H303.8L416 256.1zM464 80a16 16 0 1 0 -32 0 16 16 0 1 0 32 0z" />
                         </svg>
                       </div>
-                      <span>대형견</span> <span>15kg 이상</span> <span>{hourlyRate.large.toLocaleString()} 원</span>
+                      <span>대형견</span> <span>15kg 이상</span>{' '}
+                      <span>{petSitterData.sitterInfo.hourlyRate.large.toLocaleString()} 원</span>
                     </li>
                   ) : undefined}
                 </ul>

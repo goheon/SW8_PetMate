@@ -22,3 +22,14 @@ export const parseJwt = (token) => {
 
   return JSON.parse(jsonPayload);
 };
+
+//주소 스트링에서 oo구까지 자르는 함수
+export function cutAddressToDistrict(address) {
+  // '구' 단위까지만 추출하는 정규 표현식
+  const regex = /^.*?구/;
+  const match = address.match(regex);
+
+  // 매치된 주소가 있다면 그 부분을 반환하고, 없다면 전체 주소를 반환한다.
+  return match ? match[0] : address;
+}
+
