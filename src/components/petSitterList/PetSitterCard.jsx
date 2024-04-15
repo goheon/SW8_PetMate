@@ -4,7 +4,6 @@ import './PetSitterCard.scss';
 
 function PetSitterCard(props) {
     const dogTypes = ['소형견', '중형견', '대형견'];
-    const includesDogType = props.petsitter.type.some(type => dogTypes.includes(type));
     const typeMapping = {
         small: '소형견',
         medium: '중형견',
@@ -20,15 +19,14 @@ function PetSitterCard(props) {
                 </div>
                 <div className='text-box'>
                     <div className='text-box_top'>
-                        <p>{props.petsitter.location}</p>
+                        <p>{props.petsitter.location}&nbsp;파트너&nbsp;·&nbsp;{props.petsitter.name}&nbsp;님</p>
                         <h4>{props.petsitter.title}</h4>
                     </div>
                     <div className='text-box_bottom'>
                         <div className='tb_left'>
                             <div className='tb_keyword'>
-                                {includesDogType && <span>강아지</span>}
                                 {
-                                    props.petsitter.type.map((type, index) => (<span key={index}>{type}</span>))
+                                    props.petsitter.type.map((type, index) => (<span key={index}>#{type}</span>))
                                 }
                             </div>
                             <div className='tb_review'>

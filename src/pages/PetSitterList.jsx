@@ -47,7 +47,7 @@ const data = [
             '고양이 반려 경험 (8년) 인증 완료',
         ],
         check: ['신원 인증', '인성 검사', '촬영 동의'],
-        hourlyRate: { small: 15000, medium: 20000},
+        hourlyRate: { small: 15000, medium: 20000 },
     },
     {
         userId: 3,
@@ -68,7 +68,7 @@ const data = [
             '고양이 반려 경험 (8년) 인증 완료',
         ],
         check: ['신원 인증', '인성 검사', '촬영 동의'],
-        hourlyRate: { cat: 15000},
+        hourlyRate: { cat: 15000 },
     },
 ];
 
@@ -86,48 +86,49 @@ function PetSitterList() {
 
     return (
         <>
-            <Header />
+            <section className="page-wrapper">
+                <Header />
 
-            <section className='search-bar'>
-                <div className='search-bar_inner'>
-                    <div className='search_left'>
-                        <div className='sl_button'>
-                            <button
-                                className={`${activeModal === 'locationModal' ? 'selected-button' : ''} ${selectedLocation !== '지역' ? 'selected-location-button' : ''}`}
-                                onClick={() => toggleModal('locationModal')}>
-                                {selectedLocation}
-                            </button>
-                            {
-                                activeModal === 'locationModal' && <LocationModal setActiveModal={setActiveModal} setSelectLocation={setSelectLocation} />
-                            }
-                        </div>
-                        <div className='sl_button'>
-                            <button
-                                className={activeModal === 'typeModal' ? 'selected-button' : null}
-                                onClick={() => toggleModal('typeModal')}>
-                                {selectedType}
-                            </button>
-                            {
-                                activeModal === 'typeModal' && <TypeModal setActiveModal={setActiveModal} selectedType={selectedType}
-                                    setSelectedType={setSelectedType} selectedSizes={selectedSizes} setSelectedSizes={setSelectedSizes} />
-                            }
+                <section className='search-bar'>
+                    <div className='search-bar_inner'>
+                        <div className='search_left'>
+                            <div className='sl_button'>
+                                <button
+                                    className={`${activeModal === 'locationModal' ? 'selected-button' : ''} ${selectedLocation !== '지역' ? 'selected-location-button' : ''}`}
+                                    onClick={() => toggleModal('locationModal')}>
+                                    {selectedLocation}
+                                </button>
+                                {
+                                    activeModal === 'locationModal' && <LocationModal setActiveModal={setActiveModal} setSelectLocation={setSelectLocation} />
+                                }
+                            </div>
+                            <div className='sl_button'>
+                                <button
+                                    className={activeModal === 'typeModal' ? 'selected-button' : null}
+                                    onClick={() => toggleModal('typeModal')}>
+                                    {selectedType}
+                                </button>
+                                {
+                                    activeModal === 'typeModal' && <TypeModal setActiveModal={setActiveModal} selectedType={selectedType}
+                                        setSelectedType={setSelectedType} selectedSizes={selectedSizes} setSelectedSizes={setSelectedSizes} />
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <section className='search-list'>
+                    {
+                        petsitter.map((el, i) => {
+                            return (
+                                <PetSitterCard petsitter={petsitter[i]} />
+                            )
+                        })
+                    }
+                </section>
+
+                <Footer />
             </section>
-
-            <section className='search-list'>
-                {
-                    petsitter.map((el, i) => {
-                        return (
-                            <PetSitterCard petsitter={petsitter[i]}/>
-                        )
-                    })
-                }
-            </section>
-
-            <Footer />
-
         </>
     )
 }
