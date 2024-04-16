@@ -803,11 +803,17 @@
         font-size: 15px;
       }
       .file_img-box {
+        display: flex;
+        gap: 15px;
         font-size: 0;
         padding: 15px;
         background-color: #f4f6fe;
         margin-top: 10px;
         border-radius: 10px;
+        img {
+          max-height: 300px;
+          border: 1px solid #aaa;
+        }
       }
 
       .registration {

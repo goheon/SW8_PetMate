@@ -22,11 +22,33 @@ function ReviewWrite() {
   const nav = useNavigate();
 
   const handleImageUpload = (e) => {
-    let reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-    };
-    reader.readAsDataURL(e.target.files[0]);
+    const files = e.target.files;
+    const maxFiles = 3;
+    const previews = [];
+
+    if (files.length > maxFiles) {
+      alert(`최대 ${maxFiles}개의 이미지만 업로드할 수 있습니다.`);
+      // file input을 초기화하거나
+      fileInput.value = '';
+      return;
+    }
+    for (let i = 0; i < Math.min(files.length, 3); i++) {
+      let reader = new FileReader();
+
+      // 각 파일이 로드 완료되면 previews 배열에 결과 추가
+      reader.onloadend = () => {
+        previews.push(reader.result);
+
+        // 모든 선택된 파일이 로드 완료되었는지 확인
+        if (previews.length === Math.min(files.length, 3)) {
+          // setPreview 함수를 호출하여 상태 업데이트
+          // 이 예제에서는 setPreview가 여러 이미지 URL을 처리할 수 있다고 가정
+          setPreview(previews);
+        }
+      };
+
+      reader.readAsDataURL(files[i]);
+    }
   };
 
   const handleSummit = async (e) => {
@@ -44,7 +66,9 @@ function ReviewWrite() {
     }
 
     let formData = new FormData();
-    formData.append('img', fileInput.current.files[0]);
+    for (let i = 0; i < fileInput.current.files.length && i < 3; i++) {
+      formData.append('img', fileInput.current.files[i]);
+    }
     formData.append('title', e.target.title.value);
     formData.append('comment', e.target.reviewText.value);
     formData.append('starRate', Number(selectedOption.value));
@@ -91,10 +115,15 @@ function ReviewWrite() {
         <form action="" onSubmit={handleSummit}>
           <div>
             <h6>이미지 업로드</h6>
-            <input type="file" accept="image/*" onChange={handleImageUpload} ref={fileInput} />
+            <input type="file" accept="image/*" onChange={handleImageUpload} ref={fileInput} multiple />
+
             {preview && (
               <div className="file_img-box">
-                <img src={preview} alt="preview" />
+                {preview.map((el) => (
+                  <span>
+                    <img src={el} alt="preview" />
+                  </span>
+                ))}
               </div>
             )}
           </div>
