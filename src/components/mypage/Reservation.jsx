@@ -202,6 +202,7 @@ function Reservation() {
                   .slice()
                   .reverse()
                   .map((el) => <OrderList key={el.orderId} {...el} />))}
+          {allOrderList.length < 1 && <p className="noOrder">이용내역이 없습니다.</p>}
         </ul>
       </div>
     </>

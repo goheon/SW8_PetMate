@@ -213,6 +213,8 @@ function Reservation() {
             (onFilter
               ? filterOrderList.map((el) => <OrderList key={el.orderId} {...el} />)
               : allOrderList.map((el) => <OrderList key={el.orderId} {...el} />))}
+
+          {allOrderList.length < 1 && <p className="noOrder">예약내역이 없습니다.</p>}
         </ul>
       </div>
     </>
