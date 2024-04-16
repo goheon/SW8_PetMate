@@ -19,6 +19,7 @@ async function getPetSitterInfo(sitterId) {
     if (!response.ok) throw new Error('Network response was not ok');
 
     const data = await response.json();
+    console.log(data);
     if (data) return data;
   } catch (error) {
     console.log('Error:', error);
