@@ -211,8 +211,14 @@ function Reservation() {
         <ul className="mypage-reservation-list">
           {allOrderList.length > 0 &&
             (onFilter
-              ? filterOrderList.map((el) => <OrderList key={el.orderId} {...el} />)
-              : allOrderList.map((el) => <OrderList key={el.orderId} {...el} />))}
+              ? filterOrderList
+                  .slice()
+                  .reverse()
+                  .map((el) => <OrderList key={el.orderId} {...el} />)
+              : allOrderList
+                  .slice()
+                  .reverse()
+                  .map((el) => <OrderList key={el.orderId} {...el} />))}
 
           {allOrderList.length < 1 && <p className="noOrder">예약내역이 없습니다.</p>}
         </ul>
