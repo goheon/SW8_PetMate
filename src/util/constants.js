@@ -32,4 +32,3 @@ export function cutAddressToDistrict(address) {
   // 매치된 주소가 있다면 그 부분을 반환하고, 없다면 전체 주소를 반환한다.
   return match ? match[0] : address;
 }
-
