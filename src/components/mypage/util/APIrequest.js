@@ -127,6 +127,20 @@ export async function fetchPostReview(data, id) {
   }
 }
 
+//회원 예약 상태 수정 요청(진행중 -> 완료)
+export async function fetchOrderComplete(orderId) {
+  try {
+    const response = await fetch(`${API_URL}/mypage/${orderId}/complete`, {
+      method: 'PATCH',
+      credentials: 'include',
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
 //펫시터 회원 예약 목록 조회 요청 mypage/PetSitterReservation
 export async function fetchGetPetSitterBookList(sitterId) {
   try {

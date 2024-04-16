@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import Swal from 'sweetalert2';
 import { setAllOrderList } from '../../store';
-import { fetchGetBookList } from './util/APIrequest';
+import { fetchGetBookList, fetchOrderComplete } from './util/APIrequest';
 import 'react-datepicker/dist/react-datepicker.css';
 
 //날짜 설정 컴포넌트
@@ -33,11 +34,26 @@ const options = [
 
 //예약내역 리스트 컴포넌트
 const OrderList = (props) => {
+  const dispatch = useDispatch();
   const addressList = props.sitteraddress ? props.sitteraddress.split(' ') : undefined;
   const formedSitterAddress = addressList ? `${addressList[0]} ${addressList[1]}` : undefined;
   const handleComplete = async (e) => {
-    // const orderId = e.target.value;
+    const orderId = e.target.value;
     //주문 상태 변경 API 연결(진행중 -> 완료)
+    const response = await fetchOrderComplete(orderId);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    Swal.fire({
+      title: '완료 처리되었습니다.',
+      icon: 'success',
+      customClass: { container: 'custom-popup' },
+    }).then(async (result) => {
+      const response = await fetchGetBookList();
+      if (!response.ok) throw new Error('Network response was not ok');
+      const { data } = await response.json();
+      dispatch(setAllOrderList(data));
+    });
   };
 
   return (
