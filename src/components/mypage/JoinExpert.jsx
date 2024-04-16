@@ -29,6 +29,16 @@ function JoinExpert() {
   const handleSummit = (e) => {
     e.preventDefault();
 
+    if (!e.target.agreement.checked) {
+      Swal.fire({
+        title: '필수 이용약관 동의가 필요합니다.',
+        icon: 'warning',
+        confirmButtonText: '확인',
+        customClass: { container: 'custom-popup' },
+      });
+      return;
+    }
+
     Swal.fire({
       title: '펫시터로 전환할까요?',
       text: '전환 전 작성한 내용이 맞는지 확인해주세요!',

@@ -55,7 +55,7 @@ const OrderList = (props) => {
         </div>
         <div className="mypage-reservation-list_info_right">
           <div className="text-box">
-            <p className="title">{props.petSitterInfo.title}</p>
+            <p className="title">{props.petSitterInfo.sitterInfo.title}</p>
             <h5>{props.totalPrice.toLocaleString()}원</h5>
             <h6>
               {formedSitterAddress} 파트너 · {props.sittername} 님
@@ -63,7 +63,7 @@ const OrderList = (props) => {
           </div>
           <div className="btn-box">
             <Link to={`/mypage/order-view/${props.orderId}`}>상세내용</Link>
-            {props.state === '진행중' ? (
+            {props.state === '진행중' && new Date(props.endDate) < new Date() ? (
               <button type="button" value={props.orderId} onClick={handleComplete}>
                 완료하기
               </button>
@@ -194,8 +194,15 @@ function Reservation() {
         <ul className="mypage-reservation-list">
           {allOrderList.length > 0 &&
             (onFilter
-              ? filterOrderList.map((el) => <OrderList key={el.orderId} {...el} />)
-              : allOrderList.map((el) => <OrderList key={el.orderId} {...el} />))}
+              ? filterOrderList
+                  .slice()
+                  .reverse()
+                  .map((el) => <OrderList key={el.orderId} {...el} />)
+              : allOrderList
+                  .slice()
+                  .reverse()
+                  .map((el) => <OrderList key={el.orderId} {...el} />))}
+          {allOrderList.length < 1 && <p className="noOrder">이용내역이 없습니다.</p>}
         </ul>
       </div>
     </>
