@@ -55,7 +55,7 @@ const OrderList = (props) => {
         </div>
         <div className="mypage-reservation-list_info_right">
           <div className="text-box">
-            <p className="title">{props.petSitterInfo.title}</p>
+            <p className="title">{props.petSitterInfo.sitterInfo.title}</p>
             <h5>{props.totalPrice.toLocaleString()}원</h5>
             <h6>
               {formedSitterAddress} 파트너 · {props.sittername} 님
@@ -194,8 +194,14 @@ function Reservation() {
         <ul className="mypage-reservation-list">
           {allOrderList.length > 0 &&
             (onFilter
-              ? filterOrderList.map((el) => <OrderList key={el.orderId} {...el} />)
-              : allOrderList.map((el) => <OrderList key={el.orderId} {...el} />))}
+              ? filterOrderList
+                  .slice()
+                  .reverse()
+                  .map((el) => <OrderList key={el.orderId} {...el} />)
+              : allOrderList
+                  .slice()
+                  .reverse()
+                  .map((el) => <OrderList key={el.orderId} {...el} />))}
         </ul>
       </div>
     </>

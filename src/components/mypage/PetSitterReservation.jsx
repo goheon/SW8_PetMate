@@ -37,11 +37,6 @@ const OrderList = (props) => {
   const addressList = props.sitteraddress ? props.sitteraddress.split(' ') : undefined;
   const formedSitterAddress = addressList ? `${addressList[0]} ${addressList[1]}` : undefined;
 
-  const handleComplete = async (e) => {
-    // const orderId = e.target.value;
-    //주문 상태 변경 API 연결(진행중 -> 완료)
-  };
-
   return (
     <li key={props.orderId}>
       <div className="mypage-reservation-list_state">
@@ -57,7 +52,7 @@ const OrderList = (props) => {
         </div>
         <div className="mypage-reservation-list_info_right">
           <div className="text-box">
-            <p className="title">{props.petSitterInfo.title}</p>
+            <p className="title">{props.petSitterInfo.sitterInfo.title}</p>
             <h5>{props.totalPrice.toLocaleString()}원</h5>
             <h6>
               {formedSitterAddress} 파트너 · {props.sittername} 님
@@ -65,9 +60,6 @@ const OrderList = (props) => {
           </div>
           <div className="btn-box">
             <Link to={`/mypage/order-view/${props.orderId}`}>상세내용</Link>
-            {props.state === '완료' && props.reviewWritten !== '1' ? (
-              <Link to={`/mypage/review-write/${props.orderId}`}>리뷰작성</Link>
-            ) : undefined}
           </div>
         </div>
       </div>
