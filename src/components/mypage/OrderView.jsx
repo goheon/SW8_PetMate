@@ -96,7 +96,7 @@ function OrderView() {
       customClass: { container: 'custom-popup' },
     }).then((result) => nav(-1));
   };
-  console.log(order);
+
   return (
     <>
       <div className="mypage-order-view">

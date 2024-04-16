@@ -63,7 +63,7 @@ const OrderList = (props) => {
           </div>
           <div className="btn-box">
             <Link to={`/mypage/order-view/${props.orderId}`}>상세내용</Link>
-            {props.state === '진행중' ? (
+            {props.state === '진행중' && new Date(props.endDate) < new Date() ? (
               <button type="button" value={props.orderId} onClick={handleComplete}>
                 완료하기
               </button>
