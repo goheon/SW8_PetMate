@@ -49,7 +49,7 @@ function JoinExpert() {
       setExperienceList(sitterInfo.experience || []);
 
       // 대표 이미지 설정
-      setPreview(sitterInfo.img || null);
+      setPreview(sitterInfo.image || null);
 
       // 제목 설정
       document.getElementById('title').value = sitterInfo.title || '';
@@ -118,9 +118,12 @@ function JoinExpert() {
         }
 
         const formData = new FormData();
+
+        //이미지를 업로드한 경우 업로드 이미지로 전송
         if (fileInput.current.files.length !== 0) {
           formData.append('img', fileInput.current.files[0]);
         }
+
         formData.append('type', types);
 
         const formedHourlyRate = {};
@@ -243,7 +246,7 @@ function JoinExpert() {
           <div>
             <h6>대표 이미지</h6>
             <p>이미지를 등록하지 않는 경우 기본 이미지로 변경됩니다!</p>
-            <input type="file" accept="image/*" onChange={handleImageUpload} ref={fileInput} />
+            <input id="file-upload" type="file" accept="image/*" onChange={handleImageUpload} ref={fileInput} />
             {preview && (
               <div className="file_img-box">
                 <img src={preview} alt="preview" />

@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { fetchRegistrationPetSitter } from './util/APIrequest';
+import { fetchRegistrationPetSitter, fetchUserInfo } from './util/APIrequest';
+import { setUserInfo } from '../../store';
 
 const phoneAutoHyphen = (target) => {
   target.value = target.value
@@ -102,6 +103,10 @@ function JoinExpert() {
         const response = await fetchRegistrationPetSitter(formData);
 
         if (!response.ok) throw new Error('Network response was not ok');
+
+        //펫시터 전환 후 스토어 로그인 정보 갱신
+        const resData = await fetchUserInfo();
+        dispatch(setUserInfo(resData));
 
         Swal.fire({
           title: '성공',

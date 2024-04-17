@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useNavigate, Link, Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import ProfileImageEditModal from '../components/mypage/ProfileImgEditModal';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import infoImg from '../assets/mypage_info.png';
-import infoImg02 from '../assets/mypage_info_02.png';
 import { fetchUserInfo } from '../components/mypage/util/APIrequest';
 import { setUserInfo } from '../store';
 import './mypage.scss';
 
 function Mypage() {
   const [isPmenuOn, setIsPmenuOn] = useState(false);
+  const [isModalOn, setIsModalOn] = useState(false);
   const dispatch = useDispatch();
   const nav = useNavigate();
 
@@ -24,6 +24,10 @@ function Mypage() {
   //펫시터 메뉴 클릭의 Pmenu 핸들링
   const handleButton = () => {
     loginUserInfo.isRole === '1' ? setIsPmenuOn(!isPmenuOn) : nav('/mypage/join-expert');
+  };
+
+  const handleProfileImgEdit = () => {
+    setIsModalOn((isModalOn) => !isModalOn);
   };
 
   //펫시터 메뉴 내부 상태
@@ -59,13 +63,19 @@ function Mypage() {
               <div>
                 <div className="mypage-info_img">
                   <div className="mypage-info_img-box">
-                    <img className="defalut" src={infoImg02} alt="" />
+                    <img
+                      className="defalut"
+                      // src="https://elice-project2-pet-mate.s3.ap-northeast-2.amazonaws.com/contents/default_profile.png"
+                      src={loginUserInfo.image ? `${loginUserInfo.image[0]}` : null}
+                      alt=""
+                    />
                   </div>
-                  <div className="camera">
+                  <div className="camera" onClick={handleProfileImgEdit}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                       <path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z" />
                     </svg>
                   </div>
+                  <ProfileImageEditModal isOpen={isModalOn} onClose={handleProfileImgEdit} />
                 </div>
                 <div className="mypage-info_text">
                   <h5>{loginUserInfo.username}</h5>
@@ -76,7 +86,7 @@ function Mypage() {
               <div className="mypage-point">
                 <h5>Point</h5>
                 <p>
-                  1,000 <span>P</span>
+                  {loginUserInfo.point ? loginUserInfo.point.toLocaleString() : 0} <span>P</span>
                 </p>
               </div>
 
