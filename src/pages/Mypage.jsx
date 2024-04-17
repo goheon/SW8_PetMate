@@ -3,8 +3,6 @@ import { useNavigate, Link, Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import infoImg from '../assets/mypage_info.png';
-import infoImg02 from '../assets/mypage_info_02.png';
 import { fetchUserInfo } from '../components/mypage/util/APIrequest';
 import { setUserInfo } from '../store';
 import './mypage.scss';
@@ -59,7 +57,12 @@ function Mypage() {
               <div>
                 <div className="mypage-info_img">
                   <div className="mypage-info_img-box">
-                    <img className="defalut" src={infoImg02} alt="" />
+                    <img
+                      className="defalut"
+                      // src="https://elice-project2-pet-mate.s3.ap-northeast-2.amazonaws.com/contents/default_profile.png"
+                      src={loginUserInfo.image ? `${loginUserInfo.image[0]}` : null}
+                      alt=""
+                    />
                   </div>
                   <div className="camera">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -76,7 +79,7 @@ function Mypage() {
               <div className="mypage-point">
                 <h5>Point</h5>
                 <p>
-                  1,000 <span>P</span>
+                  {loginUserInfo.point ? loginUserInfo.point.toLocaleString() : 0} <span>P</span>
                 </p>
               </div>
 
