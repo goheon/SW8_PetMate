@@ -266,6 +266,10 @@
     }
 
     &-list {
+      height: 680px;
+      overflow-y: scroll;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
       li {
         // border: 2px solid #eee;
         background-color: #fffdf4;
@@ -514,11 +518,18 @@
         font-size: 15px;
       }
       .file_img-box {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 0;
         padding: 15px;
         background-color: #f4f6fe;
         margin-top: 10px;
         border-radius: 10px;
+        img {
+          max-width: 300px;
+        }
       }
       input[type='checkbox'] {
         display: none;
