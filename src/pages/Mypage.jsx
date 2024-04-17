@@ -47,6 +47,9 @@ function Mypage() {
             <li>
               <Link to={'/mypage/petssiter-info'}>펫시터 정보관리</Link>
             </li>
+            <li>
+              <Link to={'/mypage/petssiter-review'}>펫시터 리뷰관리</Link>
+            </li>
           </>
         )}
       </>
