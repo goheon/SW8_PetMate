@@ -7,26 +7,35 @@ import { ButtonLoading } from '../Spinner';
 import { setUserInfo } from '../../store';
 import { fetchWithdrawal, fetchUpdateUser } from './util/APIrequest';
 
+const phoneAutoHyphen = (target) => {
+  target.value = target.value
+    .replace(/[^0-9]/g, '')
+    .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+    .replace(/(\-{1,2})$/g, '');
+
+  return target;
+};
+
 function Account() {
   const nav = useNavigate();
   const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const [name, setName] = useState(loginUserInfo ? loginUserInfo.username : '');
-  const [email, setEmail] = useState(loginUserInfo ? loginUserInfo.email : '');
+  const [phone, setPhone] = useState(loginUserInfo ? loginUserInfo.phone : '');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (loginUserInfo) {
       setName(loginUserInfo.username);
-      setEmail(loginUserInfo.email);
+      setPhone(loginUserInfo.phone);
     }
   }, [loginUserInfo]);
 
   const [isNameModify, setIsNameModify] = useState(false);
-  const [isEmailModify, setIsEmailModify] = useState(false);
+  const [isPhoneModify, setIsPhoneModify] = useState(false);
   const [isPassWordModify, setIsPassWordModify] = useState(false);
   const [nameLoadingState, setNameLoadingState] = useState(false);
-  const [emailLoadingState, setEmailLoadingState] = useState(false);
+  const [phoneLoadingState, setPhoneLoadingState] = useState(false);
   const [pwLoadingState, setPwLoadingState] = useState(false);
 
   //이름수정 버튼 핸들링
@@ -37,25 +46,25 @@ function Account() {
     };
     setNameLoadingState(true);
     dispatch(setUserInfo(userInfo));
-    setIsNameModify(false);
     const response = await fetchUpdateUser({ username: name });
     if (!response.ok) throw new Error('Network response was not ok');
     setNameLoadingState(false);
+    setIsNameModify(false);
     alertEditComplete();
   };
 
-  //이메일 수정 버튼 핸들링
-  const updateEmail = async () => {
+  //핸드폰번호 수정 버튼 핸들링
+  const updatePhone = async () => {
     const userInfo = {
       ...loginUserInfo,
-      email: email,
+      phone: phone,
     };
-    setEmailLoadingState(true);
+    setPhoneLoadingState(true);
     dispatch(setUserInfo(userInfo));
-    setIsEmailModify(false);
-    const response = await fetchUpdateUser({ email: email });
+    setIsPhoneModify(false);
+    const response = await fetchUpdateUser({ phone: phone });
     if (!response.ok) throw new Error('Network response was not ok');
-    setEmailLoadingState(false);
+    setPhoneLoadingState(false);
     alertEditComplete();
   };
 
@@ -119,6 +128,7 @@ function Account() {
     dispatch(setUserInfo(null));
   };
 
+  console.log(loginUserInfo);
   return (
     <>
       <div className="mypage-account">
@@ -148,7 +158,9 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button onClick={updateName}>{nameLoadingState === true ? <ButtonLoading /> : '수정'}</button>
+                      <button onClick={updateName}>
+                        {nameLoadingState === true ? <ButtonLoading size={15} /> : '수정'}
+                      </button>
                     </>
                   ) : (
                     <>
@@ -167,35 +179,36 @@ function Account() {
                 </td>
               </tr>
               <tr>
-                <td>이메일</td>
+                <td>핸드폰번호</td>
                 <td>
-                  {isEmailModify ? (
+                  {isPhoneModify ? (
                     <>
                       <input
                         type="text"
-                        name="eamil"
-                        value={email}
+                        name="phone"
+                        value={phone}
+                        maxLength={13}
                         onChange={(e) => {
-                          setEmail(e.target.value);
+                          setPhone(phoneAutoHyphen(e.target).value);
                         }}
                       />
                       <button
                         onClick={() => {
-                          setEmail(loginUserInfo ? loginUserInfo.email : '');
-                          setIsEmailModify(false);
+                          setPhone(loginUserInfo ? loginUserInfo.phone : '');
+                          setIsPhoneModify(false);
                         }}
                         className="cancel"
                       >
                         취소
                       </button>
-                      <button onClick={updateEmail}>{emailLoadingState === true ? <ButtonLoading /> : '수정'}</button>
+                      <button onClick={updatePhone}>{phoneLoadingState === true ? <ButtonLoading /> : '수정'}</button>
                     </>
                   ) : (
                     <>
-                      <p>{loginUserInfo ? loginUserInfo.email : ''}</p>
+                      <p>{loginUserInfo ? loginUserInfo.phone : ''}</p>
                       <svg
                         onClick={() => {
-                          setIsEmailModify(true);
+                          setIsPhoneModify(true);
                         }}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 512 512"
