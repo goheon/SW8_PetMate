@@ -20,15 +20,12 @@ function Header() {
         <h1>
           <Link to={'/'}>
             <span>Pet</span>
-            <span>Sitter.</span>
+            <span>Mate.</span>
           </Link>
         </h1>
         <ul>
           <li>
             <Link to={'/pet-sitter'}>펫시터</Link>
-          </li>
-          <li>
-            <Link to={'/'}>이용후기</Link>
           </li>
           {JWT ? (
             <>
