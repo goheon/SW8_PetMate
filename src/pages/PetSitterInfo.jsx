@@ -432,7 +432,7 @@ function PetSitterInfo({ img, check }) {
             <div className="petsitter-info">
               <div className="petsitter_top">
                 <div className="pt_img">
-                  <img src={img} alt="" />
+                  <img src={petSitterData.value.image[0]} alt="" />
                 </div>
                 <div className="pt_detail">
                   <h4>{petSitterData.value.username} 펫시터</h4>
