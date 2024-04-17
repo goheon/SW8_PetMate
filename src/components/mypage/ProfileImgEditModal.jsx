@@ -75,7 +75,7 @@ const ProfileImgEditModal = ({ isOpen, onClose }) => {
                 )}
                 <div className="submit-button-wrapper">
                   <button type="submit" className="modal_submit">
-                    {isLoading === true ? <ButtonLoading size={15} /> : '변경하기'}
+                    {isLoading === true ? <ButtonLoading size={30} /> : '변경하기'}
                   </button>
                 </div>
               </form>
