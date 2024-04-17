@@ -245,7 +245,6 @@ function JoinExpert() {
           </div>
           <div>
             <h6>대표 이미지</h6>
-            <p>이미지를 등록하지 않는 경우 기본 이미지로 변경됩니다!</p>
             <input id="file-upload" type="file" accept="image/*" onChange={handleImageUpload} ref={fileInput} />
             {preview && (
               <div className="file_img-box">
