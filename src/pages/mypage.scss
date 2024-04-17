@@ -140,6 +140,34 @@
       margin-right: 10px;
       fill: #fff;
     }
+    &.on {
+      > button[type='button'] {
+        display: flex;
+        justify-content: space-between;
+        > div {
+          display: flex;
+          font-size: 14px;
+          align-items: center;
+          &:nth-of-type(1) {
+            svg {
+              width: 20px;
+            }
+          }
+          
+        }
+      }
+    }
+    .bell-length {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      color: #632ed8;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-weight: 700;
+    }
   }
   &-nav {
     width: 100%;
@@ -959,7 +987,7 @@
         margin-right: 10px;
 
         &-options {
-          >div {
+          > div {
             cursor: pointer;
             background-color: #f4f6fe;
             border: none;
@@ -989,7 +1017,7 @@
         }
       }
 
-      >button {
+      > button {
         background-color: #632ed8;
         color: #fff;
         padding: 10px 15px;
@@ -1071,7 +1099,6 @@
       }
 
       .text-box {
-
         .title {
           display: flex;
           align-items: center;
@@ -1112,7 +1139,6 @@
             display: block;
           }
         }
-        
       }
       .image-box {
         img {
