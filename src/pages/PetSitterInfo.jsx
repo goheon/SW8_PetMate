@@ -555,9 +555,9 @@ function PetSitterInfo({ img, check }) {
                   </div>
 
                   <div>
-                    <button type="button" className="inquiryWrite" onClick={openModal}>
+                    {/* <button type="button" className="inquiryWrite" onClick={openModal}>
                       문의하기
-                    </button>
+                    </button> */}
                     <button className="request-btn" type="submit">
                       예약 요청
                     </button>
