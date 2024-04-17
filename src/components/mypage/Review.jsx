@@ -1,8 +1,8 @@
 import Stars from '../Stars';
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import 'react-datepicker/dist/react-datepicker.css';
+import { fetchReviews } from './util/APIrequest';
 
 //필터 옵션
 const options = [
@@ -15,24 +15,37 @@ const options = [
 ];
 
 function Review() {
+  const [reviews, setReviews] = useState([]); // 리뷰 데이터
   const [selectedOption, setSelectedOption] = useState(options[0]); // 드롭다운 옵션
   const [startDate, setStartDate] = useState(); // 날짜 필터
   const [endDate, setEndDate] = useState();
-  const [activeExpandId, setActiveExpandId] = useState('');
+  const [activeExpandId, setActiveExpandId] = useState(''); // 현재 확장된 리뷰
 
   // 리뷰 확장 토글
   const toggleExpand = (reviewId) => {
     setActiveExpandId((preReviewId) => preReviewId === reviewId ? '' : reviewId)
   };
 
-  useEffect(() => {
-    let beginTime = new Date();
-    beginTime.setHours(0, 0, 0);
-    setStartDate(beginTime);
+   // 평점 계산
+   const averageStars = reviews.length === 0 ? "-" :
+   (reviews.reduce((acc, review) => acc + review.comment.starRate, 0) / reviews.length).toFixed(1);
 
-    let endTime = new Date();
-    endTime.setHours(23, 59, 59);
-    setEndDate(endTime);
+
+  useEffect(() => {
+    const init = async () => {
+      // const data = await fetchReviews('80zO9VGM6r4HInegpcuW4');
+      // setReviews(data);
+
+      let beginTime = new Date();
+      beginTime.setHours(0, 0, 0);
+      setStartDate(beginTime);
+
+      let endTime = new Date();
+      endTime.setHours(23, 59, 59);
+      setEndDate(endTime);
+    };
+
+    init();
   }, []);
 
   return (
@@ -44,17 +57,16 @@ function Review() {
           <li>
             <p>리뷰 수</p>
             <strong>
-              3
+              {reviews.length}
             </strong>
           </li>
           <li>
             <p>평균 별점</p>
             <strong>
-              4.9
+              {averageStars}
             </strong>
           </li>
         </ul>
-
         <div className="mypage-filter">
           <div className="mypage-filter_state">
             <Select
@@ -79,25 +91,7 @@ function Review() {
             <input type="text" placeholder="검색어입력" />
           </div>
 
-          <button
-          // onClick={() => {
-          //   const filterArr = allOrderList.filter((el) => {
-          //     if (selectedOption.value === 'all' || selectedOption.label === el.state) {
-          //       const createdAtObject = new Date(el.createdAt);
-          //       if (
-          //         startDate.getTime() <= createdAtObject.getTime() &&
-          //         createdAtObject.getTime() <= endDate.getTime()
-          //       ) {
-          //         return true;
-          //       }
-          //     }
-
-          //     return false;
-          //   });
-          //   setOnFilter(true);
-          //   setFilterOrderList(filterArr);
-          // }}
-          >
+          <button>
             조회
           </button>
         </div>
@@ -108,19 +102,17 @@ function Review() {
 
         <ul className="mypage-review-list">
           {
-            [1, 2].map((el, i) => {
-              return (
-                <ReviewList
-                  key={i}
-                  isExpanded={activeExpandId === i}
-                  onToggleExpand={() => toggleExpand(i)}
-                />
-              )
-            })
+          //   [...reviews].reverse().map((el) => {
+          //     return (
+          //         <ReviewList
+          //             key={el._id}
+          //             isExpanded={activeExpandId === el._id}
+          //             onToggleExpand={() => toggleExpand(el._id)}
+          //             review={el}
+          //         />
+          //     )
+          // })
           }
-
-          {/* <PetSitterReviewList /> */}
-          {/* {allOrderList.length < 1 && <p className="noReview">리뷰내역이 없습니다.</p>} */}
         </ul>
       </div>
 

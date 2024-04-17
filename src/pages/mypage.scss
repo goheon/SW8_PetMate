@@ -1033,22 +1033,10 @@
         padding: 20px;
         border-radius: 10px;
         margin-bottom: 20px;
-        cursor: pointer;
 
         &:last-child {
           margin-bottom: 0;
         }
-
-        // &:hover {
-        // background-color: #fdf9e7;
-        // }
-      }
-
-      .noReview {
-        text-align: center;
-        padding: 50px;
-        color: #888;
-        font-size: 22px;
       }
 
       &_state {
@@ -1140,6 +1128,7 @@
           }
         }
       }
+
       .image-box {
         img {
           width: 160px;
@@ -1147,41 +1136,8 @@
           margin-top: 14px;
           margin-right: 10px;
           object-fit: contain;
-        }
-      }
-
-      .btn-box {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        a {
-          background-color: #ffc800;
-          padding: 10px;
-          border-radius: 5px;
-          margin-bottom: 5px;
-          font-size: 12px;
-          font-weight: bold;
-        }
-
-        span {
-          padding: 10px;
-          border-radius: 5px;
-          font-weight: bold;
-          font-size: 12px;
-          text-align: center;
-          background-color: #fff;
-          border: 1px solid #ffc800;
-        }
-
-        button {
-          background-color: #632ed8;
-          color: #fff;
-          padding: 10px;
-          border-radius: 5px;
-          margin-bottom: 5px;
-          font-size: 12px;
-          font-weight: bold;
+          border-radius: 8px;
+          overflow: hidden;
         }
       }
     }
