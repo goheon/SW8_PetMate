@@ -1,7 +1,6 @@
 import Stars from '../Stars';
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { fetchPetSitterReview } from './util/APIrequest';
 import 'react-datepicker/dist/react-datepicker.css';
 
 //필터 옵션
