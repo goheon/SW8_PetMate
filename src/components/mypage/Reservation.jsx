@@ -86,7 +86,7 @@ const OrderList = (props) => {
             <Link to={`/mypage/order-view/${props.orderId}`}>상세내용</Link>
             {props.state === '진행중' && new Date(props.endDate) < new Date() ? (
               <button type="button" value={props.orderId} onClick={handleComplete}>
-                {loadingState === false ? '완료하기' : <ButtonLoading />}
+                {loadingState === false ? '완료하기' : <ButtonLoading size={18} />}
               </button>
             ) : undefined}
             {props.state === '완료' && props.reviewWritten !== '1' ? (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export const ButtonLoading = () => {
+export const ButtonLoading = ({ size }) => {
   const [spinners, setSpinners] = useState(null);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export const ButtonLoading = () => {
     <>
       {spinners && spinners.ClockLoader ? (
         <>
-          <spinners.ClockLoader color={'#FFF'} size={20} />
+          <spinners.ClockLoader color={'#FFF'} size={size} />
         </>
       ) : null}
     </>

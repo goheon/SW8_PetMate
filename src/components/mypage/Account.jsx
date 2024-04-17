@@ -201,7 +201,9 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button onClick={updatePhone}>{phoneLoadingState === true ? <ButtonLoading /> : '수정'}</button>
+                      <button onClick={updatePhone}>
+                        {phoneLoadingState === true ? <ButtonLoading size={15} /> : '수정'}
+                      </button>
                     </>
                   ) : (
                     <>
@@ -241,7 +243,9 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button onClick={updatePassword}>{pwLoadingState === true ? <ButtonLoading /> : '수정'}</button>
+                      <button onClick={updatePassword}>
+                        {pwLoadingState === true ? <ButtonLoading size={15} /> : '수정'}
+                      </button>
                     </>
                   ) : (
                     <>
