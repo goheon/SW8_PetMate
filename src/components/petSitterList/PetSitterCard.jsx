@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Stars from '../Stars';
+import { cutAddressToDistrict } from '../../util/constants';
 import './PetSitterCard.scss';
 
 function PetSitterCard(props) {
@@ -16,19 +17,18 @@ function PetSitterCard(props) {
         navigate(`/pet-sitter/${sitterId}`);
     }
 
-    const sliceAddress = (address) => {
-        return address.split(' ').slice(0, 2).join(' ');
-      }
-
     return (
         <div className='search-list_inner'>
             <div className='search_wrap' onClick={() => (handleCardClick(props.sitter.sitterId))}>
                 <div className='img-box'>
-                    <img src='public/main02_review_01.jpg' />
+                    <img src={props.sitter.image} />
+                    {
+                        console.log(props.sitter.image)
+                    }
                 </div>
                 <div className='text-box'>
                     <div className='text-box_top'>
-                        <p>{sliceAddress(props.sitter.address)}&nbsp;파트너&nbsp;&middot;&nbsp;{props.sitter.name}&nbsp;님</p>
+                        <p>{cutAddressToDistrict(props.sitter.address)}&nbsp;파트너&nbsp;&middot;&nbsp;{props.sitter.name}&nbsp;님</p>
                         <h4>{props.sitter.title}</h4>
                     </div>
                     <div className='text-box_bottom'>

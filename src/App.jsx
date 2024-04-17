@@ -20,6 +20,7 @@ import OrderView from './components/mypage/OrderView';
 import PetSitterReservation from './components/mypage/PetSitterReservation';
 import ReviewWrite from './components/mypage/ReviewWrite';
 import PetssiterInfoEdit from './components/mypage/PetssiterInfoEdit';
+import PetSitterReview from './components/mypage/PetSitterReview';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="petSitter-reservation" element={<PetSitterReservation />} />
           <Route path="review-write/:id" element={<ReviewWrite />} />
           <Route path="petssiter-info" element={<PetssiterInfoEdit />} />
+          <Route path="petssiter-review" element={<PetSitterReview />} />
         </Route>
         <Route path="/pet-sitter" element={<PetSitterList />} />
         <Route path="/pet-sitter/:sitterId" element={<PetSitterInfo />} />

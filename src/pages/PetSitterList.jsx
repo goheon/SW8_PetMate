@@ -8,7 +8,7 @@ import { API_URL } from '../util/constants';
 import './PetSitterList.scss';
 
 function PetSitterList() {
-    const [sittersList, setSittersList] = useState([]);
+    const [sittersData, setSittersData] = useState([]);
     const [filteredSitters, setFilteredSitters] = useState([]);
     const [activeModal, setActiveModal] = useState('');
     const [selectedLocation, setSelectLocation] = useState('지역');
@@ -17,11 +17,11 @@ function PetSitterList() {
 
     // 모달창(지역, 타입) 토글
     const toggleModal = (modalId) => {
-        setActiveModal((preModal) => preModal === modalId ? '' : modalId);
+        setActiveModal((preModalId) => preModalId === modalId ? '' : modalId);
     };
 
     const filterSitters = () => {
-        let tempSitters = [...sittersList];
+        let tempSitters = [...sittersData];
 
         // 지역 필터링
         if (selectedLocation !== '지역') {
@@ -52,7 +52,7 @@ function PetSitterList() {
                     method: 'GET',
                 });
                 const data = await response.json();
-                setSittersList(data);
+                setSittersData(data);
             } catch (error) {
                 console.error('데이터를 불러오는 데 실패했습니다.', error);
             }
@@ -63,7 +63,7 @@ function PetSitterList() {
 
     useEffect(() => {
         filterSitters();
-    }, [selectedLocation, selectedType, selectedSizes, sittersList]);
+    }, [selectedLocation, selectedType, selectedSizes, sittersData]);
 
     return (
         <>
