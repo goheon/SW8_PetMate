@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { setAllOrderList } from '../../store';
+import { ButtonLoading } from '../Spinner';
 import { fetchGetBookList, fetchOrderComplete } from './util/APIrequest';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -34,16 +35,20 @@ const options = [
 
 //예약내역 리스트 컴포넌트
 const OrderList = (props) => {
+  const [loadingState, setLoadingState] = useState(false);
   const dispatch = useDispatch();
   const addressList = props.sitteraddress ? props.sitteraddress.split(' ') : undefined;
   const formedSitterAddress = addressList ? `${addressList[0]} ${addressList[1]}` : undefined;
+
   const handleComplete = async (e) => {
     const orderId = e.target.value;
     //주문 상태 변경 API 연결(진행중 -> 완료)
+    setLoadingState(true);
     const response = await fetchOrderComplete(orderId);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
+    setLoadingState(false);
     Swal.fire({
       title: '완료 처리되었습니다.',
       icon: 'success',
@@ -81,7 +86,7 @@ const OrderList = (props) => {
             <Link to={`/mypage/order-view/${props.orderId}`}>상세내용</Link>
             {props.state === '진행중' && new Date(props.endDate) < new Date() ? (
               <button type="button" value={props.orderId} onClick={handleComplete}>
-                완료하기
+                {loadingState === false ? '완료하기' : <ButtonLoading />}
               </button>
             ) : undefined}
             {props.state === '완료' && props.reviewWritten !== '1' ? (

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 
+import { ButtonLoading } from '../Spinner';
 import { setUserInfo } from '../../store';
 import { fetchWithdrawal, fetchUpdateUser } from './util/APIrequest';
 
@@ -24,6 +25,9 @@ function Account() {
   const [isNameModify, setIsNameModify] = useState(false);
   const [isEmailModify, setIsEmailModify] = useState(false);
   const [isPassWordModify, setIsPassWordModify] = useState(false);
+  const [nameLoadingState, setNameLoadingState] = useState(false);
+  const [emailLoadingState, setEmailLoadingState] = useState(false);
+  const [pwLoadingState, setPwLoadingState] = useState(false);
 
   //이름수정 버튼 핸들링
   const updateName = async () => {
@@ -31,10 +35,12 @@ function Account() {
       ...loginUserInfo,
       username: name,
     };
+    setNameLoadingState(true);
     dispatch(setUserInfo(userInfo));
     setIsNameModify(false);
     const response = await fetchUpdateUser({ username: name });
     if (!response.ok) throw new Error('Network response was not ok');
+    setNameLoadingState(false);
     alertEditComplete();
   };
 
@@ -44,10 +50,12 @@ function Account() {
       ...loginUserInfo,
       email: email,
     };
+    setEmailLoadingState(true);
     dispatch(setUserInfo(userInfo));
     setIsEmailModify(false);
     const response = await fetchUpdateUser({ email: email });
     if (!response.ok) throw new Error('Network response was not ok');
+    setEmailLoadingState(false);
     alertEditComplete();
   };
 
@@ -57,10 +65,12 @@ function Account() {
       ...loginUserInfo,
       password: CryptoJS.SHA256(password).toString(),
     };
+    setPwLoadingState(true);
     dispatch(setUserInfo(userInfo));
     setIsPassWordModify(false);
     const response = await fetchUpdateUser({ password: CryptoJS.SHA256(password).toString() });
     if (!response.ok) throw new Error('Network response was not ok');
+    setPwLoadingState(false);
     alertEditComplete();
   };
 
@@ -138,7 +148,7 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button onClick={updateName}>수정</button>
+                      <button onClick={updateName}>{nameLoadingState === true ? <ButtonLoading /> : '수정'}</button>
                     </>
                   ) : (
                     <>
@@ -178,7 +188,7 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button onClick={updateEmail}>수정</button>
+                      <button onClick={updateEmail}>{emailLoadingState === true ? <ButtonLoading /> : '수정'}</button>
                     </>
                   ) : (
                     <>
@@ -218,7 +228,7 @@ function Account() {
                       >
                         취소
                       </button>
-                      <button onClick={updatePassword}>수정</button>
+                      <button onClick={updatePassword}>{pwLoadingState === true ? <ButtonLoading /> : '수정'}</button>
                     </>
                   ) : (
                     <>

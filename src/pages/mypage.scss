@@ -358,7 +358,6 @@
         .btn-box {
           display: flex;
           flex-direction: column;
-          justify-content: center;
 
           a {
             background-color: #ffc800;
@@ -370,13 +369,13 @@
           }
 
           span {
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
+            // padding: 10px;
+            // border-radius: 5px;
+            // font-weight: bold;
             font-size: 12px;
             text-align: center;
-            background-color: #fff;
-            border: 1px solid #ffc800;
+            // background-color: #fff;
+            // border: 1px solid #ffc800;
           }
 
           button {
@@ -387,6 +386,10 @@
             margin-bottom: 5px;
             font-size: 12px;
             font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
           }
         }
       }
