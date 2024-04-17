@@ -39,8 +39,7 @@ export async function fetchUpdateUser(userInfo) {
   try {
     const response = await fetch(`${API_URL}/mypage`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userInfo),
+      body: userInfo,
       credentials: 'include',
     });
     return response;

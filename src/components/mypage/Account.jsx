@@ -333,7 +333,6 @@ function Account() {
                           onClick={() => {
                             setAddress(loginUserInfo ? `${loginUserInfo.address} ${loginUserInfo.detailAddress}` : '');
                             setIsAddressModify(false);
-                            console.log(address, detailAddress);
                           }}
                           className="cancel"
                         >
