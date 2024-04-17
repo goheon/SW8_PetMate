@@ -399,6 +399,17 @@
   &-account {
     &_setting {
       margin-bottom: 50px;
+
+      .address-wrap {
+        input {
+          width: 350px;
+        }
+      }
+      .address-wrap-2 {
+        input {
+          width: 250px;
+        }
+      }
     }
 
     .withdrawal {
