@@ -8,6 +8,13 @@ import './signUp.scss';
 
 import { useNavigate } from 'react-router-dom';
 
+const phoneAutoHyphen = (target) => {
+  target.value = target.value
+    .replace(/[^0-9]/g, '')
+    .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+    .replace(/(\-{1,2})$/g, '');
+};
+
 function validateName(name) {
   // 한글, 알파벳 대소문자만 허용하는 정규식
   const re = /^[가-힣A-Za-z]+$/;
@@ -38,6 +45,7 @@ function SignUp() {
     postcode: '',
     address: '',
     addressDetail: '',
+    phoneNum: '',
   });
 
   const [touchedInputs, setTouchedInputs] = useState({
@@ -50,6 +58,10 @@ function SignUp() {
   });
 
   const handleInputChange = (e) => {
+    if (e.target.name === 'phoneNum') {
+      phoneAutoHyphen(e.target);
+    }
+
     setInputValues({
       ...inputValues,
       [e.target.name]: e.target.value,
@@ -92,8 +104,9 @@ function SignUp() {
     const address = e.target.address.value;
     const detailAddress = e.target.addressDetail.value;
     const password = e.target.password.value;
+    const phone = e.target.phoneNum.value;
 
-    if (!username || !email || !address || !detailAddress || !password) {
+    if (!username || !email || !address || !detailAddress || !password || !phone) {
       Swal.fire({
         title: '필수값을 입력해주세요.',
         text: `이름, 번호, 이메일, 주소, 비밀번호 모두 입력하세요`,
@@ -141,11 +154,24 @@ function SignUp() {
       return;
     }
 
+    if (phone.length !== 13) {
+      Swal.fire({
+        title: '핸드폰번호 확인',
+        text: `핸드폰번호를 확인하세요`,
+        icon: 'warning',
+        customClass: {
+          container: 'custom-popup',
+        },
+      });
+      return;
+    }
+
     const userInfo = {
       username,
       email,
       address,
       detailAddress,
+      phone,
       password: CryptoJS.SHA256(password).toString(),
     };
 
@@ -274,6 +300,24 @@ function SignUp() {
                   name="addressDetail"
                   placeholder="상세주소"
                   id="sing-up_detailAddress"
+                />
+              </div>
+
+              <div className="phone-wrap">
+                <p>
+                  휴대폰 번호
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" />
+                  </svg>
+                </p>
+                <input
+                  type="text"
+                  name="phoneNum"
+                  id="phone"
+                  placeholder="010-1234-5678"
+                  value={inputValues.phoneNum}
+                  maxLength={13}
+                  onChange={handleInputChange}
                 />
               </div>
 
