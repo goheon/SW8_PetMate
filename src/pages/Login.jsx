@@ -186,7 +186,7 @@ function Login() {
               </li>
             </ul>
 
-            <ul className="login_sns">
+            {/* <ul className="login_sns">
               <li>
                 <Link className="kakao-login">
                   <span>
@@ -200,7 +200,7 @@ function Login() {
                   </span>
                 </Link>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
       </section>
