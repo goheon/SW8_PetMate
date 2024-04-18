@@ -1,5 +1,6 @@
 import Stars from '../Stars';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import 'react-datepicker/dist/react-datepicker.css';
 import { fetchReviews } from './util/APIrequest';
@@ -15,6 +16,7 @@ const options = [
 ];
 
 function Review() {
+  const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const [reviews, setReviews] = useState([]); // 리뷰 데이터
   const [selectedOption, setSelectedOption] = useState(options[0]); // 드롭다운 옵션
   const [startDate, setStartDate] = useState(); // 날짜 필터
@@ -26,15 +28,15 @@ function Review() {
     setActiveExpandId((preReviewId) => preReviewId === reviewId ? '' : reviewId)
   };
 
-   // 평점 계산
-   const averageStars = reviews.length === 0 ? "-" :
-   (reviews.reduce((acc, review) => acc + review.comment.starRate, 0) / reviews.length).toFixed(1);
+  // 평점 계산
+  const averageStars = reviews.length === 0 ? "-" :
+    (reviews.reduce((acc, review) => acc + review.comment.starRate, 0) / reviews.length).toFixed(1);
 
 
   useEffect(() => {
     const init = async () => {
-      // const data = await fetchReviews('80zO9VGM6r4HInegpcuW4');
-      // setReviews(data);
+      const data = await fetchReviews(loginUserInfo.userId);
+      setReviews(data);
 
       let beginTime = new Date();
       beginTime.setHours(0, 0, 0);
@@ -100,18 +102,22 @@ function Review() {
           사진 리뷰만 보기
         </div> */}
 
+        {
+          console.log(reviews[0])
+        }
+
         <ul className="mypage-review-list">
           {
-          //   [...reviews].reverse().map((el) => {
-          //     return (
-          //         <ReviewList
-          //             key={el._id}
-          //             isExpanded={activeExpandId === el._id}
-          //             onToggleExpand={() => toggleExpand(el._id)}
-          //             review={el}
-          //         />
-          //     )
-          // })
+            [...reviews].reverse().map((el) => {
+              return (
+                <ReviewList
+                  key={el._id}
+                  isExpanded={activeExpandId === el._id}
+                  onToggleExpand={() => toggleExpand(el._id)}
+                  review={el}
+                />
+              )
+            })
           }
         </ul>
       </div>
@@ -127,38 +133,44 @@ const ReviewList = (props) => {
       <div className="mypage-review-list_state">
         <div className="review_user-profile">
           <div>
-            <span className="review_petsitter-title">안전하게 돌봐드립니다!&nbsp;&gt;</span>
-            <Stars rating={5} />
+            <span className="review_petsitter-title">{props.review.sitterTitle}&nbsp;&gt;</span>
+            <Stars rating={props.review.comment.starRate} />
           </div>
         </div>
         <p>
           작성일시
-          <span>2024. 04. 11.</span>
+          <span>{new Date(props.review.comment.createdAt).toLocaleDateString()}</span>
         </p>
       </div>
       <div className="text-box">
         <div className='title'>
-          <h5>여기가 제목입니다</h5>
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24">
-              <path d="M17.721,3,16.308,1.168A3.023,3.023,0,0,0,13.932,0H10.068A3.023,3.023,0,0,0,7.692,1.168L6.279,3Z" /><circle cx="12" cy="14" r="4" />
-              <path d="M19,5H5a5.006,5.006,0,0,0-5,5v9a5.006,5.006,0,0,0,5,5H19a5.006,5.006,0,0,0,5-5V10A5.006,5.006,0,0,0,19,5ZM12,20a6,6,0,1,1,6-6A6.006,6.006,0,0,1,12,20Z" />
-            </svg>
-            사진
-          </span>
+          <h5>{props.review.comment.title}</h5>
+          {
+            props.review.comment.image.length > 0 &&
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24">
+                <path d="M17.721,3,16.308,1.168A3.023,3.023,0,0,0,13.932,0H10.068A3.023,3.023,0,0,0,7.692,1.168L6.279,3Z" /><circle cx="12" cy="14" r="4" />
+                <path d="M19,5H5a5.006,5.006,0,0,0-5,5v9a5.006,5.006,0,0,0,5,5H19a5.006,5.006,0,0,0,5-5V10A5.006,5.006,0,0,0,19,5ZM12,20a6,6,0,1,1,6-6A6.006,6.006,0,0,1,12,20Z" />
+              </svg>
+              사진
+            </span>
+          }
         </div>
-        <p className={props.isExpanded && 'expand'}>여기서 보이는 리뷰 글자수는 2줄로 제한을 뒀고요, 클릭하면 확장되면서 짤린 텍스트와 첨부한 사진을 보여줍니당!
-          펫시터가 답글 달아주는 기능 넣을거면 여기에 추가하고 상세페이지에선 화면에 뿌리기만하죠!! 이제 글자짤림 길게 적어서 테스트 하겠습니당 길게길게길게길게길게길게길게길게길게</p>
+        <p className={props.isExpanded && 'expand'}>{props.review.comment.comment}</p>
       </div>
       {props.isExpanded && (
-        <div className='image-box'>
-          <img src="/public/main02_review_02.jpg" />
-          <img src="/public/main02_review_01.jpg" />
-          <img src="/public/main02_review_02.jpg" />
-        </div>
-      )}
+                <div className='image-box'>
+                    {
+                        props.review.comment.image.map((el) => {
+                            return (
+                                <img src={el} />
+                            )
+                        })
+                    }
+                </div>
+            )}
     </li>
   );
 };
