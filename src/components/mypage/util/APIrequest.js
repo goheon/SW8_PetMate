@@ -190,3 +190,19 @@ export async function fetchOrderReject(orderId) {
     console.error('Error:', error);
   }
 }
+
+export async function fetchPointRemittance(orderId) {
+  try {
+    const response = await fetch(`${API_URL}/pointfunc/${orderId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}

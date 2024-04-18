@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
-import { setAllOrderList } from '../../store';
+import { setAllOrderList, setUserInfo } from '../../store';
 import { ButtonLoading } from '../Spinner';
-import { fetchGetBookList, fetchOrderComplete } from './util/APIrequest';
+import { fetchGetBookList, fetchUserInfo, fetchOrderComplete, fetchPointRemittance } from './util/APIrequest';
 import 'react-datepicker/dist/react-datepicker.css';
 
 //날짜 설정 컴포넌트
@@ -35,29 +35,56 @@ const options = [
 
 //예약내역 리스트 컴포넌트
 const OrderList = (props) => {
+  const allOrderList = useSelector((state) => state.allOrderList);
+  const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const [loadingState, setLoadingState] = useState(false);
   const dispatch = useDispatch();
   const addressList = props.sitteraddress ? props.sitteraddress.split(' ') : undefined;
   const formedSitterAddress = addressList ? `${addressList[0]} ${addressList[1]}` : undefined;
 
   const handleComplete = async (e) => {
-    const orderId = e.target.value;
-    //주문 상태 변경 API 연결(진행중 -> 완료)
-    setLoadingState(true);
-    const response = await fetchOrderComplete(orderId);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    setLoadingState(false);
     Swal.fire({
-      title: '완료 처리되었습니다.',
-      icon: 'success',
+      title: '완료하기',
+      text: '펫시팅을 완료하고 포인트를 전송할까요?',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: '확인',
+      cancelButtonText: '취소',
       customClass: { container: 'custom-popup' },
     }).then(async (result) => {
-      const response = await fetchGetBookList();
-      if (!response.ok) throw new Error('Network response was not ok');
-      const { data } = await response.json();
-      dispatch(setAllOrderList(data));
+      if (result.isConfirmed) {
+        const orderId = e.target.value;
+        const orderInfo = allOrderList.filter((el) => el.orderId === orderId)[0];
+        if (orderInfo.totalPrice > loginUserInfo.point) {
+          Swal.fire({
+            title: '포인트 잔액 부족',
+            text: '포인트 충전 후 완료해주세요.',
+            icon: 'warning',
+            customClass: { container: 'custom-popup' },
+          });
+          return;
+        }
+        //주문 상태 변경 API 연결(진행중 -> 완료)
+        //포인트 전송 처리 API 연결
+        setLoadingState(true);
+        const orderResponse = await fetchOrderComplete(orderId);
+        if (!orderResponse.ok) throw new Error('orderResponse was not ok');
+        const pointResponse = await fetchPointRemittance(orderId);
+        if (!pointResponse.ok) throw new Error('pointResponse was not ok');
+        const userInfoResponse = await fetchUserInfo();
+        dispatch(setUserInfo(userInfoResponse));
+        setLoadingState(false);
+        Swal.fire({
+          title: '완료 처리되었습니다.',
+          icon: 'success',
+          customClass: { container: 'custom-popup' },
+        }).then(async (result) => {
+          const response = await fetchGetBookList();
+          if (!response.ok) throw new Error('Network response was not ok');
+          const { data } = await response.json();
+          dispatch(setAllOrderList(data));
+        });
+      }
     });
   };
 
