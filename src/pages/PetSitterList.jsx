@@ -53,6 +53,8 @@ function PetSitterList() {
         tempSitters = tempSitters.filter((sitter) => sitter.type.includes('고양이'));
       }
     }
+
+    tempSitters.reverse();
     tempSitters = chunkArrayInGroups(tempSitters, 5);
 
     setFilteredSitters(tempSitters);
@@ -73,6 +75,8 @@ function PetSitterList() {
 
     fetchData();
   }, []);
+
+  console.log(filteredSitters);
 
   useEffect(() => {
     filterSitters();
@@ -122,7 +126,7 @@ function PetSitterList() {
 
         <section className="search-list">
           {filteredSitters.length > 0 &&
-            filteredSitters[pageNation].reverse().map((sitter) => {
+            filteredSitters[pageNation].map((sitter) => {
               return <PetSitterCard key={sitter.sitterId} sitter={sitter} />;
             })}
           {/* {[...filteredSitters].reverse().map((sitter) => {

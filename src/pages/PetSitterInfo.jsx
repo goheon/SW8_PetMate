@@ -312,6 +312,9 @@ function PetSitterInfo({ img, check }) {
         <section className="container">
           <div className="container_left">
             <div className="pet-sitter-Introduction">
+              <div className="pet-sitter-Introduction_img">
+                <img src={petSitterData.sitterInfo.image[0]} alt="펫시터 대표이미지" />
+              </div>
               <div className="pet-sitter-Introduction_title">
                 <p>
                   {cutAddressToDistrict(petSitterData.value.address)} 펫시터 &middot; {petSitterData.value.username} 님
