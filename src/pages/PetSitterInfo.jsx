@@ -82,6 +82,8 @@ function PetSitterInfo({ img, check }) {
   const [petSitterData, setPetSitterData] = useState();
   const [petSitterReviewData, setPetSitterReviewData] = useState();
 
+  console.log(petSitterReviewData);
+
   useEffect(() => {
     getPetSitterInfo(sitterId).then((data) => {
       setPetSitterData(data);
