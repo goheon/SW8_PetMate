@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import 'react-datepicker/dist/react-datepicker.css';
-import { fetchPetSitterReviews } from './util/APIrequest';
+import { fetchPetSitterReviews, fetchGetSitterInfo } from './util/APIrequest';
 
 //필터 옵션
 const options = [
@@ -17,7 +17,7 @@ const options = [
 
 function PetSitterReview() {
     const loginUserInfo = useSelector((state) => state.loginUserInfo);
-    const petSitterInfo = useSelector((state) => state.petSitterInfo);
+    const [sitterInfo, setSitterInfo] = useState(); // sitterId
     const [petSitterReviews, setPetSitterReviews] = useState([]); // 리뷰 데이터
     const [selectedOption, setSelectedOption] = useState(options[0]); // 드롭다운 옵션
     const [startDate, setStartDate] = useState(); // 날짜 필터
@@ -31,51 +31,53 @@ function PetSitterReview() {
 
     // 평점 계산
     const averageStars = petSitterReviews.length === 0 ? "-" :
-        (petSitterReviews.reduce((acc, review) => acc + review.starRate, 0) / petSitterReviews.length).toFixed(1);
-
-        // useEffect(() => {
-    //     if (loginUserInfo) {
-    //         //펫시터 회원이 아닌 경우
-    //         if (!loginUserInfo.isRole) {
-    //             Swal.fire({
-    //                 title: '권한이 없습니다!',
-    //                 text: '',
-    //                 icon: 'warning',
-    //                 customClass: { container: 'custom-popup' },
-    //             }).then((result) => nav('/', { replace: true }));
-    //         }
-
-    //         const getSitterInfo = async () => {
-    //             const response = await fetchGetSitterInfo();
-    //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok');
-    //             }
-    //             const data = await response.json();
-    //             setSitterInfo(data);
-    //         };
-
-    //         getSitterInfo();
-    //     }
-
-    //     // form 값 설정
-    // }, [loginUserInfo]);
+        (petSitterReviews.reduce((acc, review) => acc + review.review.starRate, 0) / petSitterReviews.length).toFixed(1);
 
     useEffect(() => {
-        const init = async () => {
-            const data = await fetchPetSitterReviews('nj3QeK4l3tGE1C2nMOlB0');
-            setPetSitterReviews(data);
+        if (loginUserInfo) {
 
-            let beginTime = new Date();
-            beginTime.setHours(0, 0, 0);
-            setStartDate(beginTime);
+            // 펫시터 회원이 아닌 경우
+            if (!loginUserInfo.isRole) {
+                Swal.fire({
+                    title: '권한이 없습니다!',
+                    text: '',
+                    icon: 'warning',
+                    customClass: { container: 'custom-popup' },
+                }).then((result) => nav('/', { replace: true }));
+            }
 
-            let endTime = new Date();
-            endTime.setHours(23, 59, 59);
-            setEndDate(endTime);
-        };
+            const getSitterInfo = async () => {
+                const response = await fetchGetSitterInfo();
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setSitterInfo(data);
+            };
 
-        init();
-    }, []);
+            getSitterInfo();
+        }
+    }, [loginUserInfo]);
+
+    useEffect(() => {
+        if (sitterInfo) {
+            const getPetSitterReviews = async () => {
+                const data = await fetchPetSitterReviews(sitterInfo.sitterId);
+                setPetSitterReviews(data);
+            }
+            getPetSitterReviews();
+        }
+    }, [sitterInfo])
+
+    useEffect(() => {
+        let beginTime = new Date();
+        beginTime.setHours(0, 0, 0);
+        setStartDate(beginTime);
+
+        let endTime = new Date();
+        endTime.setHours(23, 59, 59);
+        setEndDate(endTime);
+    }, [])
 
     return (
         <>
@@ -129,9 +131,9 @@ function PetSitterReview() {
                         [...petSitterReviews].reverse().map((el) => {
                             return (
                                 <PetSitterReviewList
-                                    key={el._id}
-                                    isExpanded={activeExpandId === el._id}
-                                    onToggleExpand={() => toggleExpand(el._id)}
+                                    key={el.review._id}
+                                    isExpanded={activeExpandId === el.review._id}
+                                    onToggleExpand={() => toggleExpand(el.review._id)}
                                     review={el}
                                 />
                             )
@@ -152,23 +154,23 @@ const PetSitterReviewList = (props) => {
                     <img
                         alt="user-img"
                         className="review_user-profile_img"
-                        src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
+                        src={props.review.value.image}
                     />
                     <div>
-                        <span className="review_user-profile_name">{props.review.username}</span>
-                        <Stars rating={props.review.starRate} />
+                        <span className="review_user-profile_name">{props.review.value.username}</span>
+                        <Stars rating={props.review.review.starRate} />
                     </div>
                 </div>
                 <p>
                     작성일시
-                    <span>{new Date(props.review.createdAt).toLocaleDateString()}</span>
+                    <span>{new Date(props.review.review.createdAt).toLocaleDateString()}</span>
                 </p>
             </div>
             <div className="text-box">
                 <div className='title'>
-                    <h5>{props.review.title}</h5>
+                    <h5>{props.review.review.title}</h5>
                     {
-                        props.review.image.length > 0 &&
+                        props.review.review.image.length > 0 &&
                         <span>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -181,14 +183,14 @@ const PetSitterReviewList = (props) => {
                     }
 
                 </div>
-                <p className={props.isExpanded && 'expand'}>{props.review.comment}</p>
+                <p className={props.isExpanded && 'expand'}>{props.review.review.comment}</p>
             </div>
             {props.isExpanded && (
                 <div className='image-box'>
                     {
-                        props.review.image.map((el) => {
+                        props.review.review.image.map((el) => {
                             return (
-                                <img src={el} />
+                                <img alt='user-img' className='review_images' src={el} />
                             )
                         })
                     }

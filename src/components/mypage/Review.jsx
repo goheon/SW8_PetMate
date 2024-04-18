@@ -32,12 +32,17 @@ function Review() {
   const averageStars = reviews.length === 0 ? "-" :
     (reviews.reduce((acc, review) => acc + review.comment.starRate, 0) / reviews.length).toFixed(1);
 
+  useEffect(() => {
+    if (loginUserInfo) {
+      const getReviews = async () => {
+        const data = await fetchReviews(loginUserInfo.userId);
+        setReviews(data);
+      }
+      getReviews();
+    }
+  }, [loginUserInfo]);
 
   useEffect(() => {
-    const init = async () => {
-      const data = await fetchReviews(loginUserInfo.userId);
-      setReviews(data);
-
       let beginTime = new Date();
       beginTime.setHours(0, 0, 0);
       setStartDate(beginTime);
@@ -45,10 +50,7 @@ function Review() {
       let endTime = new Date();
       endTime.setHours(23, 59, 59);
       setEndDate(endTime);
-    };
-
-    init();
-  }, []);
+  }, [])
 
   return (
     <>
@@ -101,10 +103,6 @@ function Review() {
         {/* <div>
           사진 리뷰만 보기
         </div> */}
-
-        {
-          console.log(reviews[0])
-        }
 
         <ul className="mypage-review-list">
           {
@@ -161,16 +159,16 @@ const ReviewList = (props) => {
         <p className={props.isExpanded && 'expand'}>{props.review.comment.comment}</p>
       </div>
       {props.isExpanded && (
-                <div className='image-box'>
-                    {
-                        props.review.comment.image.map((el) => {
-                            return (
-                                <img src={el} />
-                            )
-                        })
-                    }
-                </div>
-            )}
+        <div className='image-box'>
+          {
+            props.review.comment.image.map((el) => {
+              return (
+                <img alt='user-img' className='review_images' src={el} />
+              )
+            })
+          }
+        </div>
+      )}
     </li>
   );
 };
