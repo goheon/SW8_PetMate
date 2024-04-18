@@ -74,6 +74,7 @@ function PetSitterInfo({ img, check }) {
   const endDate = useSelector((state) => state.reservationEndDate.endDate);
   const startTime = useSelector((state) => state.reservationStartTime.startTime);
   const endTime = useSelector((state) => state.reservationEndTime.endTime);
+  const loginUserInfo = useSelector((state) => state.loginUserInfo);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPetList, setSelectedpetList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -247,8 +248,13 @@ function PetSitterInfo({ img, check }) {
     e.preventDefault();
 
     //로그인 상태 확인
-    const userId = parseJwt(getCookie('jwt')).userId;
-    if (!userId) return alert('로그인 후 이용해주세요.');
+    if (!loginUserInfo) {
+      return Swal.fire({
+        title: '로그인 후 이용해주세요',
+        icon: 'info',
+        customClass: { container: 'custom-popup' },
+      });
+    }
 
     //요청사항
     const detailInfo = requestRef.current.value;

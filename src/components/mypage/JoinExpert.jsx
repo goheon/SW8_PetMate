@@ -157,7 +157,7 @@ function JoinExpert() {
             {experienceList.length > 0 ? (
               <ul className="mypage-join-expert_experience-list">
                 {experienceList.map((el, index) => (
-                  <li>
+                  <li Key={index}>
                     <p>{el}</p>
                     <svg
                       onClick={() => {
