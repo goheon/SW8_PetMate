@@ -1,5 +1,6 @@
 import Stars from '../Stars';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import 'react-datepicker/dist/react-datepicker.css';
 import { fetchPetSitterReviews } from './util/APIrequest';
@@ -15,6 +16,8 @@ const options = [
 ];
 
 function PetSitterReview() {
+    const loginUserInfo = useSelector((state) => state.loginUserInfo);
+    const petSitterInfo = useSelector((state) => state.petSitterInfo);
     const [petSitterReviews, setPetSitterReviews] = useState([]); // 리뷰 데이터
     const [selectedOption, setSelectedOption] = useState(options[0]); // 드롭다운 옵션
     const [startDate, setStartDate] = useState(); // 날짜 필터
@@ -29,6 +32,33 @@ function PetSitterReview() {
     // 평점 계산
     const averageStars = petSitterReviews.length === 0 ? "-" :
         (petSitterReviews.reduce((acc, review) => acc + review.starRate, 0) / petSitterReviews.length).toFixed(1);
+
+        // useEffect(() => {
+    //     if (loginUserInfo) {
+    //         //펫시터 회원이 아닌 경우
+    //         if (!loginUserInfo.isRole) {
+    //             Swal.fire({
+    //                 title: '권한이 없습니다!',
+    //                 text: '',
+    //                 icon: 'warning',
+    //                 customClass: { container: 'custom-popup' },
+    //             }).then((result) => nav('/', { replace: true }));
+    //         }
+
+    //         const getSitterInfo = async () => {
+    //             const response = await fetchGetSitterInfo();
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok');
+    //             }
+    //             const data = await response.json();
+    //             setSitterInfo(data);
+    //         };
+
+    //         getSitterInfo();
+    //     }
+
+    //     // form 값 설정
+    // }, [loginUserInfo]);
 
     useEffect(() => {
         const init = async () => {
@@ -49,7 +79,6 @@ function PetSitterReview() {
 
     return (
         <>
-
             <div className="mypage-review">
                 <h4>펫시터 리뷰관리</h4>
 
@@ -110,10 +139,6 @@ function PetSitterReview() {
                     }
                 </ul>
             </div>
-            {
-                console.log(petSitterReviews)
-            }
-
         </>
     );
 }
