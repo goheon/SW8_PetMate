@@ -80,7 +80,14 @@ function SignUp() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userInfo),
       });
-
+      if (response.status === 400) {
+        Swal.fire({
+          title: '이미 가입된 회원입니다.',
+          icon: 'warning',
+          customClass: { container: 'custom-popup' },
+        });
+        return;
+      }
       if (!response.ok) throw new Error('Network response was not ok');
 
       Swal.fire({
