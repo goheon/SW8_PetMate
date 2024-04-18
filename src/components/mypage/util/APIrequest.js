@@ -206,3 +206,42 @@ export async function fetchPointRemittance(orderId) {
     console.error('Error:', error);
   }
 }
+
+// 유저 리뷰 관리
+export const fetchReviews = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/booklist/review/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error('서버 통신에 실패했습니다.');
+    }
+    const data = await response.json();
+    return data.data; // API 응답에서 필요한 데이터 부분만 반환
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// 펫시터 리뷰 관리
+export const fetchPetSitterReviews = async (sitterId) => {
+  try {
+    const response = await fetch(`${API_URL}/booklist/review/sitter/${sitterId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('서버 통신에 실패했습니다.');
+    }
+    const data = await response.json();
+    return data.data; // API 응답에서 필요한 데이터 부분만 반환
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};

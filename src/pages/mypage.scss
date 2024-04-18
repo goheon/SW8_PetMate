@@ -140,6 +140,34 @@
       margin-right: 10px;
       fill: #fff;
     }
+    &.on {
+      > button[type='button'] {
+        display: flex;
+        justify-content: space-between;
+        > div {
+          display: flex;
+          font-size: 14px;
+          align-items: center;
+          &:nth-of-type(1) {
+            svg {
+              width: 20px;
+            }
+          }
+          
+        }
+      }
+    }
+    .bell-length {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      color: #632ed8;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-weight: 700;
+    }
   }
   &-nav {
     width: 100%;
@@ -959,7 +987,7 @@
         margin-right: 10px;
 
         &-options {
-          >div {
+          > div {
             cursor: pointer;
             background-color: #f4f6fe;
             border: none;
@@ -989,7 +1017,7 @@
         }
       }
 
-      >button {
+      > button {
         background-color: #632ed8;
         color: #fff;
         padding: 10px 15px;
@@ -1005,22 +1033,10 @@
         padding: 20px;
         border-radius: 10px;
         margin-bottom: 20px;
-        cursor: pointer;
 
         &:last-child {
           margin-bottom: 0;
         }
-
-        // &:hover {
-        // background-color: #fdf9e7;
-        // }
-      }
-
-      .noReview {
-        text-align: center;
-        padding: 50px;
-        color: #888;
-        font-size: 22px;
       }
 
       &_state {
@@ -1071,7 +1087,6 @@
       }
 
       .text-box {
-
         .title {
           display: flex;
           align-items: center;
@@ -1112,8 +1127,8 @@
             display: block;
           }
         }
-        
       }
+
       .image-box {
         img {
           width: 160px;
@@ -1121,41 +1136,8 @@
           margin-top: 14px;
           margin-right: 10px;
           object-fit: contain;
-        }
-      }
-
-      .btn-box {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        a {
-          background-color: #ffc800;
-          padding: 10px;
-          border-radius: 5px;
-          margin-bottom: 5px;
-          font-size: 12px;
-          font-weight: bold;
-        }
-
-        span {
-          padding: 10px;
-          border-radius: 5px;
-          font-weight: bold;
-          font-size: 12px;
-          text-align: center;
-          background-color: #fff;
-          border: 1px solid #ffc800;
-        }
-
-        button {
-          background-color: #632ed8;
-          color: #fff;
-          padding: 10px;
-          border-radius: 5px;
-          margin-bottom: 5px;
-          font-size: 12px;
-          font-weight: bold;
+          border-radius: 8px;
+          overflow: hidden;
         }
       }
     }
