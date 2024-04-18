@@ -273,6 +273,14 @@ function PetSitterInfo({ img, check }) {
       new Date(startTime).getHours(),
     );
 
+    if (formedStartDate < new Date()) {
+      return Swal.fire({
+        title: '시팅 시작시간을 확인해주세요.',
+        icon: 'warning',
+        customClass: { container: 'custom-popup' },
+      });
+    }
+
     //종료일
     const formedEndDate = new Date(
       new Date(endDate).getFullYear(),
