@@ -3,19 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { fetchRegistrationPetSitter, fetchUserInfo } from './util/APIrequest';
 import { setUserInfo } from '../../store';
-
-const phoneAutoHyphen = (target) => {
-  target.value = target.value
-    .replace(/[^0-9]/g, '')
-    .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
-    .replace(/(\-{1,2})$/g, '');
-};
+import { useDispatch } from 'react-redux';
 
 function JoinExpert() {
   const [experienceList, setExperienceList] = useState([]);
   const [experienceValue, setExperienceValue] = useState();
   const [preview, setPreview] = useState();
-  const [phoneNum, setPhoneNum] = useState('');
+  const dispatch = useDispatch();
   const nav = useNavigate();
   const fileInput = useRef();
 
@@ -98,7 +92,6 @@ function JoinExpert() {
         formData.append('experience', experienceList);
         formData.append('introduction', e.target.introduction.value);
         formData.append('title', e.target.title.value);
-        formData.append('phone', e.target.phone.value);
 
         const response = await fetchRegistrationPetSitter(formData);
 
@@ -241,18 +234,7 @@ function JoinExpert() {
             ></textarea>
           </div>
           <div>
-            <h6>본인인증 / 이용약관 동의</h6>
-            <label htmlFor="phone">휴대폰 번호</label>
-            <input
-              type="text"
-              name="phone"
-              id="phone"
-              placeholder="010-1234-5678"
-              value={phoneNum}
-              maxLength={13}
-              onChange={(e) => setPhoneNum(phoneAutoHyphen(e.target))}
-            />
-            <button className="phone-certified">휴대폰 번호인증</button>
+            <h6>이용약관 동의</h6>
             <input type="checkbox" name="" id="agreement" />
             <label className="checkbox_label" htmlFor="agreement">
               펫메이트 이용약관에 동의합니다. (필수)
