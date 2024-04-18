@@ -57,7 +57,7 @@ const petSitterInfo = createSlice({
     {
       userId: 1,
       name: '이하은',
-      img: 'https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg',
+      img: 'https://img.freepik.com/premium-psd/3d-illustration-of-person-with-leather-jacket_23-2149436206.jpg?size=626&ext=jpg',
       review: 215,
       regularCustomer: 145,
       info: [
@@ -73,7 +73,7 @@ const petSitterInfo = createSlice({
     {
       userId: 2,
       name: '전다현',
-      img: 'https://cdn.spotvnews.co.kr/news/photo/202306/614926_863772_1541.jpg',
+      img: 'https://img.freepik.com/free-psd/3d-illustration-of-person_23-2149436179.jpg?t=st=1713425328~exp=1713425928~hmac=0589da75be46b56eb3dd101baeef33ada37a0cdd541f4ff3ab432a706c514080',
       review: 115,
       regularCustomer: 45,
       info: [
@@ -87,8 +87,8 @@ const petSitterInfo = createSlice({
     },
     {
       userId: 3,
-      name: '뿌링클',
-      img: 'https://isplus.com/data/isp/image/2022/12/22/isp88870ed2-900e-48e0-9f52-5fbcc09ec833.600x.0.jpg',
+      name: '이승철',
+      img: 'https://img.freepik.com/free-psd/3d-illustration-of-person-with-sunglasses_23-2149436188.jpg?t=st=1713425340~exp=1713425940~hmac=4e4b42f6f99c671cf6d601c1e06e9e84cb492a2be271cd499ba972d7bfe18f62',
       review: 455,
       regularCustomer: 345,
       info: [
