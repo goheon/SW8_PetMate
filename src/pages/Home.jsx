@@ -31,7 +31,7 @@ function ReviewModal({ el, setReviewModalData }) {
     <div className="review-modal">
       <div className="review-modal_inner">
         <div className="main02-swiper_img-box">
-          <img src={el.review.image[0]} alt="" />
+          <img src={el.review.image[0] ?? '/public/images/default.jpg'} alt="" />
         </div>
         <div className="main02-swiper_text-box">
           <h4>{el.review.title}</h4>
@@ -204,7 +204,7 @@ function Home() {
                       >
                         <div>
                           <div className="main02-swiper_img-box">
-                            <img src={el.review.image[0]} alt="" />
+                            <img src={el.review.image[0] ?? '/public/images/default.jpg'} alt="" />
                           </div>
                           <div className="main02-swiper_text-box">
                             <h4>{el.review.title}</h4>
