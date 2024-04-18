@@ -387,7 +387,9 @@
 
         .review_user-profile_img {
           width: 50px;
+          height: 50px;
           margin-right: 10px;
+          border-radius: 50%;
         }
 
         .review_user-profile_name {
@@ -404,9 +406,9 @@
         margin-top: 15px;
 
         .review_user-profile_img {
-          width: 120px;
+          width: 220px;
           object-fit: cover;
-          margin-right: 10px;
+          margin-right: 15px;
           border-radius: 5px;
           &:last-child {
             margin-right: 0;
@@ -418,6 +420,7 @@
         font-size: 16px;
         line-height: 1.3;
         font-weight: 500;
+        word-break: keep-all;
       }
 
       .review_pet-sitter {
@@ -429,6 +432,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
+         
 
           .review_pet-sitter_img {
             width: 100%;

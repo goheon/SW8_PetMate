@@ -386,47 +386,44 @@ function PetSitterInfo({ img, check }) {
 
             <section className="review-section">
               <div className="review-card_inner">
-                {petSitterReviewData.length > 0 &&
+                {petSitterReviewData &&
+                  petSitterReviewData.length > 0 &&
                   petSitterReviewData.map((el) => {
                     return (
-                      <div key={el._id} className="review">
+                      <div key={el.review._id} className="review">
                         <div className="review_user-profile">
-                          <img
-                            alt="user-img"
-                            className="review_user-profile_img"
-                            src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
-                          />
+                          <img alt="user-img" className="review_user-profile_img" src={el.value.image[0]} />
                           <div>
-                            <span className="review_user-profile_name">{el.username}</span>
-                            <Stars rating={el.starRate} />
+                            <span className="review_user-profile_name">{el.value.username}</span>
+                            <Stars rating={el.review.starRate} />
                           </div>
                         </div>
-                        <h5 className="review_title">{el.title}</h5>
-                        <p className="review_user-comment">{el.comment}</p>
-                        {el.image.length > 0 ? (
+                        <h5 className="review_title">{el.review.title}</h5>
+                        <p className="review_user-comment">{el.review.comment}</p>
+                        {el.review.image.length > 0 ? (
                           <div className="review_images">
-                            {el.image.map((el) => (
+                            {el.review.image.map((el) => (
                               <img alt="user-img" className="review_user-profile_img" src={`${el}`} />
                             ))}
                           </div>
                         ) : null}
 
                         {/* <div className="review_pet-sitter">
-                        <div className="review_pet-sitter_profile">
-                          <img
-                            className="review_pet-sitter_img"
-                            src="https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg"
-                            alt="pet-siiter-img"
-                          />
-                          <span>{petSitterData.value.username}</span>
-                        </div>
-                        <div className="review_pet-siiter_comment">
-                          Voluptate laboris incididunt elit quis sit fugiat. Quis id do consectetur non id do tempor
-                          esse mollit et ullamco reprehenderit qui. Veniam nisi reprehenderit laborum non. Ad
-                          exercitation amet dolor exercitation. Duis consectetur sint sunt in esse velit aute mollit
-                          nulla eu et. Magna ad nulla aliqua sint reprehenderit.
-                        </div>
-                      </div> */}
+                          <div className="review_pet-sitter_profile">
+                            <img
+                              className="review_pet-sitter_img"
+                              src="https://dispatch.cdnser.be/cms-content/uploads/2020/10/22/bd74cb66-a4ef-4c57-9358-1cb0494d9dc2.jpg"
+                              alt="pet-siiter-img"
+                            />
+                            <span>{petSitterData.value.username}</span>
+                          </div>
+                          <div className="review_pet-siiter_comment">
+                            Voluptate laboris incididunt elit quis sit fugiat. Quis id do consectetur non id do tempor
+                            esse mollit et ullamco reprehenderit qui. Veniam nisi reprehenderit laborum non. Ad
+                            exercitation amet dolor exercitation. Duis consectetur sint sunt in esse velit aute mollit
+                            nulla eu et. Magna ad nulla aliqua sint reprehenderit.
+                          </div>
+                        </div> */}
                       </div>
                     );
                   })}
@@ -446,7 +443,7 @@ function PetSitterInfo({ img, check }) {
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                       <path d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z" />
                     </svg>
-                    후기<span>{petSitterReviewData.length}</span>개
+                    후기<span>{petSitterReviewData && petSitterReviewData.length}</span>개
                     {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                       <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" />
                     </svg>
