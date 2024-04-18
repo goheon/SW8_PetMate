@@ -82,6 +82,8 @@ function PetSitterInfo({ img, check }) {
   const [petSitterData, setPetSitterData] = useState();
   const [petSitterReviewData, setPetSitterReviewData] = useState();
 
+  console.log(petSitterReviewData);
+
   useEffect(() => {
     getPetSitterInfo(sitterId).then((data) => {
       setPetSitterData(data);
@@ -384,31 +386,32 @@ function PetSitterInfo({ img, check }) {
 
             <section className="review-section">
               <div className="review-card_inner">
-                {petSitterReviewData.map((el) => {
-                  return (
-                    <div key={el._id} className="review">
-                      <div className="review_user-profile">
-                        <img
-                          alt="user-img"
-                          className="review_user-profile_img"
-                          src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
-                        />
-                        <div>
-                          <span className="review_user-profile_name">{el.username}</span>
-                          <Stars rating={el.starRate} />
+                {petSitterReviewData.length > 0 &&
+                  petSitterReviewData.map((el) => {
+                    return (
+                      <div key={el._id} className="review">
+                        <div className="review_user-profile">
+                          <img
+                            alt="user-img"
+                            className="review_user-profile_img"
+                            src="https://tmpfiles.nohat.cc/abstract-user-flat-3.svg"
+                          />
+                          <div>
+                            <span className="review_user-profile_name">{el.username}</span>
+                            <Stars rating={el.starRate} />
+                          </div>
                         </div>
-                      </div>
-                      <h5 className="review_title">{el.title}</h5>
-                      <p className="review_user-comment">{el.comment}</p>
-                      {el.image.length > 0 ? (
-                        <div className="review_images">
-                          {el.image.map((el) => (
-                            <img alt="user-img" className="review_user-profile_img" src={`${el}`} />
-                          ))}
-                        </div>
-                      ) : null}
+                        <h5 className="review_title">{el.title}</h5>
+                        <p className="review_user-comment">{el.comment}</p>
+                        {el.image.length > 0 ? (
+                          <div className="review_images">
+                            {el.image.map((el) => (
+                              <img alt="user-img" className="review_user-profile_img" src={`${el}`} />
+                            ))}
+                          </div>
+                        ) : null}
 
-                      {/* <div className="review_pet-sitter">
+                        {/* <div className="review_pet-sitter">
                         <div className="review_pet-sitter_profile">
                           <img
                             className="review_pet-sitter_img"
@@ -424,9 +427,9 @@ function PetSitterInfo({ img, check }) {
                           nulla eu et. Magna ad nulla aliqua sint reprehenderit.
                         </div>
                       </div> */}
-                    </div>
-                  );
-                })}
+                      </div>
+                    );
+                  })}
               </div>
             </section>
           </div>
