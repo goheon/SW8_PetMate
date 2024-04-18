@@ -1,10 +1,13 @@
-import Header from '../components/Header';
-import './Login.scss';
-import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import { useDispatch } from 'react-redux';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { setUserInfo } from '../store';
+import { fetchUserInfo } from '../components/mypage/util/APIrequest';
 import { API_URL } from '../util/constants';
+import './Login.scss';
 
 function validateEmail(email) {
   const re =
@@ -20,6 +23,7 @@ function validPassword(password) {
 
 function Login() {
   const nav = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -46,8 +50,11 @@ function Login() {
         body: JSON.stringify(data),
         credentials: 'include',
       });
-
       if (!response.ok) throw new Error('Network response was not ok');
+
+      const loginUserInfo = await fetchUserInfo();
+      console.log(loginUserInfo);
+      dispatch(setUserInfo(loginUserInfo));
 
       Swal.fire({
         title: '로그인 성공',

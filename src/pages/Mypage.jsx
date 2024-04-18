@@ -42,6 +42,11 @@ function Mypage() {
   }, [loginUserInfo]);
 
   useEffect(() => {
+    const newBooksCount = allOrderList.filter((el) => el.state === '예약요청').length;
+    setNewBooks(newBooksCount);
+  }, [allOrderList]);
+
+  useEffect(() => {
     getBookList();
 
     async function getBookList() {
@@ -52,8 +57,6 @@ function Mypage() {
 
         dispatch(setAllPetSitterOrderList(data));
       }
-      const newBooksCount = allOrderList.filter((el) => el.state === '예약요청').length;
-      setNewBooks(newBooksCount);
     }
   }, [sitterInfo]);
 
