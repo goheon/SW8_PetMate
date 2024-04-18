@@ -92,7 +92,7 @@ function Home() {
     }, 100);
     setTimeout(() => {
       setAni('on end');
-    }, 1700);
+    }, 1200);
 
     getReview().then((data) => setLatestReview(data.data));
 
