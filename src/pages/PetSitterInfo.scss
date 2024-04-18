@@ -268,7 +268,7 @@
         }
       }
 
-     .request-btn {
+      .request-btn {
         border-radius: 5px;
         background-color: #632ed8;
         color: #ffffff;
@@ -390,6 +390,8 @@
           height: 50px;
           margin-right: 10px;
           border-radius: 50%;
+          background-color: #ebeeff;
+          object-fit: cover;
         }
 
         .review_user-profile_name {
@@ -432,7 +434,6 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-         
 
           .review_pet-sitter_img {
             width: 100%;
