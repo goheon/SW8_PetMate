@@ -79,6 +79,28 @@ function JoinExpert() {
           return;
         }
 
+        if (experienceList.length < 1) {
+          Swal.fire({
+            title: '반려 경험 및 경력을 입력해주세요',
+            icon: 'warning',
+            confirmButtonText: '확인',
+            customClass: { container: 'custom-popup' },
+          });
+          return;
+        }
+
+        if (!e.target.introduction.value || !e.target.title.value) {
+          Swal.fire({
+            title: '제목과 소개글은 필수값입니다',
+            icon: 'warning',
+            confirmButtonText: '확인',
+            customClass: { container: 'custom-popup' },
+          });
+          return;
+        }
+
+       
+
         const formData = new FormData();
         formData.append('img', fileInput.current.files[0]);
         formData.append('type', types);
