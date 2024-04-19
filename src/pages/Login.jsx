@@ -53,7 +53,6 @@ function Login() {
       if (!response.ok) throw new Error('Network response was not ok');
 
       const loginUserInfo = await fetchUserInfo();
-      console.log(loginUserInfo);
       dispatch(setUserInfo(loginUserInfo));
 
       Swal.fire({

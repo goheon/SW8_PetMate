@@ -31,7 +31,6 @@ const ProfileImgEditModal = ({ isOpen, onClose }) => {
       return;
     }
     setIsLoading(true);
-    console.log(formData.get('img'));
     const response = await fetchUpdateUser(formData);
     if (!response.ok) throw new Error('Network response was not ok');
     const resData = await fetchUserInfo();

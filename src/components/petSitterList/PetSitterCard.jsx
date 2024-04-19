@@ -22,7 +22,6 @@ function PetSitterCard(props) {
       <div className="search_wrap" onClick={() => handleCardClick(props.sitter.sitterId)}>
         <div className="img-box">
           <img src={props.sitter.image} />
-          {console.log(props.sitter.image)}
         </div>
         <div className="text-box">
           <div className="text-box_top">

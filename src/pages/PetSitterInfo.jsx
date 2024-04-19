@@ -19,7 +19,6 @@ async function getPetSitterInfo(sitterId) {
     if (!response.ok) throw new Error('Network response was not ok');
 
     const data = await response.json();
-    console.log(data);
     if (data) return data;
   } catch (error) {
     console.log('Error:', error);
@@ -82,8 +81,6 @@ function PetSitterInfo({ img, check }) {
   //펫시터 데이터
   const [petSitterData, setPetSitterData] = useState();
   const [petSitterReviewData, setPetSitterReviewData] = useState();
-
-  console.log(petSitterReviewData);
 
   useEffect(() => {
     getPetSitterInfo(sitterId).then((data) => {
@@ -315,7 +312,6 @@ function PetSitterInfo({ img, check }) {
         icon: 'error',
         customClass: { container: 'custom-popup' },
       });
-      console.log(data);
     }
   };
 

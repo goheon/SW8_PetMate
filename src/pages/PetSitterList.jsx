@@ -76,8 +76,6 @@ function PetSitterList() {
     fetchData();
   }, []);
 
-  console.log(filteredSitters);
-
   useEffect(() => {
     filterSitters();
   }, [selectedLocation, selectedType, selectedSizes, sittersData]);
