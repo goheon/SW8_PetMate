@@ -184,7 +184,7 @@ const ReviewList = (props) => {
       <div className="mypage-review-list_state">
         <div className="review_user-profile">
           <div>
-            <div className="review_petsitter-title" onClick={handleClick}>{props.review.sitterTitle}&nbsp;<span class="arrow" /></div>
+            <div className="review_petsitter-title" onClick={handleClick}>{props.review.sitterTitle}&nbsp;<span className="arrow" /></div>
             <Stars rating={props.review.comment.starRate} />
           </div>
         </div>
@@ -209,7 +209,7 @@ const ReviewList = (props) => {
             </span>
           }
         </div>
-        <p className={props.isExpanded && 'expand'}>{props.review.comment.comment}</p>
+        <p className={props.isExpanded ? 'expand' : null}>{props.review.comment.comment}</p>
       </div>
       {props.isExpanded && (
         <div className='image-box'>

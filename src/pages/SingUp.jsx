@@ -195,8 +195,8 @@ function SignUp() {
           <div className="sing-up_wrap">
             <form onSubmit={handleSubmit} action="http://localhost:3000/api/v1/auth/sign-up" method="post">
               <div
-                className={`name-wrap ${touchedInputs.name && !validateName(inputValues.name) ? 'invalid' : ''} ${
-                  touchedInputs.name && validateName(inputValues.name) ? 'valid' : ''
+                className={`name-wrap ${touchedInputs.name && !validateName(inputValues.name) ? 'invalid' : null} ${
+                  touchedInputs.name && validateName(inputValues.name) ? 'valid' : null
                 }`}
               >
                 <p>
@@ -216,8 +216,8 @@ function SignUp() {
 
               <div
                 className={`email-wrap email-wrap-01 ${
-                  touchedInputs.email && !validateEmail(inputValues.email) ? 'invalid' : ''
-                } ${touchedInputs.email && validateEmail(inputValues.email) ? 'valid' : ''}`}
+                  touchedInputs.email && !validateEmail(inputValues.email) ? 'invalid' : null
+                } ${touchedInputs.email && validateEmail(inputValues.email) ? 'valid' : null}`}
               >
                 <p>
                   이메일
@@ -237,8 +237,8 @@ function SignUp() {
 
               <div
                 className={`password-wrap ${
-                  touchedInputs.password && !validatePassword(inputValues.password) ? 'invalid' : ''
-                } ${touchedInputs.password && validatePassword(inputValues.password) ? 'valid' : ''}`}
+                  touchedInputs.password && !validatePassword(inputValues.password) ? 'invalid' : null
+                } ${touchedInputs.password && validatePassword(inputValues.password) ? 'valid' : null}`}
               >
                 <p>
                   비밀번호

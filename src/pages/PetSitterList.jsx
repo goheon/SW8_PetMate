@@ -90,8 +90,8 @@ function PetSitterList() {
             <div className="search_left">
               <div className="sl_button">
                 <button
-                  className={`${activeModal === 'locationModal' ? 'selected-button' : ''} ${
-                    selectedLocation !== '지역' ? 'selected-location-button' : ''
+                  className={`${activeModal === 'locationModal' ? 'selected-button' : null} ${
+                    selectedLocation !== '지역' ? 'selected-location-button' : null
                   }`}
                   onClick={() => toggleModal('locationModal')}
                 >
@@ -150,7 +150,7 @@ function PetSitterList() {
             <ul>
               {filteredSitters.map((el, index) => {
                 return (
-                  <li className={pageNation === index ? 'on' : ''}>
+                  <li className={pageNation === index ? 'on' : null}>
                     <button
                       onClick={() => {
                         setPageNation(index);

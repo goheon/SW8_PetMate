@@ -229,7 +229,7 @@ const PetSitterReviewList = (props) => {
                     }
 
                 </div>
-                <p className={props.isExpanded && 'expand'}>{props.review.review.comment}</p>
+                <p className={props.isExpanded ? 'expand' : null}>{props.review.review.comment}</p>
             </div>
             {props.isExpanded && (
                 <div className='image-box'>
