@@ -56,7 +56,7 @@ function OrderView() {
   useEffect(() => {
     //시터의 예약목록 조회
     async function getPestSitterBookList(sitterInfo) {
-      const response = await fetchGetPetSitterBookList(sitterInfo.sitterInfo.sitterId);
+      const response = await fetchGetPetSitterBookList(sitterInfo.sitterId);
       if (!response.ok) throw new Error('Network response was not ok');
       const { data } = await response.json();
       dispatch(setAllPetSitterOrderList(data));

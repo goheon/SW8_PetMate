@@ -7,8 +7,6 @@ dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 5173;
 const base = process.env.BASE || '/';
-const db_id = process.env.DB_ID;
-const db_pw = process.env.DB_PW;
 
 // Cached production assets
 const templateHtml = isProduction ? await fs.readFile('./dist/client/index.html', 'utf-8') : '';

@@ -315,7 +315,7 @@ function PetSitterInfo({ img, check }) {
     }
   };
 
-  if (!petSitterData) return <>로딩즁이거나 없는 펫시터 정보입니다</>;
+  if (!petSitterData) return <></>;
 
   return (
     <>

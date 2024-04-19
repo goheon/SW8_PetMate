@@ -180,9 +180,6 @@ function Login() {
               <li>
                 <Link to={'/sign-up'}>회원 가입</Link>
               </li>
-              <li>
-                <Link>비밀번호 찾기</Link>
-              </li>
             </ul>
 
             {/* <ul className="login_sns">
