@@ -1,0 +1,210 @@
+.sing-up {
+  display: flex;
+  min-height: 90vh;
+  padding: 140px 0px 80px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+}
+.sing-up_inner {
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  margin: 0px auto;
+}
+.sing-up_inner .sing-up_wrap {
+  background-color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0 0px 10px rgba(10, 10, 10, 0.07);
+}
+.sing-up_inner h3 {
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 30px;
+
+  color: #632ed8;
+  font-weight: 600;
+}
+.sing-up_inner form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.sing-up_inner form > div {
+  width: 100%;
+}
+.sing-up_inner form > div.email-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  margin-bottom: 30px;
+  justify-content: space-between;
+}
+.sing-up_inner form > div.email-wrap p {
+  width: 100%;
+}
+.sing-up_inner form > div.email-wrap input {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.sing-up_inner form > div.address-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  margin-bottom: 30px;
+  justify-content: space-between;
+}
+.sing-up_inner form > div.address-wrap p {
+  width: 100%;
+}
+.sing-up_inner form > div.address-wrap input {
+  width: 65%;
+  margin-bottom: 0;
+}
+.sing-up_inner form > div.address-wrap input.sing-up_address {
+  margin-top: 15px;
+  width: 100%;
+}
+.sing-up_inner form > div.address-wrap button {
+  width: 32%;
+  box-sizing: border-box;
+  background-color: #ffc800;
+  padding: 12px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: bold;
+}
+.sing-up_inner form p {
+  width: 100%;
+  font-size: 14px;
+  color: #222;
+  margin-bottom: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+.sing-up_inner form p svg {
+  display: none;
+  margin-left: 5px;
+  color: inherit;
+  width: 15px;
+}
+.sing-up_inner form .invalid input {
+  border-color: #f15746;
+  margin-bottom: 10px;
+}
+.sing-up_inner form .invalid input:focus {
+  border-color: #f15746;
+}
+.sing-up_inner form .invalid p {
+  color: #f15746; 
+  svg{
+    fill: #f15746;
+  }
+}
+.sing-up_inner form .valid p {
+  color: #632ed8;
+  svg{
+    fill: #632ed8;
+  }
+}
+.sing-up_inner form .valid p svg {
+  display: block;
+}
+.sing-up_inner form input {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-bottom: 30px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #f4f6fe;
+  font-weight: 500;
+}
+.sing-up_inner form input:focus-visible {
+  outline: 0;
+}
+.sing-up_inner form input:focus {
+  border: none;
+  border: 2px solid #632ed8;
+}
+.sing-up_inner form input.sing-up_extraAddress {
+  margin-bottom: 20px;
+}
+.sing-up_inner form .sing-up_submit {
+  border: none;
+  width: 100%;
+  background-color: #632ed8;
+  border-radius: 5px;
+  padding: 15px 17px;
+  font-size: 17px;
+  cursor: pointer;
+  margin-bottom: 0;
+  color: #fff;
+  &:focus {
+    border: none;
+  }
+}
+
+.sing-up_inner .sing-up_route {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+.sing-up_inner .sing-up_route li {
+  padding: 0px 20px;
+  position: relative;
+}
+.sing-up_inner .sing-up_route li a {
+  color: #444;
+  font-size: 14px;
+}
+.sing-up_inner .sing-up_route li::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  right: 0px;
+  display: block;
+  width: 1px;
+  height: 100%;
+  background-color: #bbb;
+}
+.sing-up_inner .sing-up_route li:last-child::after {
+  display: none;
+}
+.sing-up_inner .sing-up_sns li a {
+  position: relative;
+  display: block;
+  padding: 17px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  color: #222;
+  font-size: 16px;
+  font-weight: bold;
+}
+.sing-up_inner .sing-up_sns li a span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sing-up .input_error {
+  display: none;
+  margin-bottom: 25px;
+  color: #f15746;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sing-up .invalid .input_error {
+  display: block;
+}
