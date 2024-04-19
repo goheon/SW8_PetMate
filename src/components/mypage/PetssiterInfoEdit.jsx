@@ -154,7 +154,7 @@ function JoinExpert() {
   return (
     <>
       <div className="mypage-join-expert">
-        <h4>펫시터 전환</h4>
+        <h4>펫시터 정보 수정</h4>
         <form enctype="multipart/form-data" action="" onSubmit={handleSummit}>
           <div>
             <h6>돌봄 가능한 동물 / 사이즈</h6>

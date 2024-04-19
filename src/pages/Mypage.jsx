@@ -75,7 +75,7 @@ function Mypage() {
       <>
         <>
           <li>
-            <Link to={'/mypage/petSitter-reservation'}>펫시터 예약 관리</Link>
+            <Link to={'/mypage/petSitter-reservation'}>펫시터 예약관리</Link>
           </li>
           <li>
             <Link to={'/mypage/petssiter-info'}>펫시터 정보관리</Link>
@@ -164,9 +164,6 @@ function Mypage() {
                 </li>
                 <li>
                   <Link to={'/mypage/review'}>리뷰관리</Link>
-                </li>
-                <li>
-                  <Link to={'/mypage/point'}>포인트관리</Link>
                 </li>
                 {/* 펫시터 회원 체크 후 아래 메뉴 노출 */}
                 {isPmenuOn && <PetSitterMenu />}
