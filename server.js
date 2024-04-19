@@ -1,14 +1,14 @@
 import fs from 'node:fs/promises';
 import express from 'express';
 import dotenv from 'dotenv';
-import { apiRouter } from './routes/api.js';
-
 dotenv.config();
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 5173;
 const base = process.env.BASE || '/';
+const db_id = process.env.DB_ID;
+const db_pw = process.env.DB_PW;
 
 // Cached production assets
 const templateHtml = isProduction ? await fs.readFile('./dist/client/index.html', 'utf-8') : '';
@@ -16,13 +16,14 @@ const ssrManifest = isProduction ? await fs.readFile('./dist/client/.vite/ssr-ma
 
 // Create http server
 const app = express();
+app.use(express.json());
 
 // Add Vite or respective production middlewares
 let vite;
 if (!isProduction) {
   const { createServer } = await import('vite');
   vite = await createServer({
-    server: { middlewareMode: true },
+    server: { middlewareMode: 'ssr' },
     appType: 'custom',
     base,
   });
@@ -33,35 +34,12 @@ if (!isProduction) {
   app.use(compression());
   app.use(base, sirv('./dist/client', { extensions: [] }));
 }
-//mongoose, mongodb 연결
-import { MongoClient } from 'mongodb';
-
-let db;
-const url = 'mongodb+srv://petmate:1234@petmate.bhm01el.mongodb.net/?retryWrites=true&w=majority&appName=PetMate';
-
-(async () => {
-  try {
-    const client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log('DB 연결 성공');
-    db = client.db('forum');
-
-    app.listen(3000, () => {
-      console.log('http://localhost:3000 에서 서버 실행중');
-    });
-  } catch (err) {
-    console.log(err);
-  }
-})();
-
-
-
-//Serve APIs
-app.use('/api', apiRouter);
 
 // Serve HTML
 app.use('*', async (req, res) => {
   try {
-    const url = req.originalUrl.replace(base, '');
+    const url = req.originalUrl;
+    // .replace(base, '');
 
     let template;
     let render;
@@ -88,6 +66,7 @@ app.use('*', async (req, res) => {
     res.status(500).end(e.stack);
   }
 });
+//
 
 // Start http server
 app.listen(port, () => {
