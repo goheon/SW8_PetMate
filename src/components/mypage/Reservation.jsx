@@ -9,7 +9,7 @@ import { fetchGetBookList, fetchUserInfo, fetchOrderComplete, fetchPointRemittan
 import 'react-datepicker/dist/react-datepicker.css';
 
 //날짜 설정 컴포넌트
-const Day = ({ inputDate, setInputDate }) => {
+const Day = ({ inputDate, setInputDate, placeholder }) => {
   const [DatePicker, setDatePicker] = useState(null);
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -21,16 +21,23 @@ const Day = ({ inputDate, setInputDate }) => {
     }
   }, []);
   if (!DatePicker) return <div>Loading date picker...</div>;
-  return <DatePicker showIcon dateFormat="yyyy/MM/dd" selected={inputDate} onChange={(date) => setInputDate(date)} />;
+  return (
+    <DatePicker
+      showIcon dateFormat="yyyy/MM/dd"
+      selected={inputDate}
+      onChange={(date) => setInputDate(date)}
+      placeholderText={placeholder}
+    />
+  )
 };
 
 //필터 옵션
 const options = [
-  { value: 'all', label: '전체상품' },
-  { value: 'request', label: '예약요청' },
-  { value: 'ongoing', label: '진행중' },
-  { value: 'completion', label: '완료' },
-  { value: 'cancellation', label: '취소' },
+  { value: 0, label: '전체상품' },
+  { value: 1, label: '예약요청' },
+  { value: 2, label: '진행중' },
+  { value: 3, label: '완료' },
+  { value: 4, label: '취소' },
 ];
 
 //예약내역 리스트 컴포넌트
@@ -129,23 +136,33 @@ const OrderList = (props) => {
 function Reservation() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const allOrderList = useSelector((state) => state.allOrderList);
-  const [onFilter, setOnFilter] = useState(false);
-  const [filterOrderList, setFilterOrderList] = useState([]);
+  const [filteredOrderList, setFilteredOrderList] = useState([]);
   const dispatch = useDispatch();
-
-  //필터 날짜
-  const [startDate, setStartDate] = useState();
+  const [startDate, setStartDate] = useState(); // 필터 날짜
   const [endDate, setEndDate] = useState();
+  const [searchQuery, setSearchQuery] = useState(''); // 검색어
+
+  // 날짜 선택 핸들러
+  const handleDateChange = (start, end) => {
+    if (start && end && start > end) {
+      Swal.fire({
+        text: `종료 날짜는 시작 날짜보다 빠를 수 없습니다.`,
+        icon: 'warning',
+        customClass: { container: 'custom-popup' },
+      });
+      return;
+    }
+    setStartDate(start);
+    setEndDate(end);
+  };
+
+  // 조회 버튼 클릭 핸들러
+  const handleSearchClick = () => {
+    const searchInputValue = document.querySelector('.search-button').value.trim();
+    setSearchQuery(searchInputValue);
+  };
 
   useEffect(() => {
-    let beginTime = new Date();
-    beginTime.setHours(0, 0, 0);
-    setStartDate(beginTime);
-
-    let endTime = new Date();
-    endTime.setHours(23, 59, 59);
-    setEndDate(endTime);
-
     getBookList();
 
     async function getBookList() {
@@ -157,8 +174,37 @@ function Reservation() {
   }, [dispatch]);
 
   useEffect(() => {
-    setFilterOrderList(allOrderList);
+    setFilteredOrderList(allOrderList);
   }, [allOrderList]);
+
+  useEffect(() => {
+    let tempReservation = [...allOrderList];
+
+    // Select 필터
+    if (selectedOption.value !== 0) {
+      tempReservation = tempReservation.filter(reservation => reservation.state === selectedOption.label);
+    }
+
+    // 날짜 필터
+    if (startDate && endDate) {
+      tempReservation = tempReservation.filter((reservation) => {
+        const reservationDate = new Date(reservation.createdAt).getTime();
+        return reservationDate >= startDate.setHours(0, 0, 0) && reservationDate <= endDate.setHours(23, 59, 59);
+      });
+    }
+
+    // 검색 쿼리 필터링
+    if (searchQuery) {
+      tempReservation = tempReservation.filter(reservation =>
+        reservation.sittername.includes(searchQuery)
+        || reservation.petSitterInfo.sitterInfo.title.includes(searchQuery)
+      );
+    }
+
+    tempReservation.reverse();
+    setFilteredOrderList(tempReservation);
+
+  }, [selectedOption, allOrderList, startDate, endDate, searchQuery]);
 
   return (
     <>
@@ -168,33 +214,25 @@ function Reservation() {
           <li>
             <p>예약요청</p>
             <strong>
-              {onFilter
-                ? filterOrderList.filter((el) => el.state === '예약요청').length
-                : allOrderList.filter((el) => el.state === '예약요청').length}
+              {allOrderList.filter((el) => el.state === '예약요청').length}
             </strong>
           </li>
           <li>
             <p>진행중</p>
             <strong>
-              {onFilter
-                ? filterOrderList.filter((el) => el.state === '진행중').length
-                : allOrderList.filter((el) => el.state === '진행중').length}
+              {allOrderList.filter((el) => el.state === '진행중').length}
             </strong>
           </li>
           <li>
             <p>완료된 시팅</p>
             <strong>
-              {onFilter
-                ? filterOrderList.filter((el) => el.state === '완료').length
-                : allOrderList.filter((el) => el.state === '완료').length}
+              {allOrderList.filter((el) => el.state === '완료').length}
             </strong>
           </li>
           <li>
             <p>취소된 시팅</p>
             <strong>
-              {onFilter
-                ? filterOrderList.filter((el) => el.state === '취소').length
-                : allOrderList.filter((el) => el.state === '취소').length}
+              {allOrderList.filter((el) => el.state === '취소').length}
             </strong>
           </li>
         </ul>
@@ -209,48 +247,30 @@ function Reservation() {
             />
           </div>
           <div className="mypage-filter_start-day">
-            <Day inputDate={startDate} setInputDate={setStartDate} />
+            <Day
+              inputDate={startDate}
+              setInputDate={(date) => handleDateChange(date, endDate)}
+              placeholder="조회 시작일"
+            />
           </div>
           <div className="mypage-filter_end-day">
-            <Day inputDate={endDate} setInputDate={setEndDate} />
+            <Day
+              inputDate={endDate}
+              setInputDate={(date) => handleDateChange(startDate, date)}
+              placeholder="조회 종료일"
+            />
           </div>
           <div className="mypage-filter_search">
-            <input type="text" placeholder="검색어입력" />
+            <input type="text" className="search-button" placeholder="검색어입력" />
           </div>
-          <button
-            onClick={() => {
-              const filterArr = allOrderList.filter((el) => {
-                if (selectedOption.value === 'all' || selectedOption.label === el.state) {
-                  const createdAtObject = new Date(el.createdAt);
-                  if (
-                    startDate.getTime() <= createdAtObject.getTime() &&
-                    createdAtObject.getTime() <= endDate.getTime()
-                  ) {
-                    return true;
-                  }
-                }
-
-                return false;
-              });
-              setOnFilter(true);
-              setFilterOrderList(filterArr);
-            }}
-          >
-            조회
-          </button>
+          <button onClick={handleSearchClick}>조회</button>
         </div>
         <ul className="mypage-reservation-list">
-          {allOrderList.length > 0 &&
-            (onFilter
-              ? filterOrderList
-                  .slice()
-                  .reverse()
-                  .map((el) => <OrderList key={el.orderId} {...el} />)
-              : allOrderList
-                  .slice()
-                  .reverse()
-                  .map((el) => <OrderList key={el.orderId} {...el} />))}
-          {allOrderList.length < 1 && <p className="noOrder">이용내역이 없습니다.</p>}
+          {
+            allOrderList.length > 0
+              ? filteredOrderList.map((el) => <OrderList key={el.orderId} {...el} />)
+              : <p className="noOrder">예약내역이 없습니다.</p>
+          }
         </ul>
       </div>
     </>

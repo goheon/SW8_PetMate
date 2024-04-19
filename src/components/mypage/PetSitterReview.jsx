@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import 'react-datepicker/dist/react-datepicker.css';
+import Swal from 'sweetalert2';
 import { fetchPetSitterReviews, fetchGetSitterInfo } from './util/APIrequest';
 
 //필터 옵션
@@ -38,7 +39,11 @@ function PetSitterReview() {
     // 날짜 선택 핸들러
     const handleDateChange = (start, end) => {
         if (start && end && start > end) {
-            alert('종료 날짜는 시작 날짜보다 빠를 수 없습니다.');
+            Swal.fire({
+                text: `종료 날짜는 시작 날짜보다 빠를 수 없습니다.`,
+                icon: 'warning',
+                customClass: { container: 'custom-popup' },
+            });
             return;
         }
         setStartDate(start);
@@ -161,7 +166,7 @@ function PetSitterReview() {
                         />
                     </div>
                     <div className="mypage-filter_search">
-                        <input type="text" placeholder="검색어입력" />
+                        <input type="text" className="search-button" placeholder="검색어입력" />
                     </div>
 
                     <button onClick={handleSearchClick}>조회</button>
