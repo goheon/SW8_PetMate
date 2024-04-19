@@ -112,7 +112,7 @@ function PetSitterReview() {
             tempPetSitterReviews = tempPetSitterReviews.filter(review =>
                 review.value.username.includes(searchQuery)
                 || review.review.title.includes(searchQuery)
-                || review.review.title.includes(searchQuery)
+                || review.review.comment.includes(searchQuery)
             );
         }
 

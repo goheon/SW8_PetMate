@@ -2,6 +2,7 @@ import Stars from '../Stars';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2';
 import { fetchReviews } from './util/APIrequest';
@@ -171,12 +172,19 @@ function Review() {
 
 // 리뷰 리스트 컴포넌트
 const ReviewList = (props) => {
+  const navigate = useNavigate();
+
+  // 클릭 이벤트 핸들러
+  const handleClick = () => {
+    navigate(`/pet-sitter/${props.review.comment.sitterId}`);
+  };
+
   return (
     <li onClick={props.onToggleExpand}>
       <div className="mypage-review-list_state">
         <div className="review_user-profile">
           <div>
-            <span className="review_petsitter-title">{props.review.sitterTitle}&nbsp;&gt;</span>
+            <div className="review_petsitter-title" onClick={handleClick}>{props.review.sitterTitle}&nbsp;<span class="arrow" /></div>
             <Stars rating={props.review.comment.starRate} />
           </div>
         </div>
