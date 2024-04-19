@@ -7,21 +7,23 @@ import { fetchPetSitterReviews, fetchGetSitterInfo } from './util/APIrequest';
 
 //필터 옵션
 const options = [
-    { value: '0', label: '전체리뷰' },
-    { value: '1', label: <Stars rating={1} /> },
-    { value: '2', label: <Stars rating={2} /> },
-    { value: '3', label: <Stars rating={3} /> },
-    { value: '4', label: <Stars rating={4} /> },
-    { value: '5', label: <Stars rating={5} /> },
+    { value: 0, label: '전체리뷰' },
+    { value: 1, label: <Stars rating={1} /> },
+    { value: 2, label: <Stars rating={2} /> },
+    { value: 3, label: <Stars rating={3} /> },
+    { value: 4, label: <Stars rating={4} /> },
+    { value: 5, label: <Stars rating={5} /> },
 ];
 
 function PetSitterReview() {
     const loginUserInfo = useSelector((state) => state.loginUserInfo);
     const [sitterInfo, setSitterInfo] = useState(); // sitterId
     const [petSitterReviews, setPetSitterReviews] = useState([]); // 리뷰 데이터
+    const [filteredPetSitterReviews, setFilteredPetSitterReviews] = useState([]); // 필터링 데이터
     const [selectedOption, setSelectedOption] = useState(options[0]); // 드롭다운 옵션
     const [startDate, setStartDate] = useState(); // 날짜 필터
     const [endDate, setEndDate] = useState();
+    const [searchQuery, setSearchQuery] = useState(''); // 검색어
     const [activeExpandId, setActiveExpandId] = useState(''); // 현재 확장된 리뷰
 
     // 리뷰 확장 토글
@@ -33,9 +35,24 @@ function PetSitterReview() {
     const averageStars = petSitterReviews.length === 0 ? "-" :
         (petSitterReviews.reduce((acc, review) => acc + review.review.starRate, 0) / petSitterReviews.length).toFixed(1);
 
+    // 날짜 선택 핸들러
+    const handleDateChange = (start, end) => {
+        if (start && end && start > end) {
+            alert('종료 날짜는 시작 날짜보다 빠를 수 없습니다.');
+            return;
+        }
+        setStartDate(start);
+        setEndDate(end);
+    };
+
+    // 조회 버튼 클릭 핸들러
+    const handleSearchClick = () => {
+        const searchInputValue = document.querySelector('.search-button').value.trim();
+        setSearchQuery(searchInputValue);
+    };
+
     useEffect(() => {
         if (loginUserInfo) {
-
             // 펫시터 회원이 아닌 경우
             if (!loginUserInfo.isRole) {
                 Swal.fire({
@@ -70,14 +87,34 @@ function PetSitterReview() {
     }, [sitterInfo])
 
     useEffect(() => {
-        let beginTime = new Date();
-        beginTime.setHours(0, 0, 0);
-        setStartDate(beginTime);
+        let tempPetSitterReviews = [...petSitterReviews];
 
-        let endTime = new Date();
-        endTime.setHours(23, 59, 59);
-        setEndDate(endTime);
-    }, [])
+        // Select 필터
+        if (selectedOption.value !== 0) { // '전체리뷰' 선택 시 모든 리뷰 표시
+            tempPetSitterReviews = tempPetSitterReviews.filter(review => review.review.starRate === selectedOption.value);
+        }
+
+        // 날짜 필터
+        if (startDate && endDate) {
+            tempPetSitterReviews = tempPetSitterReviews.filter((review) => {
+                const reviewDate = new Date(review.review.createdAt).getTime();
+                return reviewDate >= startDate.setHours(0, 0, 0) && reviewDate <= endDate.setHours(23, 59, 59);
+            });
+        }
+
+        // 검색 쿼리 필터링
+        if (searchQuery) {
+            tempPetSitterReviews = tempPetSitterReviews.filter(review =>
+                review.value.username.includes(searchQuery)
+                || review.review.title.includes(searchQuery)
+                || review.review.title.includes(searchQuery)
+            );
+        }
+
+        tempPetSitterReviews.reverse();
+        setFilteredPetSitterReviews(tempPetSitterReviews);
+
+    }, [selectedOption, petSitterReviews, startDate, endDate, searchQuery]);
 
     return (
         <>
@@ -88,7 +125,7 @@ function PetSitterReview() {
                     <li>
                         <p>리뷰 수</p>
                         <strong>
-                            {petSitterReviews.length}
+                            {filteredPetSitterReviews.length}
                         </strong>
                     </li>
                     <li>
@@ -111,24 +148,28 @@ function PetSitterReview() {
                     </div>
                     <div className="mypage-filter_start-day">
                         <Day
-                            inputDate={startDate} setInputDate={setStartDate}
+                            inputDate={startDate}
+                            setInputDate={(date) => handleDateChange(date, endDate)}
+                            placeholder="조회 시작일"
                         />
                     </div>
                     <div className="mypage-filter_end-day">
                         <Day
-                            inputDate={endDate} setInputDate={setEndDate}
+                            inputDate={endDate}
+                            setInputDate={(date) => handleDateChange(startDate, date)}
+                            placeholder="조회 종료일"
                         />
                     </div>
                     <div className="mypage-filter_search">
                         <input type="text" placeholder="검색어입력" />
                     </div>
 
-                    <button>조회</button>
+                    <button onClick={handleSearchClick}>조회</button>
                 </div>
 
                 <ul className="mypage-review-list">
                     {
-                        [...petSitterReviews].reverse().map((el) => {
+                        filteredPetSitterReviews.map((el) => {
                             return (
                                 <PetSitterReviewList
                                     key={el.review._id}
@@ -201,7 +242,7 @@ const PetSitterReviewList = (props) => {
 };
 
 //날짜 설정 컴포넌트
-const Day = ({ inputDate, setInputDate }) => {
+const Day = ({ inputDate, setInputDate, placeholder }) => {
     const [DatePicker, setDatePicker] = useState(null);
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -213,7 +254,14 @@ const Day = ({ inputDate, setInputDate }) => {
         }
     }, []);
     if (!DatePicker) return <div>Loading date picker...</div>;
-    return <DatePicker showIcon dateFormat="yyyy/MM/dd" selected={inputDate} onChange={(date) => setInputDate(date)} />;
+    return (
+        <DatePicker
+            showIcon dateFormat="yyyy/MM/dd"
+            selected={inputDate}
+            onChange={(date) => setInputDate(date)}
+            placeholderText={placeholder}
+        />
+    )
 };
 
 export default PetSitterReview;
