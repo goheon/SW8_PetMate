@@ -207,7 +207,7 @@ function Home() {
                         >
                           <div>
                             <div className="main02-swiper_img-box">
-                              <img src={el.review.image[0] ?? '/public/images/default.jpg'} alt="" />
+                              <img src={el.review.image[0] ?? '/images/default.jpg'} alt="" />
                             </div>
                             <div className="main02-swiper_text-box">
                               <h4>{el.review.title}</h4>
