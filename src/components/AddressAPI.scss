@@ -33,3 +33,10 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .AddressAPI_inner {
+    width: 300px;
+    left: 50%;
+  }
+}

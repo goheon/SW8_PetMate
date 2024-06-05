@@ -16,6 +16,10 @@
     padding: 40px 30px 74px 30px;
     margin: 0px auto;
 
+    @media screen and (max-width: 768px) {
+      padding: 30px 30px 40px 30px;
+    }
+
     .search_left {
       display: flex;
       justify-content: space-between;
@@ -43,6 +47,12 @@
           &.selected-location-button {
             color: #632ed8;
           }
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .sl_button {
+          max-width: 100px;
         }
       }
     }

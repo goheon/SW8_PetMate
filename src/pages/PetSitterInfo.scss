@@ -652,3 +652,34 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+
+    &_left {
+      width: 100%;
+
+      .pet-sitter-Introduction_service > ul {
+        gap: 5px;
+      }
+    }
+
+    &_right {
+      width: 100%;
+      padding-top: 20px;
+
+      .petsitter-info .petsitter_btm p span:last-child {
+        margin-right: 10px;
+      }
+    }
+
+    .review-section .review-card_inner .review .review_images {
+      overflow-x: scroll;
+    }
+
+    .pet-select_price-list {
+      padding: 15px;
+    }
+  }
+}

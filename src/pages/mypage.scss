@@ -38,7 +38,7 @@
     padding: 30px;
     margin-bottom: 20px;
 
-    >div {
+    > div {
       &:nth-of-type(1) {
         display: flex;
         width: 100%;
@@ -163,11 +163,11 @@
     }
 
     &.on {
-      >button[type='button'] {
+      > button[type='button'] {
         display: flex;
         justify-content: space-between;
 
-        >div {
+        > div {
           display: flex;
           font-size: 14px;
           align-items: center;
@@ -177,7 +177,6 @@
               width: 20px;
             }
           }
-
         }
       }
     }
@@ -296,7 +295,7 @@
         margin-right: 10px;
 
         &-options {
-          >div {
+          > div {
             cursor: pointer;
             background-color: #f4f6fe;
             border: none;
@@ -326,7 +325,7 @@
         }
       }
 
-      >button {
+      > button {
         background-color: #632ed8;
         color: #fff;
         padding: 10px 15px;
@@ -370,7 +369,7 @@
           font-size: 14px;
         }
 
-        >span {
+        > span {
           margin-left: 5px;
           padding: 3px 5px;
           background-color: #ffc800;
@@ -524,20 +523,20 @@
       display: flex;
       flex-wrap: wrap;
 
-      >div {
+      > div {
         display: flex;
         width: 100%;
         align-items: stretch;
         flex-wrap: wrap;
         margin-bottom: 50px;
 
-        >h6 {
+        > h6 {
           width: 100%;
           margin-bottom: 10px;
           font-size: 18px;
         }
 
-        >p {
+        > p {
           width: 100%;
           margin-bottom: 10px;
           font-size: 14px;
@@ -636,7 +635,7 @@
         display: none;
       }
 
-      input[type='checkbox']:checked+.checkbox_label {
+      input[type='checkbox']:checked + .checkbox_label {
         &::before {
           content: '✔';
           background-color: #632ed8;
@@ -765,7 +764,7 @@
         }
       }
 
-      >p {
+      > p {
         display: inline-block;
         margin-bottom: 10px;
 
@@ -853,7 +852,7 @@
       }
     }
 
-    >div {
+    > div {
       display: flex;
       flex-wrap: wrap;
       margin-bottom: 50px;
@@ -892,20 +891,20 @@
       display: flex;
       flex-wrap: wrap;
 
-      >div {
+      > div {
         display: flex;
         width: 100%;
         align-items: stretch;
         flex-wrap: wrap;
         margin-bottom: 50px;
 
-        >h6 {
+        > h6 {
           width: 100%;
           margin-bottom: 10px;
           font-size: 18px;
         }
 
-        >p {
+        > p {
           width: 100%;
           margin-bottom: 10px;
           font-size: 14px;
@@ -1004,7 +1003,7 @@
       margin-right: 10px;
 
       &-rate {
-        >div {
+        > div {
           cursor: pointer;
           border: 1px solid #eee;
           background-color: #fffdf4;
@@ -1096,7 +1095,7 @@
         margin-right: 10px;
 
         &-options {
-          >div {
+          > div {
             cursor: pointer;
             background-color: #f4f6fe;
             border: none;
@@ -1126,7 +1125,7 @@
         }
       }
 
-      >button {
+      > button {
         background-color: #632ed8;
         color: #fff;
         padding: 10px 15px;
@@ -1193,7 +1192,6 @@
               top: 0px;
               left: 0px;
             }
-
           }
         }
 
@@ -1338,11 +1336,11 @@
         margin-bottom: 10px;
       }
 
-      >input {
+      > input {
         margin: 50px;
       }
 
-      .file_img-box>img {
+      .file_img-box > img {
         max-width: 600px;
         max-height: 400px;
       }
@@ -1353,7 +1351,7 @@
         align-items: center;
         justify-content: center;
 
-        >button.modal_submit {
+        > button.modal_submit {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -1378,9 +1376,93 @@
     cursor: pointer;
     font-size: 0;
 
-    >svg {
+    > svg {
       width: 30px;
       fill: #f15746;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mypage_inner {
+    flex-direction: column;
+
+    .mypage_left {
+      width: 100%;
+    }
+
+    .mypage_right {
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .mypage-reservation .mypage-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      > li {
+        padding: 10px;
+      }
+    }
+
+    .mypage-filter {
+      flex-direction: column;
+      > div {
+        margin: 10px;
+      }
+
+      > button {
+        margin: 10px;
+      }
+    }
+    .mypage-reservation-list_info {
+      margin-top: 30px;
+      flex-direction: column;
+
+      &_right {
+        flex-direction: column;
+        margin: 10px;
+      }
+
+      .img-box {
+        margin-right: 0;
+      }
+
+      .btn-box {
+        margin: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    table td:nth-of-type(1) {
+      display: flex;
+      width: 90px;
+      height: 100px;
+    }
+
+    table td {
+      vertical-align: top;
+    }
+
+    .mypage-account_setting {
+      input {
+        max-width: 166px;
+      }
+    }
+
+    .mypage-join-expert_type {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .mypage-join-expert form input,
+    label {
+      margin-top: 10px;
+    }
+
+    .mypage-join-expert form > div.mypage-join-expert_price input[type='number']:last-child {
+      margin-right: 10px;
     }
   }
 }

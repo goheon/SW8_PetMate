@@ -99,8 +99,6 @@ function JoinExpert() {
           return;
         }
 
-       
-
         const formData = new FormData();
         formData.append('img', fileInput.current.files[0]);
         formData.append('type', types);
@@ -140,7 +138,7 @@ function JoinExpert() {
       <div className="mypage-join-expert">
         <h4>펫시터 전환</h4>
         <form enctype="multipart/form-data" action="" onSubmit={handleSummit}>
-          <div>
+          <div className="mypage-join-expert_type">
             <h6>돌봄 가능한 동물 / 사이즈</h6>
             <input type="checkbox" name="" id="cat" />
             <label className="checkbox_label" htmlFor="cat">

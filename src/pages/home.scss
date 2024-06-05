@@ -428,3 +428,32 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .petsitter-list {
+    overflow-x: scroll;
+  }
+
+  .review-modal {
+    &_inner {
+      width: 80%;
+    }
+  }
+
+  .main-banner {
+    &_inner {
+      width: 90%;
+      height: auto;
+      padding-top: 50px;
+      padding-bottom: 150px;
+
+      > h3 {
+        font-size: 30px;
+      }
+
+      > p {
+        font-size: 16px;
+      }
+    }
+  }
+}
