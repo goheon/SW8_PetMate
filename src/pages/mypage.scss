@@ -1405,7 +1405,7 @@
       }
     }
 
-    .mypage-reservation .mypage-filter {
+    .mypage-filter {
       flex-direction: column;
       > div {
         margin: 10px;
@@ -1449,6 +1449,20 @@
       input {
         max-width: 166px;
       }
+    }
+
+    .mypage-join-expert_type {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .mypage-join-expert form input,
+    label {
+      margin-top: 10px;
+    }
+
+    .mypage-join-expert form > div.mypage-join-expert_price input[type='number']:last-child {
+      margin-right: 10px;
     }
   }
 }
