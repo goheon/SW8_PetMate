@@ -186,11 +186,19 @@ function Home() {
 
           <div className="main02-swiper-wrap">
             <Swiper
-              slidesPerView={3}
+              slidesPerView={1}
               spaceBetween={30}
               navigation={true}
               modules={[Navigation]}
               className="main02-swiper"
+              breakpoints={{
+                675: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 3,
+                },
+              }}
             >
               {latestReview &&
                 latestReview
